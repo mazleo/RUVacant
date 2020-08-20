@@ -11,6 +11,8 @@
 
         <!-- Font -->
         <item name="android:fontFamily">@font/roboto_condensed_light</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">22sp</item>
 
         <!-- Transition animations -->
         <item name="android:windowActivityTransitions">true</item>
