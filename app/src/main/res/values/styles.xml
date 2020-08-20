@@ -9,6 +9,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:background">@color/colorPrimary</item>
 
+        <!-- Font -->
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+
         <!-- Transition animations -->
         <item name="android:windowActivityTransitions">true</item>
     </style>
