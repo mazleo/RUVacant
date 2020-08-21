@@ -1,4 +1,8 @@
 <resources>
+    <!-- Branding -->
     <string name="app_name">RUVacant</string>
     <string name="logo_description">Application logo</string>
+
+    <!-- Options Activity -->
+    <string name="semester_text">Semester</string>
 </resources>
