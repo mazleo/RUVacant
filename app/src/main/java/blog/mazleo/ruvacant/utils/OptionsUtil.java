@@ -89,4 +89,12 @@ public class OptionsUtil {
 
         return campusOptions;
     }
+
+    public static List<String> getLevelOptionsStrings() {
+        List<String> levelOptions = new ArrayList<>();
+        levelOptions.add("Undergraduate");
+        levelOptions.add("Graduate");
+
+        return levelOptions;
+    }
 }

@@ -17,6 +17,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     public Button semesterButton;
     public Button campusButton;
+    public Button levelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         this.semesterButton = findViewById(R.id.options_semester_button);
         this.campusButton = findViewById(R.id.options_campus_button);
+        this.levelButton = findViewById(R.id.options_level_button);
 
         this.semesterButton.setOnClickListener(
                 view -> {
@@ -34,6 +36,11 @@ public class OptionsActivity extends AppCompatActivity {
         this.campusButton.setOnClickListener(
                 view -> {
                     showOptionsPicker(OptionsPickerDialogFragment.TYPE_CAMPUS_PICKER);
+                }
+        );
+        this.levelButton.setOnClickListener(
+                view -> {
+                    showOptionsPicker(OptionsPickerDialogFragment.TYPE_LEVEL_PICKER);
                 }
         );
     }

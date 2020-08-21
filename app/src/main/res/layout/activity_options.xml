@@ -35,4 +35,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/options_semester_button" />
+
+    <Button
+        android:id="@+id/options_level_button"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="@string/level_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/options_campus_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

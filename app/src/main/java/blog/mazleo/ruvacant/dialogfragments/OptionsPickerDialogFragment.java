@@ -63,13 +63,36 @@ public class OptionsPickerDialogFragment extends DialogFragment {
                 generateCampusOptionButtons(optionsPickerButtons);
                 break;
             case TYPE_LEVEL_PICKER:
-                // TODO: Create buttons
+                generateLevelOptionButtons(optionsPickerButtons);
                 break;
         }
 
         addGeneratedOptionButtonsToLayout(optionsPickerButtons);
 
         return view;
+    }
+
+    private void generateLevelOptionButtons(List<Button> optionsPickerButtons) {
+        List<String> levelOptions = OptionsUtil.getLevelOptionsStrings();
+
+        for (String option: levelOptions) {
+            Button button = new Button(getContext());
+
+            button.setText(option);
+            button.getBackground().setAlpha(0);
+            button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+
+            button.setOnClickListener(
+                    buttonView -> {
+                        ((OptionsActivity) getActivity())
+                                .levelButton
+                                .setText(((Button) buttonView).getText());
+
+                        ((DialogFragment) this).dismiss();
+                    }
+            );
+            optionsPickerButtons.add(button);
+        }
     }
 
     private void generateCampusOptionButtons(List<Button> optionsPickerButtons) {

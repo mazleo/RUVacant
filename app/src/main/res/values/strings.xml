@@ -6,4 +6,5 @@
     <!-- Options Activity -->
     <string name="semester_text">Semester</string>
     <string name="campus_text">Campus</string>
+    <string name="level_text">Level</string>
 </resources>

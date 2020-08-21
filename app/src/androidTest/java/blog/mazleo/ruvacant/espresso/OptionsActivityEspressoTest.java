@@ -47,7 +47,7 @@ public class OptionsActivityEspressoTest {
         onView(ViewMatchers.withId(R.id.options_campus_button)).perform(ViewActions.click());
         onView(ViewMatchers.withText("New Brunswick")).perform(ViewActions.click());
         onView(ViewMatchers.withId(R.id.options_campus_button)).check(ViewAssertions.matches(ViewMatchers.withText("New Brunswick")));
-        
+
         onView(ViewMatchers.withId(R.id.options_campus_button)).perform(ViewActions.click());
         onView(ViewMatchers.withText("Newark")).perform(ViewActions.click());
         onView(ViewMatchers.withId(R.id.options_campus_button)).check(ViewAssertions.matches(ViewMatchers.withText("Newark")));
@@ -55,5 +55,16 @@ public class OptionsActivityEspressoTest {
         onView(ViewMatchers.withId(R.id.options_campus_button)).perform(ViewActions.click());
         onView(ViewMatchers.withText("Camden")).perform(ViewActions.click());
         onView(ViewMatchers.withId(R.id.options_campus_button)).check(ViewAssertions.matches(ViewMatchers.withText("Camden")));
+    }
+
+    @Test
+    public void selectLevelOption() {
+        onView(ViewMatchers.withId(R.id.options_level_button)).perform(ViewActions.click());
+        onView(ViewMatchers.withText("Undergraduate")).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.options_level_button)).check(ViewAssertions.matches(ViewMatchers.withText("Undergraduate")));
+
+        onView(ViewMatchers.withId(R.id.options_level_button)).perform(ViewActions.click());
+        onView(ViewMatchers.withText("Graduate")).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.options_level_button)).check(ViewAssertions.matches(ViewMatchers.withText("Graduate")));
     }
 }
