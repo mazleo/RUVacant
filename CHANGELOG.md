@@ -28,3 +28,15 @@ __JL 8.20.2020__
         - Select semester option
 - Set general theme fields
 - Add Java 8 compatibility
+
+__JL 8.21.2020__
+
+- Option selection feature
+    - Create options activity
+    - Create options picker dialog fragment
+    - Implement semester selection functionality
+    - Implement campus selection functionality
+    - Implement level selection functionality
+    - Create and pass unit UI and functional unit tests for options activity
+- Transition from launcher to options in time
+- Set general theme fields
