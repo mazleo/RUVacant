@@ -11,6 +11,9 @@ public class OptionsUtil {
         Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentYear = calendar.get(Calendar.YEAR);
+        if (currentMonth == 12) {
+            currentYear++;
+        }
 
         int[] semesterMonthCodes = {0, 1, 7, 9};
         int[] yearCodes = {currentYear - 1, currentYear};
