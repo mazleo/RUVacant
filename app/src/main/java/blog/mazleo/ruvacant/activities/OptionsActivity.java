@@ -16,6 +16,7 @@ public class OptionsActivity extends AppCompatActivity {
     private static final String DIALOG_FRAGMENT_TAG = "OPTIONS_DIALOG_FRAGMENT";
 
     public Button semesterButton;
+    public Button campusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +24,16 @@ public class OptionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_options);
 
         this.semesterButton = findViewById(R.id.options_semester_button);
+        this.campusButton = findViewById(R.id.options_campus_button);
 
         this.semesterButton.setOnClickListener(
                 view -> {
                     showOptionsPicker(OptionsPickerDialogFragment.TYPE_SEMESTER_PICKER);
+                }
+        );
+        this.campusButton.setOnClickListener(
+                view -> {
+                    showOptionsPicker(OptionsPickerDialogFragment.TYPE_CAMPUS_PICKER);
                 }
         );
     }

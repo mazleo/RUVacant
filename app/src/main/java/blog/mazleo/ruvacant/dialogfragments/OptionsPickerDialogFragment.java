@@ -60,7 +60,7 @@ public class OptionsPickerDialogFragment extends DialogFragment {
                 generateSemesterOptionButtons(optionsPickerButtons);
                 break;
             case TYPE_CAMPUS_PICKER:
-                // TODO: Create buttons
+                generateCampusOptionButtons(optionsPickerButtons);
                 break;
             case TYPE_LEVEL_PICKER:
                 // TODO: Create buttons
@@ -70,6 +70,29 @@ public class OptionsPickerDialogFragment extends DialogFragment {
         addGeneratedOptionButtonsToLayout(optionsPickerButtons);
 
         return view;
+    }
+
+    private void generateCampusOptionButtons(List<Button> optionsPickerButtons) {
+        List<String> campusOptions = OptionsUtil.getCampusOptionsStrings();
+
+        for (String option: campusOptions) {
+            Button button = new Button(getContext());
+
+            button.setText(option);
+            button.getBackground().setAlpha(0);
+            button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+
+            button.setOnClickListener(
+                    buttonView -> {
+                        ((OptionsActivity) getActivity())
+                                .campusButton
+                                .setText(((Button) buttonView).getText());
+
+                        ((DialogFragment) this).dismiss();
+                    }
+            );
+            optionsPickerButtons.add(button);
+        }
     }
 
     private void addGeneratedOptionButtonsToLayout(List<Button> optionsPickerButtons) {

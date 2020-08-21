@@ -80,4 +80,13 @@ public class OptionsUtil {
 
         return -1;
     }
+
+    public static List<String> getCampusOptionsStrings() {
+        List<String> campusOptions = new ArrayList<>();
+        campusOptions.add("New Brunswick");
+        campusOptions.add("Newark");
+        campusOptions.add("Camden");
+
+        return campusOptions;
+    }
 }

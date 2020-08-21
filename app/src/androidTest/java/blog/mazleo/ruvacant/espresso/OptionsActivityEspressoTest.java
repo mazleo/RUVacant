@@ -41,4 +41,19 @@ public class OptionsActivityEspressoTest {
         onView(ViewMatchers.withText("Fall 2019")).perform(ViewActions.click());
         onView(ViewMatchers.withId(R.id.options_semester_button)).check(ViewAssertions.matches(ViewMatchers.withText("Fall 2019")));
     }
+
+    @Test
+    public void selectCampusOption() {
+        onView(ViewMatchers.withId(R.id.options_campus_button)).perform(ViewActions.click());
+        onView(ViewMatchers.withText("New Brunswick")).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.options_campus_button)).check(ViewAssertions.matches(ViewMatchers.withText("New Brunswick")));
+        
+        onView(ViewMatchers.withId(R.id.options_campus_button)).perform(ViewActions.click());
+        onView(ViewMatchers.withText("Newark")).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.options_campus_button)).check(ViewAssertions.matches(ViewMatchers.withText("Newark")));
+
+        onView(ViewMatchers.withId(R.id.options_campus_button)).perform(ViewActions.click());
+        onView(ViewMatchers.withText("Camden")).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.options_campus_button)).check(ViewAssertions.matches(ViewMatchers.withText("Camden")));
+    }
 }
