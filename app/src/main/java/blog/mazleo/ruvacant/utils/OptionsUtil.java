@@ -12,7 +12,7 @@ public class OptionsUtil {
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentYear = calendar.get(Calendar.YEAR);
 
-        int[] semesterMonthCodes = {1, 7, 9, 0};
+        int[] semesterMonthCodes = {0, 1, 7, 9};
         int[] yearCodes = {currentYear - 1, currentYear};
         int currentSemesterMonthCode = getCurrentSemesterMonthCode(currentMonth);
 

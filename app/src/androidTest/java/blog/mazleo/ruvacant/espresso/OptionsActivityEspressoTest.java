@@ -34,8 +34,8 @@ public class OptionsActivityEspressoTest {
         onView(ViewMatchers.withId(R.id.options_semester_button)).check(ViewAssertions.matches(ViewMatchers.withText("Spring 2020")));
 
         onView(ViewMatchers.withId(R.id.options_semester_button)).perform(ViewActions.click());
-        onView(ViewMatchers.withText("Winter 2019")).perform(ViewActions.click());
-        onView(ViewMatchers.withId(R.id.options_semester_button)).check(ViewAssertions.matches(ViewMatchers.withText("Winter 2019")));
+        onView(ViewMatchers.withText("Winter 2020")).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.options_semester_button)).check(ViewAssertions.matches(ViewMatchers.withText("Winter 2020")));
 
         onView(ViewMatchers.withId(R.id.options_semester_button)).perform(ViewActions.click());
         onView(ViewMatchers.withText("Fall 2019")).perform(ViewActions.click());
