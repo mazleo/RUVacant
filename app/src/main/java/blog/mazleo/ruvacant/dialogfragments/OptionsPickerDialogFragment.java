@@ -55,6 +55,13 @@ public class OptionsPickerDialogFragment extends DialogFragment {
         this.optionsPickerContainer = view.findViewById(R.id.options_picker_container);
 
         List<Button> optionsPickerButtons = new ArrayList<>();
+        generateOptionButtonsByPickerType(optionsPickerButtons);
+        addGeneratedOptionButtonsToLayout(optionsPickerButtons);
+
+        return view;
+    }
+
+    private void generateOptionButtonsByPickerType(List<Button> optionsPickerButtons) {
         switch (this.pickerType) {
             case TYPE_SEMESTER_PICKER:
                 generateSemesterOptionButtons(optionsPickerButtons);
@@ -66,10 +73,6 @@ public class OptionsPickerDialogFragment extends DialogFragment {
                 generateLevelOptionButtons(optionsPickerButtons);
                 break;
         }
-
-        addGeneratedOptionButtonsToLayout(optionsPickerButtons);
-
-        return view;
     }
 
     private void generateLevelOptionButtons(List<Button> optionsPickerButtons) {
