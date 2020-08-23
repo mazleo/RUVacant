@@ -91,6 +91,7 @@ public class OptionsPickerDialogFragment extends DialogFragment {
                                 .levelButton
                                 .setText(((Button) buttonView).getText());
 
+                        enableSaveButtonIfValid();
                         ((DialogFragment) this).dismiss();
                     }
             );
@@ -114,6 +115,7 @@ public class OptionsPickerDialogFragment extends DialogFragment {
                                 .campusButton
                                 .setText(((Button) buttonView).getText());
 
+                        enableSaveButtonIfValid();
                         ((DialogFragment) this).dismiss();
                     }
             );
@@ -142,11 +144,19 @@ public class OptionsPickerDialogFragment extends DialogFragment {
                                 .semesterButton
                                 .setText(((Button) buttonView).getText());
 
+                        enableSaveButtonIfValid();
                         ((DialogFragment) this).dismiss();
                     }
             );
 
             optionsPickerButtons.add(optionButton);
+        }
+    }
+
+    private void enableSaveButtonIfValid() {
+        boolean isAllOptionsPicked = ((OptionsActivity) getActivity()).isAllOptionsPicked();
+        if (isAllOptionsPicked) {
+            ((OptionsActivity) getActivity()).enableSaveButton();
         }
     }
 }

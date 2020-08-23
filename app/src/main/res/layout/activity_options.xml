@@ -20,28 +20,44 @@
     <!-- MAIN COMPONENTS -->
     <Button
         android:id="@+id/options_semester_button"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/semester_text"
+        android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@+id/options_logo" />
 
     <Button
         android:id="@+id/options_campus_button"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:text="@string/campus_text"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/options_semester_button" />
 
     <Button
         android:id="@+id/options_level_button"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:text="@string/level_text"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/options_campus_button" />
+
+    <Button
+        android:id="@+id/options_save_button"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="@string/save_text"
+        android:textSize="24sp"
+        android:textColor="@color/save_button_text_disabled"
+        android:enabled="false"
+        android:background="@drawable/save_button_background_disabled"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/options_level_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- THEME -->
     <color name="colorPrimary">#10174C</color>
     <color name="colorPrimaryDark">#0A0C2C</color>
     <color name="colorAccent">#00838F</color>
+
+    <!-- INDIVIDUAL COLORS -->
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
+
+    <!-- UI -->
+    <color name="save_button_disabled">#1A4E53</color>
+    <color name="save_button_text_disabled">#727272</color>
+    <color name="save_button_enabled">#00838F</color>
+    <color name="save_button_text_enabled">@color/white</color>
 </resources>
