@@ -40,3 +40,20 @@ __JL 8.21.2020__
     - Create and pass unit UI and functional unit tests for options activity
 - Transition from launcher to options in time
 - Set general theme fields
+
+__JL 8.23.2020__
+
+- Options Activity
+    - Save button feature
+        - Create save button
+        - Enable/disable save button when appropriate
+        - Save button UI depending on button state
+        - Implement unit tests for enabled/disabled save button
+- Implement UI
+    - Options Activity
+    - Launcher Activity
+    - Add image assets
+    - Modify layouts
+    - Modify resources
+    - Lock into portrait mode
+    - Add transition animation from launcher to options
