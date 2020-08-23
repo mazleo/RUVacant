@@ -11,4 +11,7 @@
     <string name="semester_icon_description">Semester icon</string>
     <string name="campus_icon_description">Campus icon</string>
     <string name="level_icon_description">Level icon</string>
+
+    <!-- Animations -->
+    <string name="app_logo_transition_name">transition_app_logo</string>
 </resources>
