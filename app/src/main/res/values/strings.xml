@@ -8,4 +8,7 @@
     <string name="campus_text">Campus</string>
     <string name="level_text">Level</string>
     <string name="save_text">Save</string>
+    <string name="semester_icon_description">Semester icon</string>
+    <string name="campus_icon_description">Campus icon</string>
+    <string name="level_icon_description">Level icon</string>
 </resources>
