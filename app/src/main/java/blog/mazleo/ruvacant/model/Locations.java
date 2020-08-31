@@ -1,5 +1,6 @@
 package blog.mazleo.ruvacant.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Locations<T> {
@@ -7,9 +8,9 @@ public class Locations<T> {
     private List<Room> rooms;
     private Class<T> clazz;
 
-    public Locations(List<Building> buildings, List<Room> rooms, Class<T> clazz) {
-        this.buildings = buildings;
-        this.rooms = rooms;
+    public Locations(Class<T> clazz) {
+        this.buildings = new ArrayList<>();
+        this.rooms = new ArrayList<>();
         this.clazz = clazz;
     }
 
