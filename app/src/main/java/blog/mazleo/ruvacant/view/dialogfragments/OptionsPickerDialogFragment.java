@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.dialogfragments;
+package blog.mazleo.ruvacant.view.dialogfragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import blog.mazleo.ruvacant.R;
-import blog.mazleo.ruvacant.activities.OptionsActivity;
+import blog.mazleo.ruvacant.view.activities.OptionsActivity;
 import blog.mazleo.ruvacant.utils.OptionsUtil;
 
 public class OptionsPickerDialogFragment extends DialogFragment {

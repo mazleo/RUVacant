@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.activities;
+package blog.mazleo.ruvacant.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

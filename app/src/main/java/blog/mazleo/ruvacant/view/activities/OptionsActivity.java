@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.activities;
+package blog.mazleo.ruvacant.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import blog.mazleo.ruvacant.R;
-import blog.mazleo.ruvacant.dialogfragments.OptionsPickerDialogFragment;
+import blog.mazleo.ruvacant.view.dialogfragments.OptionsPickerDialogFragment;
 
 public class OptionsActivity extends AppCompatActivity {
 
