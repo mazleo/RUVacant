@@ -5,13 +5,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import blog.mazleo.ruvacant.R;
-import blog.mazleo.ruvacant.activities.OptionsActivity;
+import blog.mazleo.ruvacant.view.activities.OptionsActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static org.hamcrest.Matchers.not;
