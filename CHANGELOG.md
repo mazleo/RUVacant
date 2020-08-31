@@ -57,3 +57,14 @@ __JL 8.23.2020__
     - Modify resources
     - Lock into portrait mode
     - Add transition animation from launcher to options
+
+__JL 8.31.2020__
+
+- Models
+    - Implement location models
+- Dependencies
+    - Add Retrofit
+    - Add RxJava
+- Refactoring
+    - Organize file structure
+- Update UML
