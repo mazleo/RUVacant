@@ -68,3 +68,7 @@ __JL 8.31.2020__
 - Refactoring
     - Organize file structure
 - Update UML
+
+__JL 9.2.2020__
+
+- Update Manifest: Internet permission and cleartext traffic
