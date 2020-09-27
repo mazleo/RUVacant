@@ -72,3 +72,12 @@ __JL 8.31.2020__
 __JL 9.2.2020__
 
 - Update Manifest: Internet permission and cleartext traffic
+
+__JL 9.27.2020__
+
+- Implement Rutgers Places retrieval
+    - Building and Room models
+    - LocationsService
+    - LocationsUtil
+    - LocationsDeserializer
+    - LocationsServiceTest
