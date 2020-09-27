@@ -9,6 +9,14 @@ public class Room {
         this.number = number;
     }
 
+    @Override
+    public String toString() {
+        return "Room{" +
+                "buildingCode='" + buildingCode + '\'' +
+                ", number='" + number + '\'' +
+                '}';
+    }
+
     public String getBuildingCode() {
         return buildingCode;
     }

@@ -13,6 +13,16 @@ public class Building {
         this.isFavorite = isFavorite;
     }
 
+    @Override
+    public String toString() {
+        return "Building{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", campusCode='" + campusCode + '\'' +
+                ", isFavorite=" + isFavorite +
+                '}';
+    }
+
     public String getCode() {
         return code;
     }
