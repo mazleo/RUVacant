@@ -80,7 +80,9 @@ public class LocationsDeserializer implements JsonDeserializer<Locations> {
                     }
 
                     Building newBuilding = new Building(code, name, campusCode, false);
-                    locations.getBuildings().add(newBuilding);
+                    if (!locations.getBuildings().contains(newBuilding)) {
+                        locations.getBuildings().add(newBuilding);
+                    }
                 }
             }
         }
@@ -106,13 +108,13 @@ public class LocationsDeserializer implements JsonDeserializer<Locations> {
                         String buildingCode = null;
                         String campusCode = null;
 
-                        if (meetingObject.has("buildingCode") && !meetingObject.getAsJsonPrimitive("buildingCode").isJsonNull()) {
+                        if (meetingObject.has("buildingCode") && !(meetingObject.get("buildingCode") instanceof JsonNull)) {
                             buildingCode = meetingObject.getAsJsonPrimitive("buildingCode").getAsString();
 
-                            if (meetingObject.has("roomNumber") && !meetingObject.getAsJsonPrimitive("roomNumber").isJsonNull()) {
+                            if (meetingObject.has("roomNumber") && !(meetingObject.get("roomNumber") instanceof JsonNull)) {
                                 roomNumber = meetingObject.getAsJsonPrimitive("roomNumber").getAsString();
                             }
-                            if (meetingObject.has("campusAbbrev") && !meetingObject.getAsJsonPrimitive("campusAbbrev").isJsonNull()) {
+                            if (meetingObject.has("campusAbbrev") && !(meetingObject.get("campusAbbrev") instanceof JsonNull)) {
                                 campusAbbrev = meetingObject.getAsJsonPrimitive("campusAbbrev").getAsString();
                             }
                             switch (campusAbbrev) {
@@ -138,10 +140,14 @@ public class LocationsDeserializer implements JsonDeserializer<Locations> {
 
                             if (buildingCode != null && roomNumber != null) {
                                 Building newBuilding = new Building(buildingCode, null, campusCode, false);
-                                locations.getBuildings().add(newBuilding);
+                                if (!locations.getBuildings().contains(newBuilding)) {
+                                    locations.getBuildings().add(newBuilding);
+                                }
 
                                 Room newRoom = new Room(buildingCode, roomNumber);
-                                locations.getRooms().add(newRoom);
+                                if (!locations.getRooms().contains(newRoom)) {
+                                    locations.getRooms().add(newRoom);
+                                }
                             }
                         }
                     }
