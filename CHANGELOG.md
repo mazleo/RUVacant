@@ -81,3 +81,11 @@ __JL 9.27.2020__
     - LocationsUtil
     - LocationsDeserializer
     - LocationsServiceTest
+
+__JL 9.28.2020__
+
+- Implement Locations retrievel from Rutgers courses data- Write unit test
+    - Override equals and hashcode functions in models
+    - Implement retrieveLocationsDownloadFromRutgersCourses
+    - Add CoursesUtil
+    - Fix bugs in deserializer and remove duplicates upon parsing
