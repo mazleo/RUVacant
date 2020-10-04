@@ -89,3 +89,11 @@ __JL 9.28.2020__
     - Implement retrieveLocationsDownloadFromRutgersCourses
     - Add CoursesUtil
     - Fix bugs in deserializer and remove duplicates upon parsing
+
+__JL 10.4.2020__
+
+- Implement subject retrieval from rutgers
+    - Implement unit test
+    - Implement subject model
+    - Implement deserializer
+    - Implement retrofit service
