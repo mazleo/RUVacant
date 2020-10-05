@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import blog.mazleo.ruvacant.model.Building;
+import blog.mazleo.ruvacant.model.Room;
 
 @RunWith(AndroidJUnit4.class)
 public class LocationsViewModelTest {
@@ -23,5 +24,22 @@ public class LocationsViewModelTest {
 
         Assert.assertTrue(building1Exists);
         Assert.assertFalse(building2Exists);
+    }
+    @Test
+    public void addAndContainsRoomTest() {
+        LocationsViewModel locationsViewModel = new LocationsViewModel(null);
+
+        Room room1 = new Room("HLL", "101");
+        Room room2 = new Room("HLL", "102");
+        Room room3 = new Room("AB", "1000");
+        Room room4 = new Room("AB", "2000");
+
+        locationsViewModel.addRoom(room1);
+        locationsViewModel.addRoom(room3);
+
+        Assert.assertTrue(locationsViewModel.containsRoom(room1));
+        Assert.assertFalse(locationsViewModel.containsRoom(room2));
+        Assert.assertTrue(locationsViewModel.containsRoom(room3));
+        Assert.assertFalse(locationsViewModel.containsRoom(room4));
     }
 }

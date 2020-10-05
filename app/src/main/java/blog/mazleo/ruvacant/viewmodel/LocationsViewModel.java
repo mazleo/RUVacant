@@ -29,4 +29,13 @@ public class LocationsViewModel {
     public boolean containsBuilding(Building building) {
         return this.existingBuildings.contains(building.getCode());
     }
+
+    public void addRoom(Room room) {
+        this.rooms.add(room);
+        this.existingRooms.add(room.getBuildingCode() + "-" + room.getNumber());
+    }
+
+    public boolean containsRoom(Room room) {
+        return this.existingRooms.contains(room.getBuildingCode() + "-" + room.getNumber());
+    }
 }
