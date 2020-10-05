@@ -97,3 +97,16 @@ __JL 10.4.2020__
     - Implement subject model
     - Implement deserializer
     - Implement retrofit service
+
+__JL 10.5.2020__
+
+- Implement initial LocationsViewModel + unit tests
+    - Implement addBuilding
+    - Implement containsBuilding
+    - Implement addRoom
+    - Implement containsRoom
+    - Test addBuilding
+    - Test containsBuilding
+    - Test addRoom
+    - Test containsRoom
+- Add initial and unimplemented DataProcessor
