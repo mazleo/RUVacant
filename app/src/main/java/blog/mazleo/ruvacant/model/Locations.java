@@ -3,7 +3,7 @@ package blog.mazleo.ruvacant.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Locations<T> {
+public class Locations {
     private List<Building> buildings;
     private List<Room> rooms;
 
