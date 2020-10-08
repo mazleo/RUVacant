@@ -110,3 +110,10 @@ __JL 10.5.2020__
     - Test addRoom
     - Test containsRoom
 - Add initial and unimplemented DataProcessor
+
+__JL 10.7.2020__
+
+- Remove clazz field from Locations model and references to it
+- Update UML
+    - Bridging Components
+    - Service Components
