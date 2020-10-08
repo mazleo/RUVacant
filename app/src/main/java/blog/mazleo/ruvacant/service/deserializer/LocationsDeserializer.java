@@ -19,7 +19,7 @@ import blog.mazleo.ruvacant.model.Room;
 public class LocationsDeserializer implements JsonDeserializer<Locations> {
     @Override
     public Locations deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Locations locations = new Locations((Class) typeOfT);
+        Locations locations = new Locations();
 
 
         if (json.isJsonObject()) {

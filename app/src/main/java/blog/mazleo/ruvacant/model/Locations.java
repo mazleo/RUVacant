@@ -6,12 +6,10 @@ import java.util.List;
 public class Locations<T> {
     private List<Building> buildings;
     private List<Room> rooms;
-    private Class<T> clazz;
 
-    public Locations(Class<T> clazz) {
+    public Locations() {
         this.buildings = new ArrayList<>();
         this.rooms = new ArrayList<>();
-        this.clazz = clazz;
     }
 
     public List<Building> getBuildings() {
