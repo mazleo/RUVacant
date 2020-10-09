@@ -117,3 +117,24 @@ __JL 10.7.2020__
 - Update UML
     - Bridging Components
     - Service Components
+
+__JL 10.8.2020__
+
+- Fix locations model
+- Implement more models
+    - Level
+    - Option
+    - Semester
+- Implement locations retrieval
+    - Including unit test
+    - Initial DataProcessor model
+    - LocationsRepository
+    - RepositoryInstance
+    - LocationsWebService
+    - SubjectsWebService
+    - OptionsUtil.getNearestFullSemesterOption()
+    - Partial LocationsViewModel
+- Update UML
+    - Bridging components
+    - Data components
+    - Service components
