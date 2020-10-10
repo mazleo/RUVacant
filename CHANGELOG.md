@@ -138,3 +138,8 @@ __JL 10.8.2020__
     - Bridging components
     - Data components
     - Service components
+
+__JL 10.9.2020__
+
+- Fix bug in OptionsUtil
+- Implement proper parallelism into locations retrieval
