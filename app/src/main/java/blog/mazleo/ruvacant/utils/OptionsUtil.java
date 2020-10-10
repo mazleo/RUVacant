@@ -50,7 +50,7 @@ public class OptionsUtil {
             currentYear++;
         }
 
-        int[] semesterMonthCodes = {0, 0, 7, 9};
+        int[] semesterMonthCodes = {0, 1, 7, 9};
         int[] yearCodes = {currentYear - 1, currentYear};
         int currentSemesterMonthCode = getCurrentSemesterMonthCode(currentMonth);
 
