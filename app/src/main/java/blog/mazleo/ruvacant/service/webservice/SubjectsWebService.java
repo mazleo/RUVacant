@@ -61,7 +61,7 @@ public class SubjectsWebService implements Observer {
         );
 
         observable
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
     }

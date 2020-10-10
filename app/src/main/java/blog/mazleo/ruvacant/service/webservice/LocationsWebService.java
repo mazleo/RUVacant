@@ -5,10 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,14 +21,9 @@ import blog.mazleo.ruvacant.utils.LocationsUtil;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.parallel.ParallelFlowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
@@ -41,14 +33,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LocationsWebService {
     private LocationsRepository locationsRepository;
     private Locations locations;
-    private List<Disposable> disposables;
-    private int numObservables;
-    private int countCompletedObservables;
+    private Disposable disposable;
 
     public LocationsWebService(LocationsRepository locationsRepository) {
         this.locationsRepository = locationsRepository;
         this.locations = new Locations();
-        this.disposables = new ArrayList<>();
     }
 
     public void downloadLocationsFromRutgersPlaces() {
@@ -60,7 +49,7 @@ public class LocationsWebService {
         Observable<Locations> locationsObservable = locationsService.retrieveLocationsFromRutgersPlaces();
 
         locationsObservable
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Locations>() {
                     @Override
@@ -95,53 +84,12 @@ public class LocationsWebService {
         List<Observable> observables = new ArrayList<>();
         populateLocationsObservableListFromSubjects(subjects, option, locationsService, observables);
 
-//        numObservables = observables.size();
-//        countCompletedObservables = 0;
-//
-//        for (Observable<Locations> observable : observables) {
-//            observable
-//                    .subscribeOn(Schedulers.computation())
-//                    .doOnSubscribe(
-//                            d -> {
-//                                addDisposable(d);
-//                            }
-//                    )
-//                    .doOnNext(
-//                            newLocations -> {
-//                                Log.i("APPDEBUG", "ONNEXT");
-//                                Log.i("APPDEBUG", "ID: " + Thread.currentThread().getId());
-//                                appendLocations(newLocations);
-//                            }
-//                    )
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .doOnError(
-//                            e -> {
-//                                Log.i("APPDEBUG", "ONERR");
-//                                Log.i("APPDEBUG", e.toString());
-//                                Log.i("APPDEBUG", "NUM: " + countCompletedObservables);
-//                                e.printStackTrace();
-////                                locationsRepository.onError(e);
-////                                cleanUp();
-//                            }
-//                    )
-//                    .doOnComplete(
-//                            () -> {
-//                                incrementCountCompletedObservables();
-//                                if (isLocationsRetrievalComplete()) {
-//                                    locationsRepository.onDownloadLocationsFromRutgersCoursesComplete(locations);
-//                                    cleanUp();
-//                                    Log.i("APPDEBUG", "ONCOMP");
-//                                }
-//                            }
-//                    )
-//                    .subscribe(l->{},e->{});
-//        }
-
         Observable<Locations> finalObservable = Observable.mergeArray((Observable[]) observables.toArray(new Observable[observables.size()]));
 
         finalObservable
-                .subscribeOn(Schedulers.io())
                 .doOnSubscribe(d -> disposable = d)
+                .subscribeOn(Schedulers.computation())
+                .flatMap(locations -> {return Observable.just(locations).subscribeOn(Schedulers.computation());})
                 .doOnNext(
                         newLocations -> {
                             appendLocations(newLocations);
@@ -159,18 +107,6 @@ public class LocationsWebService {
                             cleanUp();
                         }
                 );
-    }
-
-    private synchronized void addDisposable(Disposable disposable) {
-        disposables.add(disposable);
-    }
-
-    private synchronized void incrementCountCompletedObservables() {
-        countCompletedObservables++;
-    }
-
-    private synchronized boolean isLocationsRetrievalComplete() {
-        return numObservables == countCompletedObservables;
     }
 
     private void populateLocationsObservableListFromSubjects(List<Subject> subjects, Option option, LocationsService locationsService, List<Observable> observables) {
@@ -198,18 +134,13 @@ public class LocationsWebService {
     }
 
     public void cleanUp() {
-        if (disposables != null) {
-            for (Disposable disposable : disposables) {
-                if (disposable != null && !disposable.isDisposed()) {
-                    disposable.dispose();
-                    disposable = null;
-                }
-            }
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+            disposable = null;
         }
 
         locationsRepository = null;
         locations = null;
-        disposables = null;
     }
 
     private static Retrofit getRetrofit(String baseUrl, OkHttpClient client, Gson gson) {
