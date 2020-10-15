@@ -143,3 +143,13 @@ __JL 10.9.2020__
 
 - Fix bug in OptionsUtil
 - Implement proper parallelism into locations retrieval
+
+__JL 10.15.2020__
+
+- Add unit test for course info service
+- Refactor (rename) DataProcessor to DataDownloadProcessor
+- Update UML
+    - Data components
+    - Tests
+    - Bridging components
+    - Service components
