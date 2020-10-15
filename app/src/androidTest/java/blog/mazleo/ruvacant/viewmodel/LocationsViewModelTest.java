@@ -1,11 +1,9 @@
 package blog.mazleo.ruvacant.viewmodel;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,8 +15,7 @@ import java.util.List;
 import blog.mazleo.ruvacant.model.Building;
 import blog.mazleo.ruvacant.model.Option;
 import blog.mazleo.ruvacant.model.Room;
-import blog.mazleo.ruvacant.processor.DataProcessor;
-import blog.mazleo.ruvacant.utils.OptionsUtil;
+import blog.mazleo.ruvacant.processor.DataDownloadProcessor;
 
 @RunWith(AndroidJUnit4.class)
 public class LocationsViewModelTest {
@@ -57,9 +54,9 @@ public class LocationsViewModelTest {
 
     @Test
     public void downloadLocationsTest() {
-        DataProcessor dataProcessor = new DataProcessor();
-        dataProcessor.setSelectedOptions(new Option(7, 2019, "NB", "U"));
-        LocationsViewModel locationsViewModel = new LocationsViewModel(dataProcessor);
+        DataDownloadProcessor dataDownloadProcessor = new DataDownloadProcessor();
+        dataDownloadProcessor.setSelectedOptions(new Option(7, 2019, "NB", "U"));
+        LocationsViewModel locationsViewModel = new LocationsViewModel(dataDownloadProcessor);
         locationsViewModel.downloadLocations();
 
         try {

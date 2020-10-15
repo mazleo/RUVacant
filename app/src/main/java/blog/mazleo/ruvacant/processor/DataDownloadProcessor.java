@@ -2,7 +2,7 @@ package blog.mazleo.ruvacant.processor;
 
 import blog.mazleo.ruvacant.model.Option;
 
-public class DataProcessor {
+public class DataDownloadProcessor {
     private Option selectedOptions;
 
     public Option getSelectedOptions() {

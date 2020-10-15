@@ -9,20 +9,20 @@ import blog.mazleo.ruvacant.model.Locations;
 import blog.mazleo.ruvacant.model.Option;
 import blog.mazleo.ruvacant.model.Room;
 import blog.mazleo.ruvacant.model.Subject;
-import blog.mazleo.ruvacant.processor.DataProcessor;
+import blog.mazleo.ruvacant.processor.DataDownloadProcessor;
 import blog.mazleo.ruvacant.repository.LocationsRepository;
 import blog.mazleo.ruvacant.utils.OptionsUtil;
 
 public class LocationsViewModel {
-    private DataProcessor dataProcessor;
+    private DataDownloadProcessor dataDownloadProcessor;
     private List<Building> buildings;
     private List<Room> rooms;
     private HashSet<String> existingBuildings;
     private HashSet<String> existingRooms;
     private LocationsRepository locationsRepository;
 
-    public LocationsViewModel(DataProcessor dataProcessor) {
-        this.dataProcessor = dataProcessor;
+    public LocationsViewModel(DataDownloadProcessor dataDownloadProcessor) {
+        this.dataDownloadProcessor = dataDownloadProcessor;
         this.buildings = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.existingBuildings = new HashSet<>();
@@ -46,7 +46,7 @@ public class LocationsViewModel {
 
     private void startDownloadLocationsFromRutgersCourses() {
         locationsRepository = new LocationsRepository(this);
-        downloadSubjects(dataProcessor.getSelectedOptions());
+        downloadSubjects(dataDownloadProcessor.getSelectedOptions());
     }
 
     private void downloadSubjects(Option option) {
@@ -55,7 +55,7 @@ public class LocationsViewModel {
 
     public void onSubjectsRetrieved(List<Subject> subjects) {
         locationsRepository = null;
-        Option downloadOption = OptionsUtil.getNearestFullSemesterOption(dataProcessor.getSelectedOptions());
+        Option downloadOption = OptionsUtil.getNearestFullSemesterOption(dataDownloadProcessor.getSelectedOptions());
         downloadLocationsFromRutgersCourses(subjects, downloadOption);
     }
 
