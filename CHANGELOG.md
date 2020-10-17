@@ -153,3 +153,13 @@ __JL 10.15.2020__
     - Tests
     - Bridging components
     - Service components
+
+__JL 10.16.2020__
+
+- Implement models
+    - Class
+    - ClassInstructor
+    - Course
+    - CourseInfoCollection
+    - Instructor
+    - Meeting
