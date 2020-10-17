@@ -163,3 +163,13 @@ __JL 10.16.2020__
     - CourseInfoCollection
     - Instructor
     - Meeting
+
+__JL 10.17.2020__
+
+- Update UML
+    - Tests
+    - Bridging Components
+    - Data Components
+    - Service Components
+- Continue Rutgers course data retrieval and parsing
+    - Add onto CourseInfoDeserializer
