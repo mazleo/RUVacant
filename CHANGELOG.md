@@ -173,3 +173,23 @@ __JL 10.17.2020__
     - Service Components
 - Continue Rutgers course data retrieval and parsing
     - Add onto CourseInfoDeserializer
+
+__JL 10.27.2020__
+
+- Implement NamingUtil + unit test
+- Add util implementations + unit test
+    - NamingUtil
+    - CoursesUtil
+- Add methods to models
+    - Class
+    - ClassInstructor
+    - Course
+    - Instructor
+    - Meeting
+- Implement CourseInfoService
+    - Service
+    - Unit Test
+    - Deserializer
+- Update UML
+    - Tests
+    - Utilities
