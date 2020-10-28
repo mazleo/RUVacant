@@ -17,6 +17,18 @@ public class Meeting {
         this.endTime = endTime;
     }
 
+    @Override
+    public String toString() {
+        return "Meeting{" +
+                "classIndex='" + classIndex + '\'' +
+                ", buildingCode='" + buildingCode + '\'' +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", meetingDay='" + meetingDay + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
     public String getClassIndex() {
         return classIndex;
     }

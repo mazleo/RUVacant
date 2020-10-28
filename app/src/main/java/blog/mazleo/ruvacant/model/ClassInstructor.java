@@ -11,6 +11,15 @@ public class ClassInstructor {
         this.instructorFirstName = instructorFirstName;
     }
 
+    @Override
+    public String toString() {
+        return "ClassInstructor{" +
+                "classIndex='" + classIndex + '\'' +
+                ", instructorLastName='" + instructorLastName + '\'' +
+                ", instructorFirstName='" + instructorFirstName + '\'' +
+                '}';
+    }
+
     public String getClassIndex() {
         return classIndex;
     }

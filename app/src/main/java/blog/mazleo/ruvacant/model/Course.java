@@ -13,6 +13,16 @@ public class Course {
         this.expandedTitle = expandedTitle;
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "subjectCode='" + subjectCode + '\'' +
+                ", code='" + code + '\'' +
+                ", title='" + title + '\'' +
+                ", expandedTitle='" + expandedTitle + '\'' +
+                '}';
+    }
+
     public String getSubjectCode() {
         return subjectCode;
     }

@@ -13,6 +13,16 @@ public class Class {
         this.courseCode = courseCode;
     }
 
+    @Override
+    public String toString() {
+        return "Class{" +
+                "index='" + index + '\'' +
+                ", code='" + code + '\'' +
+                ", subjectCode='" + subjectCode + '\'' +
+                ", courseCode='" + courseCode + '\'' +
+                '}';
+    }
+
     public String getIndex() {
         return index;
     }
