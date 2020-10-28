@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -57,5 +59,23 @@ public class NamingUtilTest {
         Assert.assertTrue(result5.contains("Apps"));
         Assert.assertTrue(result5.contains("-"));
         Assert.assertTrue(result5.contains("Business"));
+    }
+
+    @Test
+    public void joinSplitNameArrayTest() {
+        List<String> input1 = new ArrayList<>(Arrays.asList("Intro", "Computer", "Sci"));
+        List<String> input2 = new ArrayList<>(Arrays.asList("Intro", "Computers", "&", "Appl"));
+        List<String> input3 = new ArrayList<>(Arrays.asList("Data", "Structures"));
+        List<String> input4 = new ArrayList<>(Arrays.asList("Comp", "Apps", "-", "Business"));
+
+        String result1 = "Intro Computer Sci";
+        String result2 = "Intro Computers & Appl";
+        String result3 = "Data Structures";
+        String result4 = "Comp Apps - Business";
+
+        Assert.assertEquals(NamingUtil.joinSplitNameArray(input1), result1);
+        Assert.assertEquals(NamingUtil.joinSplitNameArray(input2), result2);
+        Assert.assertEquals(NamingUtil.joinSplitNameArray(input3), result3);
+        Assert.assertEquals(NamingUtil.joinSplitNameArray(input4), result4);
     }
 }

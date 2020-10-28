@@ -21,4 +21,16 @@ public class NamingUtil {
 
         return resultNameList;
     }
+
+    public static String joinSplitNameArray(List<String> splitName) {
+        String joinedName = "";
+        for (int n = 0; n < splitName.size(); n++) {
+            joinedName += splitName.get(n);
+            if (n != splitName.size() - 1) {
+                joinedName += " ";
+            }
+        }
+
+        return joinedName;
+    }
 }
