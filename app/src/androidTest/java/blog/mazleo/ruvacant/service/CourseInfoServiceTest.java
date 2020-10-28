@@ -16,6 +16,14 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import blog.mazleo.ruvacant.model.Class;
+import blog.mazleo.ruvacant.model.ClassInstructor;
+import blog.mazleo.ruvacant.model.Course;
+import blog.mazleo.ruvacant.model.CourseInfoCollection;
+import blog.mazleo.ruvacant.model.Instructor;
+import blog.mazleo.ruvacant.model.Meeting;
+import blog.mazleo.ruvacant.service.deserializer.CourseInfoDeserializer;
+import blog.mazleo.ruvacant.service.webservice.CourseInfoService;
 import blog.mazleo.ruvacant.utils.CoursesUtil;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -52,14 +60,34 @@ public class CourseInfoServiceTest {
 
         TestObserver<CourseInfoCollection> testObserver = TestObserver.create(new Observer<CourseInfoCollection>() {
             @Override
-            public void onSubscribe(@NonNull Disposable d) {}
+            public void onSubscribe(@NonNull Disposable d) {
+                Log.i("APPDEBUG", "ON SUB");
+            }
             @Override
             public void onNext(CourseInfoCollection courseInfoCollection) {
-                Log.i("APPDEBUG", courseInfoCollection.getCourses().toString());
-                Log.i("APPDEBUG", courseInfoCollection.getClasses().toString());
-                Log.i("APPDEBUG", courseInfoCollection.getInstructors().toString());
-                Log.i("APPDEBUG", courseInfoCollection.getClassesInstructors().toString());
-                Log.i("APPDEBUG", courseInfoCollection.getMeetings().toString());
+                Log.i("APPDEBUG", "ON NEXT");
+
+                Assert.assertNotNull(courseInfoCollection.getCourses());
+                Assert.assertNotNull(courseInfoCollection.getClasses());
+                Assert.assertNotNull(courseInfoCollection.getInstructors());
+                Assert.assertNotNull(courseInfoCollection.getClassesInstructors());
+                Assert.assertNotNull(courseInfoCollection.getMeetings());
+
+                for (Course course : courseInfoCollection.getCourses()) {
+                    Log.i("APPDEBUG", course.toString());
+                }
+                for (Class ruClass : courseInfoCollection.getClasses()) {
+                    Log.i("APPDEBUG", ruClass.toString());
+                }
+                for (Instructor instructor : courseInfoCollection.getInstructors()) {
+                    Log.i("APPDEBUG", instructor.toString());
+                }
+                for (ClassInstructor classInstructor : courseInfoCollection.getClassesInstructors()) {
+                    Log.i("APPDEBUG", classInstructor.toString());
+                }
+                for (Meeting meeting : courseInfoCollection.getMeetings()) {
+                    Log.i("APPDEBUG", meeting.toString());
+                }
 
                 Assert.assertThat(courseInfoCollection.getCourses().size(), Matchers.greaterThan(0));
                 Assert.assertThat(courseInfoCollection.getClasses().size(), Matchers.greaterThan(0));
@@ -68,9 +96,11 @@ public class CourseInfoServiceTest {
                 Assert.assertThat(courseInfoCollection.getMeetings().size(), Matchers.greaterThan(0));
             }
             @Override
-            public void onError(@NonNull Throwable e) {e.printStackTrace();}
+            public void onError(@NonNull Throwable e) {e.printStackTrace();Log.i("APPDEBUG", "ON ERR");}
             @Override
-            public void onComplete() {}
+            public void onComplete() {
+                Log.i("APPDEBUG", "ON COMP");
+            }
         });
 
         observable
