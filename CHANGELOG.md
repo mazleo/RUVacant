@@ -193,3 +193,9 @@ __JL 10.27.2020__
 - Update UML
     - Tests
     - Utilities
+
+__JL 10.31.2020__
+
+- Refactor CourseInfoDeserializer
+- Add initial CourseInfoWebService
+- Update UML - Service Components
