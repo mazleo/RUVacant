@@ -10,58 +10,38 @@ import java.util.concurrent.TimeUnit;
 import blog.mazleo.ruvacant.model.CourseInfoCollection;
 import blog.mazleo.ruvacant.model.Option;
 import blog.mazleo.ruvacant.model.Subject;
+import blog.mazleo.ruvacant.repository.CoursesRepository;
 import blog.mazleo.ruvacant.service.deserializer.CourseInfoDeserializer;
 import blog.mazleo.ruvacant.utils.CoursesUtil;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CourseInfoWebService implements Observer<CourseInfoCollection> {
-    private CourseRepository courseRepository;
+    private CoursesRepository coursesRepository;
     private List<CourseInfoCollection> courseInfos;
     private Disposable disposable;
 
-    public CourseInfoWebService(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
+    public CourseInfoWebService(CoursesRepository coursesRepository) {
+        this.coursesRepository = coursesRepository;
         this.courseInfos = new ArrayList<>();
         this.disposable = null;
     }
 
     public void downloadCourseInfos(List<Subject> subjects, Option selectedOptions) {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(10, TimeUnit.SECONDS)
-                .build();
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(CourseInfoCollection.class, new CourseInfoDeserializer())
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CoursesUtil.RUTGERS_SIS_BASE_URL)
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(client)
-                .build();
-
+        OkHttpClient client = getClient();
+        Gson gson = getGson();
+        Retrofit retrofit = getRetrofit(client, gson);
         CourseInfoService courseInfoService = retrofit.create(CourseInfoService.class);
 
-        List<Observable> observablesList = new ArrayList<>();
-        for (Subject subject : subjects) {
-            observablesList.add(courseInfoService.retrieveCourseInfos(
-                    subject.getCode(),
-                    selectedOptions.getSemesterMonth() + selectedOptions.getSemesterYear() + "",
-                    selectedOptions.getSchoolCampusCode(),
-                    selectedOptions.getLevelCode()
-            ));
-        }
+        List<Observable> observablesList = getNewPopulatedObservablesList(subjects, selectedOptions, courseInfoService);
         Observable<CourseInfoCollection> finalObservable = Observable.mergeArray(observablesList.toArray(new Observable[observablesList.size()]));
 
         finalObservable
@@ -72,16 +52,50 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
                 .subscribe(this);
     }
 
+    private static List<Observable> getNewPopulatedObservablesList(List<Subject> subjects, Option selectedOptions, CourseInfoService courseInfoService) {
+        List<Observable> observablesList = new ArrayList<>();
+        for (Subject subject : subjects) {
+            observablesList.add(courseInfoService.retrieveCourseInfos(
+                    subject.getCode(),
+                    selectedOptions.getSemesterMonth() + selectedOptions.getSemesterYear() + "",
+                    selectedOptions.getSchoolCampusCode(),
+                    selectedOptions.getLevelCode()
+            ));
+        }
+        return observablesList;
+    }
+
+    private static Retrofit getRetrofit(OkHttpClient client, Gson gson) {
+        return new Retrofit.Builder()
+                    .baseUrl(CoursesUtil.RUTGERS_SIS_BASE_URL)
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(client)
+                    .build();
+    }
+
+    private static Gson getGson() {
+        return new GsonBuilder()
+                    .registerTypeAdapter(CourseInfoCollection.class, new CourseInfoDeserializer())
+                    .create();
+    }
+
+    private static OkHttpClient getClient() {
+        return new OkHttpClient.Builder()
+                    .callTimeout(10, TimeUnit.SECONDS)
+                    .build();
+    }
+
     private synchronized void appendCourseInfos(CourseInfoCollection courseInfoCollection) {
         this.courseInfos.add(courseInfoCollection);
     }
 
     private void returnCourseInfos() {
-        this.courseRepository.passDownloadedCourseInfos(this.courseInfos);
+        this.coursesRepository.onCourseInfosDownloadComplete(courseInfos);
     }
 
     public void cleanUp() {
-        this.courseRepository = null;
+        this.coursesRepository = null;
         this.courseInfos.clear();
         this.courseInfos = null;
         if (this.disposable != null && !this.disposable.isDisposed()) {
@@ -91,7 +105,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
     }
 
     private void passError(Throwable e) {
-        this.courseRepository.passCourseDownloadError(e);
+        this.coursesRepository.passError(e);
     }
 
     @Override
