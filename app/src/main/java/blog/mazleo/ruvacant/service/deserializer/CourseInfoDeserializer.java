@@ -183,7 +183,7 @@ public class CourseInfoDeserializer implements JsonDeserializer {
                     String endTimeUnparsed = getUnparsedEndTimeIfNotNull(meetingObject);
                     String pmCode = getPMCodeIfNotNull(meetingObject);
 
-                    if (allRequiredMeetingValuesExist(buildingCode, roomNumber, meetingDay, startTimeUnparsed, endTimeUnparsed, pmCode)) {
+                    if (anyRequiredMeetingValueNotValid(buildingCode, roomNumber, meetingDay, startTimeUnparsed, endTimeUnparsed, pmCode)) {
                         continue;
                     }
 
@@ -210,7 +210,7 @@ public class CourseInfoDeserializer implements JsonDeserializer {
         return CoursesUtil.parseTimeDataToSecondOfDay(startTimeUnparsed, pmCode.equals("A") ? CoursesUtil.TimeCode.AM : CoursesUtil.TimeCode.PM);
     }
 
-    private static boolean allRequiredMeetingValuesExist(String buildingCode, String roomNumber, String meetingDay, String startTimeUnparsed, String endTimeUnparsed, String pmCode) {
+    private static boolean anyRequiredMeetingValueNotValid(String buildingCode, String roomNumber, String meetingDay, String startTimeUnparsed, String endTimeUnparsed, String pmCode) {
         return buildingCode == null
                 || roomNumber == null
                 || meetingDay == null
