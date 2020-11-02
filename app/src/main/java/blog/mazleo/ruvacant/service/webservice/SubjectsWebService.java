@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import blog.mazleo.ruvacant.model.Option;
 import blog.mazleo.ruvacant.model.Subject;
+import blog.mazleo.ruvacant.repository.CoursesRepository;
 import blog.mazleo.ruvacant.repository.LocationsRepository;
 import blog.mazleo.ruvacant.repository.RepositoryInstance;
 import blog.mazleo.ruvacant.service.deserializer.SubjectListDeserializer;
@@ -35,22 +36,11 @@ public class SubjectsWebService implements Observer {
     }
 
     public void downloadSubjects(Option selectedOption) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(List.class, new SubjectListDeserializer())
-                .create();
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(10, TimeUnit.SECONDS)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CoursesUtil.RUTGERS_SIS_BASE_URL)
-                .client(client)
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
+        Gson gson = getGson();
+        OkHttpClient client = getClient();
+        Retrofit retrofit = getRetrofit(gson, client);
         SubjectsService subjectsService = retrofit.create(SubjectsService.class);
+
         Observable<List> observable = subjectsService.retrieveSubjects(
                 new StringBuilder()
                         .append(selectedOption.getSemesterMonth())
@@ -66,13 +56,34 @@ public class SubjectsWebService implements Observer {
                 .subscribe(this);
     }
 
+    private static Retrofit getRetrofit(Gson gson, OkHttpClient client) {
+        return new Retrofit.Builder()
+                    .baseUrl(CoursesUtil.RUTGERS_SIS_BASE_URL)
+                    .client(client)
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+    }
+
+    private static OkHttpClient getClient() {
+        return new OkHttpClient.Builder()
+                    .callTimeout(10, TimeUnit.SECONDS)
+                    .build();
+    }
+
+    private static Gson getGson() {
+        return new GsonBuilder()
+                    .registerTypeAdapter(List.class, new SubjectListDeserializer())
+                    .create();
+    }
+
     private void returnSubjects() {
         if (repository instanceof LocationsRepository) {
             ((LocationsRepository) repository).onSubjectsDownloadComplete(subjects);
         }
-//        else if (repository instanceof CoursesRepository) {
-            // TODO
-//        }
+        else if (repository instanceof CoursesRepository) {
+            ((CoursesRepository) repository).onSubjectsDownloadComplete(subjects);
+        }
     }
 
     private void appendSubjects(List newSubjects) {
@@ -83,9 +94,9 @@ public class SubjectsWebService implements Observer {
         if (repository instanceof LocationsRepository) {
             ((LocationsRepository) repository).onError(e);
         }
-//        else if (repository instanceof CoursesRepository) {
-            // TODO
-//        }
+        else if (repository instanceof CoursesRepository) {
+            ((CoursesRepository) repository).passError(e);
+        }
     }
 
     public void cleanUp() {
