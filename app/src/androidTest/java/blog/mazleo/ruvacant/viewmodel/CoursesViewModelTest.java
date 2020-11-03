@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import blog.mazleo.ruvacant.model.Class;
 import blog.mazleo.ruvacant.model.ClassInstructor;
 import blog.mazleo.ruvacant.model.Course;
 import blog.mazleo.ruvacant.model.Instructor;
@@ -22,7 +23,7 @@ import blog.mazleo.ruvacant.processor.DataDownloadProcessor;
 @RunWith(AndroidJUnit4.class)
 public class CoursesViewModelTest {
     @Test
-    private void downloadCourseDataTest() {
+    public void downloadCourseDataTest() {
         CoursesViewModel coursesViewModel = new CoursesViewModel(new DataDownloadProcessor());
 
         coursesViewModel.initializeDownloadCourseData(new Option(
@@ -33,7 +34,7 @@ public class CoursesViewModelTest {
         ));
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(60000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -54,24 +55,24 @@ public class CoursesViewModelTest {
         Assert.assertNotNull(classesInstructors);
         Assert.assertNotNull(meetings);
 
-        for (Subject subject : subjects) {
-            Log.i("APPDEBUG", subject.toString());
-        }
-        for (Course course : courses) {
-            Log.i("APPDEBUG", course.toString());
-        }
-        for (Class clazz : classes) {
-            Log.i("APPDEBUG", clazz.toString());
-        }
-        for (Instructor instructor : instructors) {
-            Log.i("APPDEBUG", instructor.toString());
-        }
-        for (ClassInstructor classInstructor : classesInstructors) {
-            Log.i("APPDEBUG", classInstructor.toString());
-        }
-        for (Meeting meeting : meetings) {
-            Log.i("APPDEBUG", meeting.toString());
-        }
+//        for (Subject subject : subjects) {
+//            Log.i("APPDEBUG", subject.toString());
+//        }
+//        for (Course course : courses) {
+//            Log.i("APPDEBUG", course.toString());
+//        }
+//        for (Class clazz : classes) {
+//            Log.i("APPDEBUG", clazz.toString());
+//        }
+//        for (Instructor instructor : instructors) {
+//            Log.i("APPDEBUG", instructor.toString());
+//        }
+//        for (ClassInstructor classInstructor : classesInstructors) {
+//            Log.i("APPDEBUG", classInstructor.toString());
+//        }
+//        for (Meeting meeting : meetings) {
+//            Log.i("APPDEBUG", meeting.toString());
+//        }
 
         Assert.assertThat(subjects.size(), Matchers.greaterThan(0));
         Assert.assertThat(courses.size(), Matchers.greaterThan(0));
