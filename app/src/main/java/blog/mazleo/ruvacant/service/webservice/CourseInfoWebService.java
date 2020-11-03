@@ -1,5 +1,7 @@
 package blog.mazleo.ruvacant.service.webservice;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -44,12 +46,14 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
         List<Observable> observablesList = getNewPopulatedObservablesList(subjects, selectedOptions, courseInfoService);
         Observable<CourseInfoCollection> finalObservable = Observable.mergeArray(observablesList.toArray(new Observable[observablesList.size()]));
 
-        finalObservable
-                .subscribeOn(Schedulers.computation())
-                .flatMap(courseInfoCollection -> Observable.just(courseInfoCollection))
-                .doOnNext(courseInfoCollection -> appendCourseInfos(courseInfoCollection))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this);
+        if (finalObservable != null) {
+            finalObservable
+                    .subscribeOn(Schedulers.computation())
+                    .flatMap(courseInfoCollection -> Observable.just(courseInfoCollection).subscribeOn(Schedulers.computation()))
+                    .doOnNext(courseInfoCollection -> appendCourseInfos(courseInfoCollection))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this);
+        }
     }
 
     private static List<Observable> getNewPopulatedObservablesList(List<Subject> subjects, Option selectedOptions, CourseInfoService courseInfoService) {
@@ -57,7 +61,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
         for (Subject subject : subjects) {
             observablesList.add(courseInfoService.retrieveCourseInfos(
                     subject.getCode(),
-                    selectedOptions.getSemesterMonth() + selectedOptions.getSemesterYear() + "",
+                    String.valueOf(selectedOptions.getSemesterMonth()) + String.valueOf(selectedOptions.getSemesterYear()) + "",
                     selectedOptions.getSchoolCampusCode(),
                     selectedOptions.getLevelCode()
             ));
@@ -82,7 +86,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
 
     private static OkHttpClient getClient() {
         return new OkHttpClient.Builder()
-                    .callTimeout(10, TimeUnit.SECONDS)
+                    .callTimeout(5, TimeUnit.MINUTES)
                     .build();
     }
 
@@ -96,12 +100,14 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
 
     public void cleanUp() {
         this.coursesRepository = null;
-        this.courseInfos.clear();
-        this.courseInfos = null;
+        if (this.courseInfos != null) {
+            this.courseInfos.clear();
+            this.courseInfos = null;
+        }
         if (this.disposable != null && !this.disposable.isDisposed()) {
             this.disposable.dispose();
+            this.disposable = null;
         }
-        this.disposable = null;
     }
 
     private void passError(Throwable e) {
@@ -118,6 +124,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
 
     @Override
     public void onError(@NonNull Throwable e) {
+        e.printStackTrace();
         passError(e);
         cleanUp();
     }
