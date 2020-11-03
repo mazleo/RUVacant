@@ -1,5 +1,7 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.Nullable;
+
 public class Class {
     private String index;
     private String code;
@@ -21,6 +23,20 @@ public class Class {
                 ", subjectCode='" + subjectCode + '\'' +
                 ", courseCode='" + courseCode + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return index.hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Class)) return false;
+
+        Class classToCompare = (Class) obj;
+
+        return index.equals(classToCompare.getIndex());
     }
 
     public String getIndex() {

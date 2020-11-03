@@ -1,5 +1,7 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.Nullable;
+
 public class Meeting {
     private String classIndex;
     private String buildingCode;
@@ -15,6 +17,32 @@ public class Meeting {
         this.meetingDay = meetingDay;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return (
+                classIndex + ":"
+                + buildingCode + "-" + roomNumber + ":"
+                + meetingDay + ":"
+                + startTime + "-" + endTime
+                ).hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Meeting)) return false;
+
+        Meeting meetingToCompare = (Meeting) obj;
+
+        return (
+                classIndex.equals(meetingToCompare.getClassIndex())
+                && buildingCode.equals(meetingToCompare.getBuildingCode())
+                && roomNumber.equals(meetingToCompare.getRoomNumber())
+                && meetingDay.equals(meetingToCompare.getMeetingDay())
+                && startTime == meetingToCompare.getStartTime()
+                && endTime == meetingToCompare.getEndTime()
+                );
     }
 
     @Override

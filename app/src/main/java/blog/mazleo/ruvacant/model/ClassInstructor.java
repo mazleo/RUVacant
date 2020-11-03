@@ -1,5 +1,7 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.Nullable;
+
 public class ClassInstructor {
     private String classIndex;
     private String instructorLastName;
@@ -18,6 +20,24 @@ public class ClassInstructor {
                 ", instructorLastName='" + instructorLastName + '\'' +
                 ", instructorFirstName='" + instructorFirstName + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return (classIndex + ":" + instructorLastName + "," + instructorFirstName).hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof ClassInstructor)) return false;
+
+        ClassInstructor classInstructorToCompare = (ClassInstructor) obj;
+
+        return (
+                classIndex.equals(classInstructorToCompare.getClassIndex())
+                && instructorLastName.equals(classInstructorToCompare.getInstructorLastName())
+                && instructorFirstName.equals(classInstructorToCompare.getInstructorFirstName())
+                );
     }
 
     public String getClassIndex() {
