@@ -199,3 +199,25 @@ __JL 10.31.2020__
 - Refactor CourseInfoDeserializer
 - Add initial CourseInfoWebService
 - Update UML - Service Components
+
+__JL 11.2.2020__
+
+- Fix CourseInfoDeserializer method name semantic error
+- Complete subjects and course web services
+- Add hashCode and equals overrides to some models
+    - Class
+    - ClassInstructor
+    - Course
+    - Meeting
+    - Subject
+- Modify CourseInfoWebService to fix some bugs
+- Add and modify CoursesRepository
+    - Import CoursesViewModel
+    - Remove selectedOption parameter from initiateSubjectsServiceDownload method
+    - Add null checker before cleaning up subjectsWebService in on DownloadComplete methods
+- Partially complete CoursesViewModel + unit test
+- Update UML
+    - Bridging components
+    - Data components
+    - Service components
+    - Tests
