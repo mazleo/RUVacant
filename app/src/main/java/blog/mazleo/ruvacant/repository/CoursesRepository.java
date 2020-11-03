@@ -7,6 +7,7 @@ import blog.mazleo.ruvacant.model.Option;
 import blog.mazleo.ruvacant.model.Subject;
 import blog.mazleo.ruvacant.service.webservice.CourseInfoWebService;
 import blog.mazleo.ruvacant.service.webservice.SubjectsWebService;
+import blog.mazleo.ruvacant.viewmodel.CoursesViewModel;
 
 public class CoursesRepository implements RepositoryInstance {
     private CoursesViewModel coursesViewModel;
@@ -28,16 +29,18 @@ public class CoursesRepository implements RepositoryInstance {
         this.courseInfoWebService = null;
     }
 
-    public void initiateSubjectsServiceDownload(Option selectedOption) {
+    public void initiateSubjectsServiceDownload() {
         this.subjectsWebService = new SubjectsWebService(this);
-        this.subjectsWebService.downloadSubjects(selectedOption);
+        this.subjectsWebService.downloadSubjects(selectedOptions);
     }
 
     public void onSubjectsDownloadComplete(List<Subject> subjects) {
         passDownloadedSubjects(subjects);
 
-        this.subjectsWebService.cleanUp();
-        this.subjectsWebService = null;
+        if (this.subjectsWebService != null) {
+            this.subjectsWebService.cleanUp();
+            this.subjectsWebService = null;
+        }
 
         initiateCourseInfoServiceDownload(subjects, selectedOptions);
     }
@@ -54,8 +57,10 @@ public class CoursesRepository implements RepositoryInstance {
     public void onCourseInfosDownloadComplete(List<CourseInfoCollection> courseInfos) {
         passDownloadedCourseInfos(courseInfos);
 
-        this.courseInfoWebService.cleanUp();
-        this.courseInfoWebService = null;
+        if (this.courseInfoWebService != null) {
+            this.courseInfoWebService.cleanUp();
+            this.courseInfoWebService = null;
+        }
 
         cleanUp();
     }
