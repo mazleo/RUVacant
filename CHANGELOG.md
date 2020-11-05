@@ -221,3 +221,8 @@ __JL 11.2.2020__
     - Data components
     - Service components
     - Tests
+
+__JL 11.4.2020__
+
+- Fix meeting start and end time parsing bug
+- Add additional data validators for course data
