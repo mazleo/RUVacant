@@ -203,7 +203,19 @@ public class CourseInfoDeserializer implements JsonDeserializer {
     private static int getParsedEndTime(String endTimeUnparsed, int startTime) {
         int endTimeAM = CoursesUtil.parseTimeDataToSecondOfDay(endTimeUnparsed, CoursesUtil.TimeCode.AM);
         int endTimePM = CoursesUtil.parseTimeDataToSecondOfDay(endTimeUnparsed, CoursesUtil.TimeCode.PM);
-        return Math.abs(startTime - endTimeAM) < Math.abs(startTime - endTimePM) ? endTimeAM : endTimePM;
+
+        if (endTimeAM >= startTime && endTimePM >= startTime) {
+            return Math.abs(startTime - endTimeAM) < Math.abs(startTime - endTimePM) ? endTimeAM : endTimePM;
+        }
+        else if (endTimeAM >= startTime && endTimePM < startTime) {
+            return endTimeAM;
+        }
+        else if (endTimePM >= startTime && endTimeAM < startTime) {
+            return endTimePM;
+        }
+        else {
+            return 0;
+        }
     }
 
     private static int getParsedStartTime(String startTimeUnparsed, String pmCode) {
