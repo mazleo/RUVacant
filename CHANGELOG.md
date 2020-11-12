@@ -226,3 +226,7 @@ __JL 11.4.2020__
 
 - Fix meeting start and end time parsing bug
 - Add additional data validators for course data
+
+__JL 11.11.2020__
+
+- Add more locations validations in unit test
