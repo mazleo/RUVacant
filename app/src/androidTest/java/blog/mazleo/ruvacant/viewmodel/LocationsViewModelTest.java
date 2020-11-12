@@ -55,21 +55,28 @@ public class LocationsViewModelTest {
     @Test
     public void downloadLocationsTest() {
         DataDownloadProcessor dataDownloadProcessor = new DataDownloadProcessor();
-        dataDownloadProcessor.setSelectedOptions(new Option(7, 2019, "NB", "U"));
+        dataDownloadProcessor.setSelectedOptions(new Option(9, 2019, "NB", "U"));
         LocationsViewModel locationsViewModel = new LocationsViewModel(dataDownloadProcessor);
         locationsViewModel.downloadLocations();
 
-        try {
-            Thread.sleep(60000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
+        final int SECONDS_TO_TEST = 120;
+        for (int i = 0; i < SECONDS_TO_TEST; i++) {
+            Log.i("APPDEBUG", (SECONDS_TO_TEST - i) + " seconds left...");
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         Assert.assertThat(locationsViewModel.getBuildings().size(), Matchers.greaterThan(0));
         Assert.assertThat(locationsViewModel.getRooms().size(), Matchers.greaterThan(0));
         Assert.assertFalse(hasBuildingDuplicates(locationsViewModel.getBuildings()));
         Assert.assertFalse(hasRoomDuplicates(locationsViewModel.getRooms()));
+
+        assertValidBuildings(locationsViewModel.getBuildings());
+        assertValidRooms(locationsViewModel.getRooms());
 
         Log.i("APPDEBUG", String.valueOf(locationsViewModel.getBuildings().size()));
         Log.i("APPDEBUG", String.valueOf(locationsViewModel.getRooms().size()));
@@ -81,6 +88,31 @@ public class LocationsViewModelTest {
         Log.i("APPDEBUG", "--- LIST ROOMS ---");
         for (int r = 0; r < locationsViewModel.getRooms().size(); r++) {
             Log.i("APPDEBUG", locationsViewModel.getRooms().get(r).toString());
+        }
+    }
+
+    private static void assertValidBuildings(List<Building> buildings) {
+        for (Building building : buildings) {
+            Assert.assertNotNull(building.getCode());
+
+            Assert.assertThat(building.getCode().length(), Matchers.greaterThan(0));
+            if (building.getName() != null) {
+                Assert.assertThat(building.getName().length(), Matchers.greaterThan(0));
+            }
+            if (building.getCampusCode() != null) {
+                Assert.assertThat(building.getCampusCode().length(), Matchers.greaterThan(0));
+            }
+            Assert.assertFalse(building.isFavorite());
+        }
+    }
+
+    private static void assertValidRooms(List<Room> rooms) {
+        for (Room room : rooms) {
+            Assert.assertNotNull(room.getBuildingCode());
+            Assert.assertNotNull(room.getNumber());
+
+            Assert.assertThat(room.getBuildingCode().length(), Matchers.greaterThan(0));
+            Assert.assertThat(room.getNumber().length(), Matchers.greaterThan(0));
         }
     }
 
