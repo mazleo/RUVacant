@@ -1,9 +1,59 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+
+@Entity(
+        primaryKeys = {
+                "semester_month",
+                "semester_year",
+                "school_campus_code",
+                "level_code"
+        },
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Semester.class,
+                        parentColumns = {
+                                "month",
+                                "year"
+                        },
+                        childColumns = {
+                                "semester_month",
+                                "semester_year"
+                        }
+                ),
+                @ForeignKey(
+                        entity = SchoolCampus.class,
+                        parentColumns = {
+                                "code"
+                        },
+                        childColumns = {
+                                "school_campus_code"
+                        }
+                ),
+                @ForeignKey(
+                        entity = Level.class,
+                        parentColumns = {
+                                "code"
+                        },
+                        childColumns = {
+                                "level_code"
+                        }
+                )
+        }
+)
 public class Option {
+    @ColumnInfo(name = "semester_month")
     int semesterMonth;
+    @ColumnInfo(name = "semester_year")
     int semesterYear;
+    @NonNull
+    @ColumnInfo(name = "school_campus_code")
     String schoolCampusCode;
+    @NonNull
+    @ColumnInfo(name = "level_code")
     String levelCode;
 
     public Option(int semesterMonth, int semesterYear, String schoolCampusCode, String levelCode) {

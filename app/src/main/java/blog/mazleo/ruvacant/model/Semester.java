@@ -1,7 +1,18 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
+@Entity(
+        primaryKeys = {
+                "month",
+                "year"
+        }
+)
 public class Semester {
+    @ColumnInfo(name = "month")
     private int month;
+    @ColumnInfo(name = "year")
     private int year;
 
     public Semester(int month, int year) {
