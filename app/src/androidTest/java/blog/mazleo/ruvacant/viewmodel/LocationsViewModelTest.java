@@ -54,7 +54,7 @@ public class LocationsViewModelTest {
 
     @Test
     public void downloadLocationsTest() {
-        DataDownloadProcessor dataDownloadProcessor = new DataDownloadProcessor();
+        DataDownloadProcessor dataDownloadProcessor = new DataDownloadProcessor(null, null);
         dataDownloadProcessor.setSelectedOptions(new Option(9, 2019, "NB", "U"));
         LocationsViewModel locationsViewModel = new LocationsViewModel(dataDownloadProcessor);
         locationsViewModel.downloadLocations();

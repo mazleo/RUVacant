@@ -121,6 +121,7 @@ public class CoursesViewModelTest {
     private void assertAllInstructorDataValid(List<Instructor> instructors) {
         for (Instructor instructor : instructors) {
             Assert.assertNotNull(instructor.getLastName());
+            Assert.assertNotNull(instructor.getFirstName());
 
             Assert.assertThat(instructor.getLastName().length(), Matchers.greaterThan(0));
         }
