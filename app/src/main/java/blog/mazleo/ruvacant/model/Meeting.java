@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 @Entity(
         primaryKeys = {
@@ -35,9 +36,19 @@ import androidx.room.ForeignKey;
                 @ForeignKey(
                         entity = Room.class,
                         parentColumns = {
+                                "building_code",
                                 "number"
                         },
                         childColumns = {
+                                "building_code",
+                                "room_number"
+                        }
+                )
+        },
+        indices = {
+                @Index(
+                        value = {
+                                "building_code",
                                 "room_number"
                         }
                 )
@@ -47,9 +58,9 @@ public class Meeting {
     @NonNull
     @ColumnInfo(name = "class_index")
     private String classIndex;
-    @ColumnInfo(name = "building_code")
+    @ColumnInfo(name = "building_code", index = true)
     private String buildingCode;
-    @ColumnInfo(name = "room_number")
+    @ColumnInfo(name = "room_number", index = true)
     private String roomNumber;
     @NonNull
     @ColumnInfo(name = "meeting_day")

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 @Entity(
         primaryKeys = {
@@ -33,6 +34,14 @@ import androidx.room.ForeignKey;
                                 "instructor_first_name"
                         }
                 )
+        },
+        indices = {
+                @Index(
+                        value = {
+                                "instructor_last_name",
+                                "instructor_first_name"
+                        }
+                )
         }
 )
 public class ClassInstructor {
@@ -40,10 +49,10 @@ public class ClassInstructor {
     @ColumnInfo(name = "class_index")
     private String classIndex;
     @NonNull
-    @ColumnInfo(name = "instructor_last_name")
+    @ColumnInfo(name = "instructor_last_name", index = true)
     private String instructorLastName;
     @NonNull
-    @ColumnInfo(name = "instructor_first_name")
+    @ColumnInfo(name = "instructor_first_name", index = true)
     private String instructorFirstName;
 
     public ClassInstructor(String classIndex, String instructorLastName, String instructorFirstName) {

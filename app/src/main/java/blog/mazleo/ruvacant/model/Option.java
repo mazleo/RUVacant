@@ -50,10 +50,10 @@ public class Option {
     @ColumnInfo(name = "semester_year")
     int semesterYear;
     @NonNull
-    @ColumnInfo(name = "school_campus_code")
+    @ColumnInfo(name = "school_campus_code", index = true)
     String schoolCampusCode;
     @NonNull
-    @ColumnInfo(name = "level_code")
+    @ColumnInfo(name = "level_code", index = true)
     String levelCode;
 
     public Option(int semesterMonth, int semesterYear, String schoolCampusCode, String levelCode) {

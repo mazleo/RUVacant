@@ -25,7 +25,7 @@ public class Campus {
     private String code;
     @ColumnInfo(name = "name")
     private String name;
-    @ColumnInfo(name = "school_campus_code")
+    @ColumnInfo(name = "school_campus_code", index = true)
     private String schoolCampusCode;
 
     public Campus(String code, String name, String schoolCampusCode) {

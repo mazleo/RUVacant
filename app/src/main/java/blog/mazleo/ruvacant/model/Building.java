@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
@@ -26,7 +27,7 @@ public class Building {
     private String code;
     @ColumnInfo(name = "name")
     private String name;
-    @ColumnInfo(name = "campus_code")
+    @ColumnInfo(name = "campus_code", index = true)
     private String campusCode;
     @ColumnInfo(name = "is_fave")
     private boolean isFavorite;
