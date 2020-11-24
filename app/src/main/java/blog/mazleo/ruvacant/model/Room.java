@@ -1,9 +1,34 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
+@Entity(
+        primaryKeys = {
+               "building_code",
+               "number"
+        },
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Building.class,
+                        parentColumns = {
+                                "code"
+                        },
+                        childColumns = {
+                                "building_code"
+                        }
+                )
+        }
+)
 public class Room {
+    @NonNull
+    @ColumnInfo(name = "building_code")
     private String buildingCode;
+    @NonNull
+    @ColumnInfo(name = "number")
     private String number;
 
     public Room(String buildingCode, String number) {

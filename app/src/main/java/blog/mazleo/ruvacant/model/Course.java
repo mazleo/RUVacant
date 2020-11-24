@@ -1,11 +1,38 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
+@Entity(
+        primaryKeys = {
+                "subject_code",
+                "code"
+        },
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Subject.class,
+                        parentColumns = {
+                                "code"
+                        },
+                        childColumns = {
+                                "subject_code"
+                        }
+                )
+        }
+)
 public class Course {
+    @NonNull
+    @ColumnInfo(name = "subject_code")
     private String subjectCode;
+    @NonNull
+    @ColumnInfo(name = "code")
     private String code;
+    @ColumnInfo(name = "title")
     private String title;
+    @ColumnInfo(name = "expanded_title")
     private String expandedTitle;
 
     public Course(String subjectCode, String code, String title, String expandedTitle) {

@@ -1,9 +1,17 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Subject {
+    @NonNull
+    @PrimaryKey
     String code;
+    @ColumnInfo(name = "title")
     String title;
 
     public Subject(String code, String title) {

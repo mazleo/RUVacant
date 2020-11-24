@@ -1,13 +1,62 @@
 package blog.mazleo.ruvacant.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
+@Entity(
+        primaryKeys = {
+                "class_index",
+                "meeting_day",
+                "start_time",
+                "end_time"
+        },
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Class.class,
+                        parentColumns = {
+                                "index"
+                        },
+                        childColumns = {
+                                "class_index"
+                        }
+                ),
+                @ForeignKey(
+                        entity = Building.class,
+                        parentColumns = {
+                                "code"
+                        },
+                        childColumns = {
+                                "building_code"
+                        }
+                ),
+                @ForeignKey(
+                        entity = Room.class,
+                        parentColumns = {
+                                "number"
+                        },
+                        childColumns = {
+                                "room_number"
+                        }
+                )
+        }
+)
 public class Meeting {
+    @NonNull
+    @ColumnInfo(name = "class_index")
     private String classIndex;
+    @ColumnInfo(name = "building_code")
     private String buildingCode;
+    @ColumnInfo(name = "room_number")
     private String roomNumber;
+    @NonNull
+    @ColumnInfo(name = "meeting_day")
     private String meetingDay;
+    @ColumnInfo(name = "start_time")
     private int startTime;
+    @ColumnInfo(name = "end_time")
     private int endTime;
 
     public Meeting(String classIndex, String buildingCode, String roomNumber, String meetingDay, int startTime, int endTime) {

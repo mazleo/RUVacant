@@ -4,14 +4,31 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 
+@Entity(
+        primaryKeys = {
+                "last_name",
+                "first_name"
+        }
+)
 public class Instructor {
+    @NonNull
+    @ColumnInfo(name = "last_name")
     private String lastName;
+    @NonNull
+    @ColumnInfo(name = "first_name")
     private String firstName;
 
     public Instructor(String lastName, String firstName) {
         this.lastName = lastName;
-        this.firstName = firstName;
+        if (firstName == null) {
+            this.firstName = "";
+        }
+        else {
+            this.firstName = firstName;
+        }
     }
 
     @Override
