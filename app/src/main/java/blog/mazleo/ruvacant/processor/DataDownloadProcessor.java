@@ -24,6 +24,8 @@ public class DataDownloadProcessor {
     private MutableLiveData<Boolean> dataDownloadProgress;
     private MutableLiveData<Boolean> dataSaveProgress;
 
+    public DataDownloadProcessor() {}
+
     public DataDownloadProcessor(Activity currentActivity, Option selectedOptions) {
         this.currentActivity = currentActivity;
         this.selectedOptions = selectedOptions;
