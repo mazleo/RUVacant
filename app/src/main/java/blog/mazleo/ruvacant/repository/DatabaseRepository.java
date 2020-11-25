@@ -119,6 +119,11 @@ public class DatabaseRepository {
         return semesters;
     }
 
+    public void onError(Throwable e) {
+        databaseViewModel.onError(e);
+        cleanUp();
+    }
+
     public void cleanUpKeepData() {
         if (databaseService != null) {
             databaseService.cleanUpKeepData();

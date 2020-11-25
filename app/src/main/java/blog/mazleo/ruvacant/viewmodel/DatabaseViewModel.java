@@ -64,6 +64,11 @@ public class DatabaseViewModel {
         dataDownloadProcessor = null;
     }
 
+    public void onError(Throwable e) {
+        dataDownloadProcessor.onSaveError(e);
+        cleanUp();
+    }
+
     public void setDataDownloadProcessor(DataDownloadProcessor dataDownloadProcessor) {
         this.dataDownloadProcessor = dataDownloadProcessor;
     }

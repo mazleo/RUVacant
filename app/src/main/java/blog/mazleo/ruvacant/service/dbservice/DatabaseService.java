@@ -117,8 +117,8 @@ public class DatabaseService {
     }
 
     private void onError(Throwable e) {
+        databaseRepository.onError(e);
         cleanUp();
-        // TODO Pass error
     }
 
     public void cleanUp() {
