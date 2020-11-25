@@ -133,6 +133,15 @@ public class DatabaseService {
         activity = null;
     }
 
+    public void cleanUpKeepData() {
+        if (disposable != null) {
+            disposable.dispose();
+            disposable = null;
+        }
+        databaseRepository = null;
+        activity = null;
+    }
+
     public AppDatabase getAppDatabase() {
         return appDatabase;
     }
