@@ -26,7 +26,7 @@ public interface CourseDao {
     Completable insertInstructors(Instructor... instructors);
 
     @Insert
-    Completable insertClassesInstructors(ClassInstructor classesInstructors);
+    Completable insertClassesInstructors(ClassInstructor... classesInstructors);
 
     @Insert
     Completable insertMeetings(Meeting... meetings);
