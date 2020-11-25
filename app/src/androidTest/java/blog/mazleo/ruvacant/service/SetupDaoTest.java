@@ -17,11 +17,10 @@ import blog.mazleo.ruvacant.service.dbservice.AppDatabase;
 import blog.mazleo.ruvacant.utils.DatabaseUtil;
 import io.reactivex.Completable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.TestObserver;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @RunWith(AndroidJUnit4.class)
@@ -61,6 +60,7 @@ public class SetupDaoTest {
 
         completable
                 .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
         try {
