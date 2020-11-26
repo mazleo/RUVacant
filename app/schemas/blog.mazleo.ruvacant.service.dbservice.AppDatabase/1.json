@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "304e4515b861abff946cde0d5f92dfd4",
+    "identityHash": "c843bc501c14c28d0104ccf8e5226dac",
     "entities": [
       {
         "tableName": "SchoolCampus",
@@ -488,7 +488,7 @@
       },
       {
         "tableName": "Meeting",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`class_index` TEXT NOT NULL, `building_code` TEXT, `room_number` TEXT, `meeting_day` TEXT NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, PRIMARY KEY(`class_index`, `meeting_day`, `start_time`, `end_time`), FOREIGN KEY(`class_index`) REFERENCES `Class`(`index`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`building_code`) REFERENCES `Building`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`building_code`, `room_number`) REFERENCES `Room`(`building_code`, `number`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`class_index` TEXT NOT NULL, `building_code` TEXT NOT NULL, `room_number` TEXT NOT NULL, `meeting_day` TEXT NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, PRIMARY KEY(`class_index`, `building_code`, `room_number`, `meeting_day`, `start_time`, `end_time`), FOREIGN KEY(`class_index`) REFERENCES `Class`(`index`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`building_code`) REFERENCES `Building`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`building_code`, `room_number`) REFERENCES `Room`(`building_code`, `number`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "classIndex",
@@ -500,13 +500,13 @@
             "fieldPath": "buildingCode",
             "columnName": "building_code",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "roomNumber",
             "columnName": "room_number",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "meetingDay",
@@ -530,6 +530,8 @@
         "primaryKey": {
           "columnNames": [
             "class_index",
+            "building_code",
+            "room_number",
             "meeting_day",
             "start_time",
             "end_time"
@@ -717,7 +719,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '304e4515b861abff946cde0d5f92dfd4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c843bc501c14c28d0104ccf8e5226dac')"
     ]
   }
 }
