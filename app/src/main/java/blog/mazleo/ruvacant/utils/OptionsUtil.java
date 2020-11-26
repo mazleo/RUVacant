@@ -142,4 +142,33 @@ public class OptionsUtil {
 
         return levelOptions;
     }
+
+    public static int getSemesterMonthFromSemesterString(String semesterString) {
+        String[] splitSemester = semesterString.split(" ");
+        int semesterMonth = -1;
+
+        switch (splitSemester[0]) {
+            case "Fall":
+                semesterMonth = 9;
+                break;
+            case "Spring":
+                semesterMonth = 1;
+                break;
+            case "Winter":
+                semesterMonth = 0;
+                break;
+            case "Summer":
+                semesterMonth = 7;
+                break;
+        }
+
+        return semesterMonth;
+    }
+
+    public static int getSemesterYearFromSemesterString(String semesterString) {
+        String[] splitSemester = semesterString.split(" ");
+        int semesterYear = Integer.valueOf(splitSemester[1]);
+
+        return semesterYear;
+    }
 }
