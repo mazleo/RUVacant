@@ -29,7 +29,7 @@ public class DatabaseViewModel {
     }
 
     public void onInitialDatabaseSetupComplete() {
-        // TODO Finish
+        dataDownloadProcessor.onInitialDatabaseSetupComplete();
     }
 
     public void saveLocations(List<Building> buildings, List<Room> rooms) {
@@ -37,7 +37,7 @@ public class DatabaseViewModel {
     }
 
     public void onSaveLocationsComplete() {
-        // TODO Finish
+        dataDownloadProcessor.onSaveLocationsComplete();
     }
 
     public void saveCourses(List<Subject> subjects, List<Course> courses, List<Class> classes, List<Instructor> instructors, List<ClassInstructor> classesInstructors, List<Meeting> meetings) {
@@ -45,7 +45,7 @@ public class DatabaseViewModel {
     }
 
     public void onSaveCoursesComplete() {
-        // TODO Finish
+        dataDownloadProcessor.onSaveCoursesComplete();
     }
 
     public void cleanUp() {

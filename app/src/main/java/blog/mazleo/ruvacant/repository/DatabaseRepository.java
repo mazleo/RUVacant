@@ -36,7 +36,7 @@ public class DatabaseRepository {
     }
 
     public void onInitialDatabaseSetupComplete() {
-        // TODO Do something on finish
+        databaseViewModel.onInitialDatabaseSetupComplete();
     }
 
     public void saveLocations(List<Building> buildings, List<Room> rooms) {
@@ -44,7 +44,7 @@ public class DatabaseRepository {
     }
 
     public void onSaveLocationsComplete() {
-        // TODO Do something on finish
+        databaseViewModel.onSaveLocationsComplete();
     }
 
     public void saveCourses(List<Subject> subjects, List<Course> courses, List<Class> classes, List<Instructor> instructors, List<ClassInstructor> classesInstructors, List<Meeting> meetings) {
@@ -52,7 +52,7 @@ public class DatabaseRepository {
     }
 
     public void onSaveCoursesComplete() {
-        // TODO Do something on finish
+        databaseViewModel.onSaveCoursesComplete();
     }
 
     private List<SchoolCampus> getPopulatedSchoolCampuses() {
@@ -92,26 +92,8 @@ public class DatabaseRepository {
         List<Semester> semesters = new ArrayList<>();
 
         for (String semesterOptionString : semesterOptionsStrings) {
-            String[] splitSemester = semesterOptionString.split(" ");
-            int semesterMonth = -1;
-            int semesterYear = -1;
-
-            semesterYear = Integer.valueOf(splitSemester[1]);
-
-            switch (splitSemester[0]) {
-                case "Fall":
-                    semesterMonth = 9;
-                    break;
-                case "Spring":
-                    semesterMonth = 1;
-                    break;
-                case "Winter":
-                    semesterMonth = 0;
-                    break;
-                case "Summer":
-                    semesterMonth = 7;
-                    break;
-            }
+            int semesterMonth = OptionsUtil.getSemesterMonthFromSemesterString(semesterOptionString);
+            int semesterYear = OptionsUtil.getSemesterYearFromSemesterString(semesterOptionString);
 
             semesters.add(new Semester(semesterMonth, semesterYear));
         }

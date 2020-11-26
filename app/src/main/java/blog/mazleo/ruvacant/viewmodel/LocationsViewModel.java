@@ -71,11 +71,11 @@ public class LocationsViewModel {
     }
 
     private void onLocationsRetrievalComplete() {
-        // TODO
+        dataDownloadProcessor.onDownloadLocationsComplete();
     }
 
     public void onError(Throwable e) {
-        // TODO
+        dataDownloadProcessor.onDownloadError(e);
     }
 
     public void appendLocations(Locations locations) {
@@ -106,6 +106,31 @@ public class LocationsViewModel {
 
     public boolean containsBuilding(Building building) {
         return this.existingBuildings.contains(building.getCode());
+    }
+
+    public void cleanUp() {
+
+        dataDownloadProcessor = null;
+        if (locationsRepository != null) {
+            locationsRepository.cleanUp();
+            locationsRepository = null;
+        }
+        if (buildings != null) {
+            buildings.clear();
+            buildings = null;
+        }
+        if (rooms != null) {
+            rooms.clear();
+            rooms = null;
+        }
+        if (existingBuildings != null) {
+            existingBuildings.clear();
+            existingBuildings = null;
+        }
+        if (existingRooms != null) {
+            existingRooms.clear();
+            existingRooms = null;
+        }
     }
 
     public void addRoom(Room room) {

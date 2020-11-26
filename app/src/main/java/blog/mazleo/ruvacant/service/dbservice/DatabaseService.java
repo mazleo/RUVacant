@@ -1,6 +1,7 @@
 package blog.mazleo.ruvacant.service.dbservice;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.room.Room;
 
@@ -40,10 +41,12 @@ public class DatabaseService {
     }
 
     private void buildDatabase() {
+        Log.d("APPDEBUG", "Building database...");
         this.appDatabase = Room.databaseBuilder(activity.getApplicationContext(), AppDatabase.class, DatabaseUtil.DATABASE_NAME).build();
     }
 
     public void setupInitialDatabase(Option option, List<SchoolCampus> schoolCampuses, List<Level> levels, List<Semester> semesters, List<Campus> campuses) {
+        Log.d("APPDEBUG", "Setting up initial database...");
         List<Completable> completableCollection = new ArrayList<>();
 
         completableCollection.add(appDatabase.setupDao().insertSchoolCampuses(schoolCampuses.toArray(new SchoolCampus[schoolCampuses.size()])));
@@ -64,11 +67,13 @@ public class DatabaseService {
     }
 
     private void onInitialSetupComplete() {
+        Log.d("APPDEBUG", "Initial database setup complete...");
         disposable = null;
-        // TODO Notify setup done
+        databaseRepository.onInitialDatabaseSetupComplete();
     }
 
     public void saveLocations(List<Building> buildings, List<blog.mazleo.ruvacant.model.Room> rooms) {
+        Log.d("APPDEBUG", "Saving locations...");
         List<Completable> completableCollection = new ArrayList<>();
 
         completableCollection.add(appDatabase.locationDao().insertBuildings(buildings.toArray(new Building[buildings.size()])));
@@ -86,11 +91,13 @@ public class DatabaseService {
     }
 
     private void onSaveLocationsComplete() {
+        Log.d("APPDEBUG", "Saving locations complete...");
         disposable = null;
-        // TODO Notify done
+        databaseRepository.onSaveLocationsComplete();
     }
 
     public void saveCourses(List<Subject> subjects, List<Course> courses, List<Class> classes, List<Instructor> instructors, List<ClassInstructor> classesInstructors, List<Meeting> meetings) {
+        Log.d("APPDEBUG", "Saving courses...");
         List<Completable> completableCollection = new ArrayList<>();
 
         completableCollection.add(appDatabase.courseDao().insertSubjects(subjects.toArray(new Subject[subjects.size()])));
@@ -112,16 +119,19 @@ public class DatabaseService {
     }
 
     private void onSaveCoursesComplete() {
+        Log.d("APPDEBUG", "Saving courses complete...");
         disposable = null;
-        // TODO Notify done
+        databaseRepository.onSaveCoursesComplete();
     }
 
     private void onError(Throwable e) {
+        Log.d("APPDEBUG", "A database error has occurred...");
         databaseRepository.onError(e);
         cleanUp();
     }
 
     public void cleanUp() {
+        Log.d("APPDEBUG", "Performing full cleanup of database...");
         if (appDatabase != null) {
             appDatabase.clearAllTables();
         }
@@ -134,6 +144,7 @@ public class DatabaseService {
     }
 
     public void cleanUpKeepData() {
+        Log.d("APPDEBUG", "Performing partial cleanup of database...");
         if (disposable != null) {
             disposable.dispose();
             disposable = null;

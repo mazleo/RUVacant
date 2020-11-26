@@ -53,7 +53,7 @@ public class CoursesViewModel {
 
     private void onCourseDataDownloadComplete() {
         cleanUpDownloaders();
-        // TODO Notify DataDownloadProcessor to start saving data
+        dataDownloadProcessor.onDownloadCoursesComplete();
     }
 
     private void appendCourseInfos(List<CourseInfoCollection> courseInfos) {
@@ -180,8 +180,7 @@ public class CoursesViewModel {
     }
 
     public void passError(Throwable e) {
-        // TODO
-        // dataDownloadProcessor.onDownloadError(e);
+        dataDownloadProcessor.onDownloadError(e);
     }
 
     public List<Subject> getSubjects() {
