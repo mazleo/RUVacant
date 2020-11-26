@@ -58,7 +58,12 @@ public class ClassInstructor {
     public ClassInstructor(String classIndex, String instructorLastName, String instructorFirstName) {
         this.classIndex = classIndex;
         this.instructorLastName = instructorLastName;
-        this.instructorFirstName = instructorFirstName;
+        if (instructorFirstName == null) {
+            this.instructorFirstName = "";
+        }
+        else {
+            this.instructorFirstName = instructorFirstName;
+        }
     }
 
     @Override
