@@ -38,6 +38,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
     }
 
     public void downloadCourseInfos(List<Subject> subjects, Option selectedOptions) {
+        Log.d("APPDEBUG", "Beginning course download...");
         OkHttpClient client = getClient();
         Gson gson = getGson();
         Retrofit retrofit = getRetrofit(client, gson);
@@ -99,6 +100,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
     }
 
     public void cleanUp() {
+        Log.d("APPDEBUG", "Performing CourseInfo cleanup...");
         this.coursesRepository = null;
         if (this.courseInfos != null) {
             this.courseInfos.clear();
@@ -124,6 +126,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
 
     @Override
     public void onError(@NonNull Throwable e) {
+        Log.d("APPDEBUG", "An error has occurred while downloading courses...");
         e.printStackTrace();
         passError(e);
         cleanUp();
@@ -131,6 +134,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
 
     @Override
     public void onComplete() {
+        Log.d("APPDEBUG", "Downloading courses complete...");
         returnCourseInfos();
         cleanUp();
     }

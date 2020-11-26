@@ -41,6 +41,7 @@ public class LocationsWebService {
     }
 
     public void downloadLocationsFromRutgersPlaces() {
+        Log.d("APPDEBUG", "Beginning Rutgers Places location download...");
         OkHttpClient client = getClient(true);
         Gson gson = getGson();
         Retrofit retrofit = getRetrofit(LocationsUtil.RUTGERS_PLACES_BASE_URL, client, gson);
@@ -64,17 +65,20 @@ public class LocationsWebService {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        Log.d("APPDEBUG", "An error has occurred while downloading locations from Rutgers Places...");
                         passError(e);
                     }
 
                     @Override
                     public void onComplete() {
+                        Log.d("APPDEBUG", "Locations download from Rutgers Places complete...");
                         locationsRepository.onDownloadLocationsFromRutgersPlacesComplete(locations);
                     }
                 });
     }
 
     public void downloadLocationsFromRutgersCourses(List<Subject> subjects, Option option) {
+        Log.d("APPDEBUG", "Beginning Rutgers Courses location download...");
         OkHttpClient client = getClient(false);
         Gson gson = getGson();
         Retrofit retrofit = getRetrofit(CoursesUtil.RUTGERS_SIS_BASE_URL, client, gson);
@@ -99,10 +103,12 @@ public class LocationsWebService {
                 .subscribe(
                         l -> {},
                         e -> {
+                            Log.d("APPDEBUG", "An error has occurred while downloading locations from Rutgers Courses...");
                             passError(e);
                             cleanUp();
                         },
                         () -> {
+                            Log.d("APPDEBUG", "Locations download from Rutgers Courses complete...");
                             locationsRepository.onDownloadLocationsFromRutgersCoursesComplete(locations);
                             cleanUp();
                         }
@@ -134,6 +140,7 @@ public class LocationsWebService {
     }
 
     public void cleanUp() {
+        Log.d("APPDEBUG", "Performing LocationsWebService cleanup...");
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
             disposable = null;

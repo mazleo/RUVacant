@@ -1,5 +1,7 @@
 package blog.mazleo.ruvacant.service.webservice;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -36,6 +38,7 @@ public class SubjectsWebService implements Observer {
     }
 
     public void downloadSubjects(Option selectedOption) {
+        Log.d("APPDEBUG", "Beginning subjects download...");
         Gson gson = getGson();
         OkHttpClient client = getClient();
         Retrofit retrofit = getRetrofit(gson, client);
@@ -100,6 +103,7 @@ public class SubjectsWebService implements Observer {
     }
 
     public void cleanUp() {
+        Log.d("APPDEBUG", "Performing SubjectsWebService cleanup...");
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
@@ -123,12 +127,14 @@ public class SubjectsWebService implements Observer {
 
     @Override
     public void onError(@NonNull Throwable e) {
+        Log.d("APPDEBUG", "An error has occurred while downloading subjects...");
         passError(e);
         cleanUp();
     }
 
     @Override
     public void onComplete() {
+        Log.d("APPDEBUG", "Subjects download complete...");
         returnSubjects();
         cleanUp();
     }
