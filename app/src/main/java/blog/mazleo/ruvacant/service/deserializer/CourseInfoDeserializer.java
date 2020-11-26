@@ -190,14 +190,17 @@ public class CourseInfoDeserializer implements JsonDeserializer {
                     int startTime = getParsedStartTime(startTimeUnparsed, pmCode);
                     int endTime = getParsedEndTime(endTimeUnparsed, startTime);
 
-                    addNewMeetingToList(meetings, sectionIndex, buildingCode, roomNumber, meetingDay, startTime, endTime);
+                    addNewMeetingToListIfNotExists(meetings, sectionIndex, buildingCode, roomNumber, meetingDay, startTime, endTime);
                 }
             }
         }
     }
 
-    private static void addNewMeetingToList(List<Meeting> meetings, String sectionIndex, String buildingCode, String roomNumber, String meetingDay, int startTime, int endTime) {
-        meetings.add(new Meeting(sectionIndex, buildingCode, roomNumber, meetingDay, startTime, endTime));
+    private static void addNewMeetingToListIfNotExists(List<Meeting> meetings, String sectionIndex, String buildingCode, String roomNumber, String meetingDay, int startTime, int endTime) {
+        Meeting newMeeting = new Meeting(sectionIndex, buildingCode, roomNumber, meetingDay, startTime, endTime);
+        if (!meetings.contains(newMeeting)) {
+            meetings.add(new Meeting(sectionIndex, buildingCode, roomNumber, meetingDay, startTime, endTime));
+        }
     }
 
     private static int getParsedEndTime(String endTimeUnparsed, int startTime) {
