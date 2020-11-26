@@ -10,6 +10,8 @@ import androidx.room.Index;
 @Entity(
         primaryKeys = {
                 "class_index",
+                "building_code",
+                "room_number",
                 "meeting_day",
                 "start_time",
                 "end_time"
@@ -58,8 +60,10 @@ public class Meeting {
     @NonNull
     @ColumnInfo(name = "class_index")
     private String classIndex;
+    @NonNull
     @ColumnInfo(name = "building_code", index = true)
     private String buildingCode;
+    @NonNull
     @ColumnInfo(name = "room_number", index = true)
     private String roomNumber;
     @NonNull
