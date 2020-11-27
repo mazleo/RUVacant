@@ -87,7 +87,7 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
 
     private static OkHttpClient getClient() {
         return new OkHttpClient.Builder()
-                    .callTimeout(5, TimeUnit.MINUTES)
+                    .callTimeout(15, TimeUnit.MINUTES)
                     .build();
     }
 

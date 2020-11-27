@@ -168,13 +168,13 @@ public class LocationsWebService {
     private static OkHttpClient getClient(boolean addConnectionSpecs) {
         if (addConnectionSpecs) {
             return new OkHttpClient.Builder()
-                    .callTimeout(10, TimeUnit.SECONDS)
+                    .callTimeout(15, TimeUnit.MINUTES)
                     .connectionSpecs(Arrays.asList(ConnectionSpec.COMPATIBLE_TLS))
                     .build();
         }
         else {
             return new OkHttpClient.Builder()
-                    .callTimeout(10, TimeUnit.SECONDS)
+                    .callTimeout(15, TimeUnit.MINUTES)
                     .build();
         }
     }

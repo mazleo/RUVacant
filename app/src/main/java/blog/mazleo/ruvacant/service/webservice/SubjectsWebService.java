@@ -70,7 +70,7 @@ public class SubjectsWebService implements Observer {
 
     private static OkHttpClient getClient() {
         return new OkHttpClient.Builder()
-                    .callTimeout(10, TimeUnit.SECONDS)
+                    .callTimeout(15, TimeUnit.MINUTES)
                     .build();
     }
 
