@@ -113,12 +113,9 @@ public class DataDownloadProcessor {
     public void onDataRetrievalComplete() {
         dataRetrievalProgress.setValue(false);
         // TODO move on
-
-        Log.i("APPDEBUG", "DONE");
     }
 
     private void onSaveStart() {
-        Log.i("APPDEBUG", "SAVE STARTING");
         dataSaveProgress.setValue(true);
         if (databaseViewModel == null) {
             databaseViewModel = new DatabaseViewModel(currentActivity);
@@ -132,7 +129,6 @@ public class DataDownloadProcessor {
     }
 
     private void onDownloadStart() {
-        Log.i("APPDEBUG", "DOWNLOAD STARTING");
         dataRetrievalProgress.setValue(true);
         dataDownloadProgress.setValue(true);
     }
