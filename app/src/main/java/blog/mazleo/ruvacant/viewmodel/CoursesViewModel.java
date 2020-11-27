@@ -179,8 +179,8 @@ public class CoursesViewModel {
         }
     }
 
-    public void passError(Throwable e) {
-        dataDownloadProcessor.onDownloadError(e);
+    public void passError(Throwable e, String message) {
+        dataDownloadProcessor.onDownloadError(e, message);
     }
 
     public List<Subject> getSubjects() {

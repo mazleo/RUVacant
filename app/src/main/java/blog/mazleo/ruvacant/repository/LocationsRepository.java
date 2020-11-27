@@ -48,8 +48,8 @@ public class LocationsRepository implements RepositoryInstance {
         locationsWebService = null;
     }
 
-    public void onError(Throwable e) {
-        locationsViewModel.onError(e);
+    public void onError(Throwable e, String message) {
+        locationsViewModel.onError(e, message);
         cleanUp();
     }
 

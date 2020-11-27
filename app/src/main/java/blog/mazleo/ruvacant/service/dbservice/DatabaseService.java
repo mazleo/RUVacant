@@ -126,7 +126,8 @@ public class DatabaseService {
 
     private void onError(Throwable e) {
         Log.d("APPDEBUG", "A database error has occurred...");
-        databaseRepository.onError(e);
+        String message = "An error has occurred while saving data. Please try again.";
+        databaseRepository.onError(e, message);
         cleanUp();
     }
 

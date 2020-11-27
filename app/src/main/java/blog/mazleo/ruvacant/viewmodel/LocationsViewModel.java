@@ -73,8 +73,8 @@ public class LocationsViewModel {
         dataDownloadProcessor.onDownloadLocationsComplete();
     }
 
-    public void onError(Throwable e) {
-        dataDownloadProcessor.onDownloadError(e);
+    public void onError(Throwable e, String message) {
+        dataDownloadProcessor.onDownloadError(e, message);
     }
 
     public void appendLocations(Locations locations) {

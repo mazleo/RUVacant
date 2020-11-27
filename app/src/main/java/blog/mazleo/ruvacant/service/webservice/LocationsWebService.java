@@ -67,7 +67,8 @@ public class LocationsWebService {
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d("APPDEBUG", "An error has occurred while downloading locations from Rutgers Places...");
-                        passError(e);
+                        String message = "An error has occurred while downloading Rutgers locations. Please try again.";
+                        passError(e, message);
                     }
 
                     @Override
@@ -89,6 +90,13 @@ public class LocationsWebService {
         List<Observable> observables = new ArrayList<>();
         populateLocationsObservableListFromSubjects(subjects, option, locationsService, observables);
 
+        if (observables.size() == 0) {
+            Log.d("APPDEBUG", "A download error has occurred while downloading courses. No location info exist for the selected options...");
+            String message = "An error has occurred while downloading Rutgers data. No data exists for the selected options.";
+            passError(new Throwable(), message);
+            return;
+        }
+
         Observable<Locations> finalObservable = Observable.mergeArray((Observable[]) observables.toArray(new Observable[observables.size()]));
 
         finalObservable
@@ -105,7 +113,8 @@ public class LocationsWebService {
                         l -> {},
                         e -> {
                             Log.d("APPDEBUG", "An error has occurred while downloading locations from Rutgers Courses...");
-                            passError(e);
+                            String message = "An error has occurred while downloading Rutgers locations data. Please try again.";
+                            passError(e, message);
                             cleanUp();
                         },
                         () -> {
@@ -150,8 +159,8 @@ public class LocationsWebService {
         locations.getRooms().addAll(newLocations.getRooms());
     }
 
-    private void passError(Throwable e) {
-        locationsRepository.onError(e);
+    private void passError(Throwable e, String message) {
+        locationsRepository.onError(e, message);
     }
 
     public void cleanUp() {

@@ -93,12 +93,12 @@ public class SubjectsWebService implements Observer {
         subjects.addAll(newSubjects);
     }
 
-    private void passError(Throwable e) {
+    private void passError(Throwable e, String message) {
         if (repository instanceof LocationsRepository) {
-            ((LocationsRepository) repository).onError(e);
+            ((LocationsRepository) repository).onError(e, message);
         }
         else if (repository instanceof CoursesRepository) {
-            ((CoursesRepository) repository).passError(e);
+            ((CoursesRepository) repository).passError(e, message);
         }
     }
 
@@ -128,7 +128,8 @@ public class SubjectsWebService implements Observer {
     @Override
     public void onError(@NonNull Throwable e) {
         Log.d("APPDEBUG", "An error has occurred while downloading subjects...");
-        passError(e);
+        String message = "An error has occurred while downloading Rutgers data. Please try again.";
+        passError(e, message);
         cleanUp();
     }
 

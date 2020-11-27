@@ -14,6 +14,7 @@ public class DataDownloadProcessor {
     // ----- FIELDS -----
     private Activity currentActivity;
     private Option selectedOptions;
+    private String errorMessage;
 
     // ----- VIEWMODELS -----
     private LocationsViewModel locationsViewModel;
@@ -64,6 +65,7 @@ public class DataDownloadProcessor {
 
     public void onDownloadLocationsComplete() {
         downloadCourses();
+        errorMessage = null;
     }
 
     public void downloadCourses() {
@@ -75,10 +77,12 @@ public class DataDownloadProcessor {
 
     public void onDownloadCoursesComplete() {
         onDownloadComplete();
+        errorMessage = null;
     }
 
     public void onDownloadComplete() {
         dataDownloadProgress.setValue(false);
+        errorMessage = null;
         onSaveStart();
     }
 
@@ -88,6 +92,7 @@ public class DataDownloadProcessor {
 
     public void onSaveLocationsComplete() {
         saveCourses();
+        errorMessage = null;
     }
 
     public void saveCourses() {
@@ -103,15 +108,18 @@ public class DataDownloadProcessor {
 
     public void onSaveCoursesComplete() {
         onSaveComplete();
+        errorMessage = null;
     }
 
     public void onSaveComplete() {
         dataSaveProgress.setValue(false);
         onDataRetrievalComplete();
+        errorMessage = null;
     }
 
     public void onDataRetrievalComplete() {
         dataRetrievalProgress.setValue(false);
+        errorMessage = null;
         // TODO move on
     }
 
@@ -126,6 +134,7 @@ public class DataDownloadProcessor {
 
     public void onInitialDatabaseSetupComplete() {
         saveLocations();
+        errorMessage = null;
     }
 
     private void onDownloadStart() {
@@ -141,7 +150,8 @@ public class DataDownloadProcessor {
         this.selectedOptions = selectedOptions;
     }
 
-    public void onSaveError(Throwable e) {
+    public void onSaveError(Throwable e, String message) {
+        this.errorMessage = message;
         this.onSaveError.setValue(true);
         this.onSaveError.setValue(false);
         this.dataSaveProgress.setValue(false);
@@ -150,7 +160,8 @@ public class DataDownloadProcessor {
         cleanUpAllComponents();
     }
 
-    public void onDownloadError(Throwable e) {
+    public void onDownloadError(Throwable e, String message) {
+        this.errorMessage = message;
         onDownloadError.setValue(true);
         onDownloadError.setValue(false);
         dataDownloadProgress.setValue(false);

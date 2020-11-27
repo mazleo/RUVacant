@@ -45,6 +45,15 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
         CourseInfoService courseInfoService = retrofit.create(CourseInfoService.class);
 
         List<Observable> observablesList = getNewPopulatedObservablesList(subjects, selectedOptions, courseInfoService);
+
+        if (observablesList.size() == 0) {
+            Log.d("APPDEBUG", "A download error has occurred while downloading courses. No course info exist for the selected options...");
+
+            String message = "An error has occurred while downloading Rutgers data. No data exists for the selected options.";
+            passError(new Throwable(), message);
+            return;
+        }
+
         Observable<CourseInfoCollection> finalObservable = Observable.mergeArray(observablesList.toArray(new Observable[observablesList.size()]));
 
         if (finalObservable != null) {
@@ -112,8 +121,8 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
         }
     }
 
-    private void passError(Throwable e) {
-        this.coursesRepository.passError(e);
+    private void passError(Throwable e, String message) {
+        this.coursesRepository.passError(e, message);
     }
 
     @Override
@@ -128,7 +137,8 @@ public class CourseInfoWebService implements Observer<CourseInfoCollection> {
     public void onError(@NonNull Throwable e) {
         Log.d("APPDEBUG", "An error has occurred while downloading courses...");
         e.printStackTrace();
-        passError(e);
+        String message = "An error has occurred while downloading Rutgers course data. Please try again.";
+        passError(e, message);
         cleanUp();
     }
 

@@ -101,8 +101,8 @@ public class DatabaseRepository {
         return semesters;
     }
 
-    public void onError(Throwable e) {
-        databaseViewModel.onError(e);
+    public void onError(Throwable e, String message) {
+        databaseViewModel.onError(e, message);
         cleanUp();
     }
 

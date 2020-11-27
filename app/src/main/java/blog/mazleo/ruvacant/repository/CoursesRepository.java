@@ -69,8 +69,8 @@ public class CoursesRepository implements RepositoryInstance {
         this.coursesViewModel.onCourseInfosRetrieved(courseInfos);
     }
 
-    public void passError(Throwable e) {
-        this.coursesViewModel.passError(e);
+    public void passError(Throwable e, String message) {
+        this.coursesViewModel.passError(e, message);
     }
 
     public void cleanUp() {

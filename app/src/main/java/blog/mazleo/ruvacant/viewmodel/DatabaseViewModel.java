@@ -64,8 +64,8 @@ public class DatabaseViewModel {
         dataDownloadProcessor = null;
     }
 
-    public void onError(Throwable e) {
-        dataDownloadProcessor.onSaveError(e);
+    public void onError(Throwable e, String message) {
+        dataDownloadProcessor.onSaveError(e, message);
         cleanUp();
     }
 
