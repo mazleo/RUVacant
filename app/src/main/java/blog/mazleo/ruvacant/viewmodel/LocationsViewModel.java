@@ -55,8 +55,7 @@ public class LocationsViewModel {
 
     public void onSubjectsRetrieved(List<Subject> subjects) {
         locationsRepository = null;
-        Option downloadOption = OptionsUtil.getNearestFullSemesterOption(dataDownloadProcessor.getSelectedOptions());
-        downloadLocationsFromRutgersCourses(subjects, downloadOption);
+        downloadLocationsFromRutgersCourses(subjects, dataDownloadProcessor.getSelectedOptions());
     }
 
     private void downloadLocationsFromRutgersCourses(List<Subject> subjects, Option option) {

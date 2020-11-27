@@ -18,6 +18,7 @@ import blog.mazleo.ruvacant.repository.LocationsRepository;
 import blog.mazleo.ruvacant.service.deserializer.LocationsDeserializer;
 import blog.mazleo.ruvacant.utils.CoursesUtil;
 import blog.mazleo.ruvacant.utils.LocationsUtil;
+import blog.mazleo.ruvacant.utils.OptionsUtil;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -127,6 +128,20 @@ public class LocationsWebService {
                     option.getLevelCode()
             );
             observables.add(locationsObservable);
+
+            if (option.getSemesterMonth() == 0 || option.getSemesterMonth() == 7) {
+                Option additionalOption = OptionsUtil.getNearestFullSemesterOption(option);
+                Observable<Locations> additionalLocationsObservable = locationsService.retrieveLocationsFromRutgersCourses(
+                        subject.getCode(),
+                        new StringBuilder()
+                                .append(additionalOption.getSemesterMonth())
+                                .append(additionalOption.getSemesterYear())
+                                .toString(),
+                        additionalOption.getSchoolCampusCode(),
+                        additionalOption.getLevelCode()
+                );
+                observables.add(additionalLocationsObservable);
+            }
         }
     }
 
