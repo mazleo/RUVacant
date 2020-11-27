@@ -133,7 +133,9 @@ public class DatabaseService {
     public void cleanUp() {
         Log.d("APPDEBUG", "Performing full cleanup of database...");
         if (appDatabase != null) {
-            appDatabase.clearAllTables();
+            Completable.fromAction(() -> appDatabase.clearAllTables())
+                    .subscribeOn(Schedulers.computation())
+                    .subscribe(() -> Log.d("APPDEBUG", "Database cleared..."));
         }
         if (disposable != null) {
             disposable.dispose();
