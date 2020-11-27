@@ -171,4 +171,28 @@ public class OptionsUtil {
 
         return semesterYear;
     }
+
+    public static String getSchoolCampusCodeFromName(String campusName) {
+        switch (campusName) {
+            case "New Brunswick":
+                return "NB";
+            case "Newark":
+                return "N";
+            case "Camden":
+                return "CM";
+        }
+
+        return "NB";
+    }
+
+    public static String getLevelCodeFromName(String levelName) {
+        switch (levelName) {
+            case "Undergraduate":
+                return "U";
+            case "Graduate":
+                return "G";
+        }
+
+        return "U";
+    }
 }
