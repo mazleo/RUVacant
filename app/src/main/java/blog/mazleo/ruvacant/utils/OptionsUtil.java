@@ -66,7 +66,7 @@ public class OptionsUtil {
                         semesterMonthCodes[currentSemesterMonthCodeIndex],
                         yearCodes[currentYearCodeIndex],
                         userSelectedOption.getSchoolCampusCode(),
-                        userSelectedOption.getLevelCode()
+                        "U"
                 );
             }
 

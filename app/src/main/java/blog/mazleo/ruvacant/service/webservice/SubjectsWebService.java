@@ -16,6 +16,7 @@ import blog.mazleo.ruvacant.repository.LocationsRepository;
 import blog.mazleo.ruvacant.repository.RepositoryInstance;
 import blog.mazleo.ruvacant.service.deserializer.SubjectListDeserializer;
 import blog.mazleo.ruvacant.utils.CoursesUtil;
+import blog.mazleo.ruvacant.utils.OptionsUtil;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -44,7 +45,8 @@ public class SubjectsWebService implements Observer {
         Retrofit retrofit = getRetrofit(gson, client);
         SubjectsService subjectsService = retrofit.create(SubjectsService.class);
 
-        Observable<List> observable = subjectsService.retrieveSubjects(
+        List<Observable> observables = new ArrayList<>();
+        Observable<List> originalObservable = subjectsService.retrieveSubjects(
                 new StringBuilder()
                         .append(selectedOption.getSemesterMonth())
                         .append(selectedOption.getSemesterYear())
@@ -52,6 +54,26 @@ public class SubjectsWebService implements Observer {
                 selectedOption.getSchoolCampusCode(),
                 selectedOption.getLevelCode()
         );
+        observables.add(originalObservable);
+
+        if (repository instanceof LocationsRepository) {
+            if (selectedOption.getSemesterMonth() == 0 || selectedOption.getSemesterMonth() == 7) {
+                Option fullerOption = OptionsUtil.getNearestFullSemesterOption(selectedOption);
+
+                Observable<List> fullerObservable = subjectsService.retrieveSubjects(
+                        new StringBuilder()
+                                .append(fullerOption.getSemesterMonth())
+                                .append(fullerOption.getSemesterYear())
+                                .toString(),
+                        fullerOption.getSchoolCampusCode(),
+                        fullerOption.getLevelCode()
+                );
+
+                observables.add(fullerObservable);
+            }
+        }
+
+        Observable<List> observable = Observable.concatArray(observables.toArray(new Observable[observables.size()]));
 
         observable
                 .subscribeOn(Schedulers.computation())

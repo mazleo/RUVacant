@@ -139,15 +139,15 @@ public class LocationsWebService {
             observables.add(locationsObservable);
 
             if (option.getSemesterMonth() == 0 || option.getSemesterMonth() == 7) {
-                Option additionalOption = OptionsUtil.getNearestFullSemesterOption(option);
+                Option fullerOption = OptionsUtil.getNearestFullSemesterOption(option);
                 Observable<Locations> additionalLocationsObservable = locationsService.retrieveLocationsFromRutgersCourses(
                         subject.getCode(),
                         new StringBuilder()
-                                .append(additionalOption.getSemesterMonth())
-                                .append(additionalOption.getSemesterYear())
+                                .append(fullerOption.getSemesterMonth())
+                                .append(fullerOption.getSemesterYear())
                                 .toString(),
-                        additionalOption.getSchoolCampusCode(),
-                        additionalOption.getLevelCode()
+                        fullerOption.getSchoolCampusCode(),
+                        fullerOption.getLevelCode()
                 );
                 observables.add(additionalLocationsObservable);
             }
