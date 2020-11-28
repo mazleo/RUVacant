@@ -24,7 +24,11 @@ public class DataDownloadProcessor {
     // ----- UI Components -----
     private MutableLiveData<Boolean> dataRetrievalProgress;
     private MutableLiveData<Boolean> dataDownloadProgress;
+    private MutableLiveData<Boolean> dataLocationsDownloadProgress;
+    private MutableLiveData<Boolean> dataCoursesDownloadProgress;
     private MutableLiveData<Boolean> dataSaveProgress;
+    private MutableLiveData<Boolean> dataLocationsSaveProgress;
+    private MutableLiveData<Boolean> dataCoursesSaveProgress;
     private MutableLiveData<Boolean> onDownloadError;
     private MutableLiveData<Boolean> onSaveError;
 
@@ -40,13 +44,21 @@ public class DataDownloadProcessor {
 
         this.dataRetrievalProgress = new MutableLiveData<>();
         this.dataDownloadProgress = new MutableLiveData<>();
+        this.dataLocationsDownloadProgress = new MutableLiveData<>();
+        this.dataCoursesDownloadProgress = new MutableLiveData<>();
         this.dataSaveProgress = new MutableLiveData<>();
+        this.dataLocationsSaveProgress = new MutableLiveData<>();
+        this.dataCoursesSaveProgress = new MutableLiveData<>();
         this.onDownloadError = new MutableLiveData<>();
         this.onSaveError = new MutableLiveData<>();
 
         this.dataRetrievalProgress.setValue(false);
         this.dataDownloadProgress.setValue(false);
+        this.dataLocationsDownloadProgress.setValue(false);
+        this.dataCoursesDownloadProgress.setValue(false);
         this.dataSaveProgress.setValue(false);
+        this.dataLocationsSaveProgress.setValue(false);
+        this.dataCoursesSaveProgress.setValue(false);
         this.onDownloadError.setValue(false);
         this.onSaveError.setValue(false);
     }
@@ -57,6 +69,7 @@ public class DataDownloadProcessor {
     }
 
     public void downloadLocations() {
+        dataLocationsDownloadProgress.setValue(true);
         if (locationsViewModel == null) {
             locationsViewModel = new LocationsViewModel(this);
         }
@@ -64,11 +77,13 @@ public class DataDownloadProcessor {
     }
 
     public void onDownloadLocationsComplete() {
+        dataLocationsDownloadProgress.setValue(false);
         downloadCourses();
         errorMessage = null;
     }
 
     public void downloadCourses() {
+        dataCoursesDownloadProgress.setValue(true);
         if (coursesViewModel == null) {
             coursesViewModel = new CoursesViewModel(this);
         }
@@ -76,6 +91,7 @@ public class DataDownloadProcessor {
     }
 
     public void onDownloadCoursesComplete() {
+        dataCoursesDownloadProgress.setValue(false);
         onDownloadComplete();
         errorMessage = null;
     }
@@ -87,15 +103,18 @@ public class DataDownloadProcessor {
     }
 
     public void saveLocations() {
+        dataLocationsSaveProgress.setValue(true);
         databaseViewModel.saveLocations(locationsViewModel.getBuildings(), locationsViewModel.getRooms());
     }
 
     public void onSaveLocationsComplete() {
+        dataLocationsSaveProgress.setValue(false);
         saveCourses();
         errorMessage = null;
     }
 
     public void saveCourses() {
+        dataCoursesSaveProgress.setValue(true);
         databaseViewModel.saveCourses(
                 coursesViewModel.getSubjects(),
                 coursesViewModel.getCourses(),
@@ -107,6 +126,7 @@ public class DataDownloadProcessor {
     }
 
     public void onSaveCoursesComplete() {
+        dataCoursesSaveProgress.setValue(false);
         onSaveComplete();
         errorMessage = null;
     }
@@ -215,5 +235,45 @@ public class DataDownloadProcessor {
 
     public boolean isDataRetrievalInProgress() {
         return this.dataRetrievalProgress.getValue();
+    }
+
+    public MutableLiveData<Boolean> getDataRetrievalProgress() {
+        return dataRetrievalProgress;
+    }
+
+    public MutableLiveData<Boolean> getDataDownloadProgress() {
+        return dataDownloadProgress;
+    }
+
+    public MutableLiveData<Boolean> getDataLocationsDownloadProgress() {
+        return dataLocationsDownloadProgress;
+    }
+
+    public MutableLiveData<Boolean> getDataCoursesDownloadProgress() {
+        return dataCoursesDownloadProgress;
+    }
+
+    public MutableLiveData<Boolean> getDataSaveProgress() {
+        return dataSaveProgress;
+    }
+
+    public MutableLiveData<Boolean> getDataLocationsSaveProgress() {
+        return dataLocationsSaveProgress;
+    }
+
+    public MutableLiveData<Boolean> getDataCoursesSaveProgress() {
+        return dataCoursesSaveProgress;
+    }
+
+    public MutableLiveData<Boolean> getOnDownloadError() {
+        return onDownloadError;
+    }
+
+    public MutableLiveData<Boolean> getOnSaveError() {
+        return onSaveError;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

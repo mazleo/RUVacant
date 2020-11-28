@@ -121,4 +121,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/options_level_button"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:id="@+id/dim_act_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/dim_view"
+        android:translationZ="10dp" />
+
+    <ProgressBar
+        android:id="@+id/data_retrieval_progress_bar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        android:translationZ="11dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/white"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/data_retrieval_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="12dp"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="@id/data_retrieval_progress_bar"
+        app:layout_constraintLeft_toLeftOf="@id/data_retrieval_progress_bar"
+        app:layout_constraintRight_toRightOf="@id/data_retrieval_progress_bar"
+        app:layout_constraintBottom_toBottomOf="@id/data_retrieval_progress_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

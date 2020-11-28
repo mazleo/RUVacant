@@ -15,4 +15,5 @@
     <color name="save_button_text_disabled">#727272</color>
     <color name="save_button_enabled">#00838F</color>
     <color name="save_button_text_enabled">@color/white</color>
+    <color name="dim_view">#D9000000</color>
 </resources>
