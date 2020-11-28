@@ -94,4 +94,14 @@ public class Option {
     public void setLevelCode(String levelCode) {
         this.levelCode = levelCode;
     }
+
+    @Override
+    public String toString() {
+        return "Option{" +
+                "semesterMonth=" + semesterMonth +
+                ", semesterYear=" + semesterYear +
+                ", schoolCampusCode='" + schoolCampusCode + '\'' +
+                ", levelCode='" + levelCode + '\'' +
+                '}';
+    }
 }
