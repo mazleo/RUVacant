@@ -47,16 +47,11 @@ public class DatabaseService {
 
     public void setupInitialDatabase(Option option, List<SchoolCampus> schoolCampuses, List<Level> levels, List<Semester> semesters, List<Campus> campuses) {
         Log.d("APPDEBUG", "Setting up initial database...");
-        List<Completable> completableCollection = new ArrayList<>();
 
-        completableCollection.add(appDatabase.setupDao().insertSchoolCampuses(schoolCampuses.toArray(new SchoolCampus[schoolCampuses.size()])));
-        completableCollection.add(appDatabase.setupDao().insertLevels(levels.toArray(new Level[levels.size()])));
-        completableCollection.add(appDatabase.setupDao().insertSemesters(semesters.toArray(new Semester[semesters.size()])));
-        completableCollection.add(appDatabase.setupDao().insertCampuses(campuses.toArray(new Campus[campuses.size()])));
-        completableCollection.add(appDatabase.setupDao().insertOption(option));
+        List<Completable> completableCollection = new ArrayList<>();
+        populateCompletableCollectionForInitialSetup(option, schoolCampuses, levels, semesters, campuses, completableCollection);
 
         Completable finalCompletable = Completable.concat(completableCollection);
-
         this.disposable = finalCompletable
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,6 +59,14 @@ public class DatabaseService {
                         this::onInitialSetupComplete,
                         this::onError
                 );
+    }
+
+    private void populateCompletableCollectionForInitialSetup(Option option, List<SchoolCampus> schoolCampuses, List<Level> levels, List<Semester> semesters, List<Campus> campuses, List<Completable> completableCollection) {
+        completableCollection.add(appDatabase.setupDao().insertSchoolCampuses(schoolCampuses.toArray(new SchoolCampus[schoolCampuses.size()])));
+        completableCollection.add(appDatabase.setupDao().insertLevels(levels.toArray(new Level[levels.size()])));
+        completableCollection.add(appDatabase.setupDao().insertSemesters(semesters.toArray(new Semester[semesters.size()])));
+        completableCollection.add(appDatabase.setupDao().insertCampuses(campuses.toArray(new Campus[campuses.size()])));
+        completableCollection.add(appDatabase.setupDao().insertOption(option));
     }
 
     private void onInitialSetupComplete() {
@@ -74,13 +77,11 @@ public class DatabaseService {
 
     public void saveLocations(List<Building> buildings, List<blog.mazleo.ruvacant.model.Room> rooms) {
         Log.d("APPDEBUG", "Saving locations...");
-        List<Completable> completableCollection = new ArrayList<>();
 
-        completableCollection.add(appDatabase.locationDao().insertBuildings(buildings.toArray(new Building[buildings.size()])));
-        completableCollection.add(appDatabase.locationDao().insertRooms(rooms.toArray(new blog.mazleo.ruvacant.model.Room[rooms.size()])));
+        List<Completable> completableCollection = new ArrayList<>();
+        populateCompletableCollectionForLocations(buildings, rooms, completableCollection);
 
         Completable finalCompletable = Completable.concat(completableCollection);
-
         disposable = finalCompletable
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,6 +89,11 @@ public class DatabaseService {
                         this::onSaveLocationsComplete,
                         this::onError
                 );
+    }
+
+    private void populateCompletableCollectionForLocations(List<Building> buildings, List<blog.mazleo.ruvacant.model.Room> rooms, List<Completable> completableCollection) {
+        completableCollection.add(appDatabase.locationDao().insertBuildings(buildings.toArray(new Building[buildings.size()])));
+        completableCollection.add(appDatabase.locationDao().insertRooms(rooms.toArray(new blog.mazleo.ruvacant.model.Room[rooms.size()])));
     }
 
     private void onSaveLocationsComplete() {
@@ -98,17 +104,11 @@ public class DatabaseService {
 
     public void saveCourses(List<Subject> subjects, List<Course> courses, List<Class> classes, List<Instructor> instructors, List<ClassInstructor> classesInstructors, List<Meeting> meetings) {
         Log.d("APPDEBUG", "Saving courses...");
-        List<Completable> completableCollection = new ArrayList<>();
 
-        completableCollection.add(appDatabase.courseDao().insertSubjects(subjects.toArray(new Subject[subjects.size()])));
-        completableCollection.add(appDatabase.courseDao().insertCourses(courses.toArray(new Course[courses.size()])));
-        completableCollection.add(appDatabase.courseDao().insertClasses(classes.toArray(new Class[classes.size()])));
-        completableCollection.add(appDatabase.courseDao().insertInstructors(instructors.toArray(new Instructor[instructors.size()])));
-        completableCollection.add(appDatabase.courseDao().insertClassesInstructors(classesInstructors.toArray(new ClassInstructor[classesInstructors.size()])));
-        completableCollection.add(appDatabase.courseDao().insertMeetings(meetings.toArray(new Meeting[meetings.size()])));
+        List<Completable> completableCollection = new ArrayList<>();
+        populateCompletableCollectionForCourses(subjects, courses, classes, instructors, classesInstructors, meetings, completableCollection);
 
         Completable finalCompletable = Completable.concat(completableCollection);
-
         disposable = finalCompletable
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,6 +116,15 @@ public class DatabaseService {
                         this::onSaveCoursesComplete,
                         this::onError
                 );
+    }
+
+    private void populateCompletableCollectionForCourses(List<Subject> subjects, List<Course> courses, List<Class> classes, List<Instructor> instructors, List<ClassInstructor> classesInstructors, List<Meeting> meetings, List<Completable> completableCollection) {
+        completableCollection.add(appDatabase.courseDao().insertSubjects(subjects.toArray(new Subject[subjects.size()])));
+        completableCollection.add(appDatabase.courseDao().insertCourses(courses.toArray(new Course[courses.size()])));
+        completableCollection.add(appDatabase.courseDao().insertClasses(classes.toArray(new Class[classes.size()])));
+        completableCollection.add(appDatabase.courseDao().insertInstructors(instructors.toArray(new Instructor[instructors.size()])));
+        completableCollection.add(appDatabase.courseDao().insertClassesInstructors(classesInstructors.toArray(new ClassInstructor[classesInstructors.size()])));
+        completableCollection.add(appDatabase.courseDao().insertMeetings(meetings.toArray(new Meeting[meetings.size()])));
     }
 
     private void onSaveCoursesComplete() {

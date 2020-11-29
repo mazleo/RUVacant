@@ -38,20 +38,12 @@ public class DataDownloadProcessor {
         this.currentActivity = currentActivity;
         this.selectedOptions = selectedOptions;
 
-        this.locationsViewModel = new LocationsViewModel(this);
-        this.coursesViewModel = new CoursesViewModel(this);
-        this.databaseViewModel = new DatabaseViewModel(currentActivity);
+        initializeAllComponents(currentActivity);
+        constructLiveDatas();
+        initializeLiveDatas();
+    }
 
-        this.dataRetrievalProgress = new MutableLiveData<>();
-        this.dataDownloadProgress = new MutableLiveData<>();
-        this.dataLocationsDownloadProgress = new MutableLiveData<>();
-        this.dataCoursesDownloadProgress = new MutableLiveData<>();
-        this.dataSaveProgress = new MutableLiveData<>();
-        this.dataLocationsSaveProgress = new MutableLiveData<>();
-        this.dataCoursesSaveProgress = new MutableLiveData<>();
-        this.onDownloadError = new MutableLiveData<>();
-        this.onSaveError = new MutableLiveData<>();
-
+    private void initializeLiveDatas() {
         this.dataRetrievalProgress.setValue(false);
         this.dataDownloadProgress.setValue(false);
         this.dataLocationsDownloadProgress.setValue(false);
@@ -63,9 +55,32 @@ public class DataDownloadProcessor {
         this.onSaveError.setValue(false);
     }
 
+    private void constructLiveDatas() {
+        this.dataRetrievalProgress = new MutableLiveData<>();
+        this.dataDownloadProgress = new MutableLiveData<>();
+        this.dataLocationsDownloadProgress = new MutableLiveData<>();
+        this.dataCoursesDownloadProgress = new MutableLiveData<>();
+        this.dataSaveProgress = new MutableLiveData<>();
+        this.dataLocationsSaveProgress = new MutableLiveData<>();
+        this.dataCoursesSaveProgress = new MutableLiveData<>();
+        this.onDownloadError = new MutableLiveData<>();
+        this.onSaveError = new MutableLiveData<>();
+    }
+
+    private void initializeAllComponents(Activity currentActivity) {
+        this.locationsViewModel = new LocationsViewModel(this);
+        this.coursesViewModel = new CoursesViewModel(this);
+        this.databaseViewModel = new DatabaseViewModel(currentActivity);
+    }
+
     public void initializeDataDownload() {
         onDownloadStart();
         downloadLocations();
+    }
+
+    private void onDownloadStart() {
+        dataRetrievalProgress.setValue(true);
+        dataDownloadProgress.setValue(true);
     }
 
     public void downloadLocations() {
@@ -100,6 +115,20 @@ public class DataDownloadProcessor {
         dataDownloadProgress.setValue(false);
         errorMessage = null;
         onSaveStart();
+    }
+
+    private void onSaveStart() {
+        dataSaveProgress.setValue(true);
+        if (databaseViewModel == null) {
+            databaseViewModel = new DatabaseViewModel(currentActivity);
+        }
+        databaseViewModel.setDataDownloadProcessor(this);
+        databaseViewModel.setupInitialDatabase(selectedOptions);
+    }
+
+    public void onInitialDatabaseSetupComplete() {
+        saveLocations();
+        errorMessage = null;
     }
 
     public void saveLocations() {
@@ -141,33 +170,6 @@ public class DataDownloadProcessor {
         dataRetrievalProgress.setValue(false);
         errorMessage = null;
         // TODO move on
-    }
-
-    private void onSaveStart() {
-        dataSaveProgress.setValue(true);
-        if (databaseViewModel == null) {
-            databaseViewModel = new DatabaseViewModel(currentActivity);
-        }
-        databaseViewModel.setDataDownloadProcessor(this);
-        databaseViewModel.setupInitialDatabase(selectedOptions);
-    }
-
-    public void onInitialDatabaseSetupComplete() {
-        saveLocations();
-        errorMessage = null;
-    }
-
-    private void onDownloadStart() {
-        dataRetrievalProgress.setValue(true);
-        dataDownloadProgress.setValue(true);
-    }
-
-    public Option getSelectedOptions() {
-        return selectedOptions;
-    }
-
-    public void setSelectedOptions(Option selectedOptions) {
-        this.selectedOptions = selectedOptions;
     }
 
     public void onSaveError(Throwable e, String message) {
@@ -215,6 +217,14 @@ public class DataDownloadProcessor {
             coursesViewModel.cleanUp();
             coursesViewModel = null;
         }
+    }
+
+    public Option getSelectedOptions() {
+        return selectedOptions;
+    }
+
+    public void setSelectedOptions(Option selectedOptions) {
+        this.selectedOptions = selectedOptions;
     }
 
     public LocationsViewModel getLocationsViewModel() {

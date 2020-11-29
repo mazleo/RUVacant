@@ -9,7 +9,7 @@
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
 
-    <!-- UI -->
+    <!-- OPTIONS UI -->
     <color name="options_buttons_color">#0D103A</color>
     <color name="save_button_disabled">#1A4E53</color>
     <color name="save_button_text_disabled">#727272</color>
