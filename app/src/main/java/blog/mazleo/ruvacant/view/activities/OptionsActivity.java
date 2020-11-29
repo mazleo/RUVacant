@@ -106,6 +106,11 @@ public class OptionsActivity extends AppCompatActivity {
                                     ObjectAnimator.ofFloat(dataRetrievalImageView, "alpha", 0f, 1f)
                                             .setDuration(500)
                                             .start();
+
+                                    semesterButton.setClickable(false);
+                                    campusButton.setClickable(false);
+                                    levelButton.setClickable(false);
+                                    saveButton.setClickable(false);
                                 }
                                 else {
                                     ObjectAnimator.ofFloat(dimmingView, "alpha", 1f, 0f)
@@ -118,9 +123,10 @@ public class OptionsActivity extends AppCompatActivity {
                                             .setDuration(500)
                                             .start();
 
-                                    dimmingView.setVisibility(View.GONE);
-                                    dataRetrievalProgressBar.setVisibility(View.GONE);
-                                    dataRetrievalImageView.setVisibility(View.GONE);
+                                    semesterButton.setClickable(true);
+                                    campusButton.setClickable(true);
+                                    levelButton.setClickable(true);
+                                    saveButton.setClickable(true);
                                 }
                             }
                     );
