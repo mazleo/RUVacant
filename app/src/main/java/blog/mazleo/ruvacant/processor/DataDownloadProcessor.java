@@ -198,6 +198,19 @@ public class DataDownloadProcessor {
         cleanUpDatabase();
     }
 
+    public void cleanUpAllComponentsKeepData() {
+        cleanUpLocations();
+        cleanUpCourses();
+        cleanUpDatabaseKeepData();
+    }
+
+    public void cleanUpDatabaseKeepData() {
+        if (this.databaseViewModel != null) {
+            this.databaseViewModel.cleanUpKeepData();
+            this.databaseViewModel = null;
+        }
+    }
+
     public void cleanUpDatabase() {
         if (this.databaseViewModel != null) {
             this.databaseViewModel.cleanUp();
