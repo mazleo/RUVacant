@@ -37,7 +37,7 @@ public final class RuMeeting {
         return Calendar.THURSDAY;
       case "F":
         return Calendar.FRIDAY;
-      case "SA":
+      case "S":
         return Calendar.SATURDAY;
       case "SU":
         return Calendar.SUNDAY;

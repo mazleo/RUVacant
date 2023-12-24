@@ -1,9 +1,9 @@
 package blog.mazleo.ruvacant.service.web;
 
 import android.util.Log;
-import blog.mazleo.ruvacant.service.model.RuCourse;
+import blog.mazleo.ruvacant.service.model.RuClassInfos;
 import blog.mazleo.ruvacant.service.model.RuSubject;
-import blog.mazleo.ruvacant.service.serialization.RuCoursesDeserializer;
+import blog.mazleo.ruvacant.service.serialization.RuClassInfosDeserializer;
 import blog.mazleo.ruvacant.service.serialization.RuSubjectsDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +25,7 @@ public final class RequestService {
         @Override
         public void onResponse(Call<List<RuSubject>> call, Response<List<RuSubject>> response) {
           List<RuSubject> subjects = response.body();
-          initiateCoursesRequests(subjects);
+          initiateClassInfosRequests(subjects);
         }
 
         @Override
@@ -35,16 +35,16 @@ public final class RequestService {
         }
       };
 
-  private final Callback<List<RuCourse>> coursesDeserializationCallback =
-      new Callback<List<RuCourse>>() {
+  private final Callback<RuClassInfos> classInfosDeserializationCallback =
+      new Callback<RuClassInfos>() {
         @Override
-        public void onResponse(Call<List<RuCourse>> call, Response<List<RuCourse>> response) {
-          List<RuCourse> courses = response.body();
+        public void onResponse(Call<RuClassInfos> call, Response<RuClassInfos> response) {
+          RuClassInfos ruClassInfos = response.body();
           // TODO: Handle response.
         }
 
         @Override
-        public void onFailure(Call<List<RuCourse>> call, Throwable t) {
+        public void onFailure(Call<RuClassInfos> call, Throwable t) {
           // TODO: Handle failure.
           Log.d("TESTING", t.getMessage());
         }
@@ -72,9 +72,11 @@ public final class RequestService {
         .enqueue(subjectsDeserializationCallback);
   }
 
-  private void initiateCoursesRequests(List<RuSubject> subjects) {
+  private void initiateClassInfosRequests(List<RuSubject> subjects) {
     Gson gson =
-        new GsonBuilder().registerTypeAdapter(List.class, new RuCoursesDeserializer()).create();
+        new GsonBuilder()
+            .registerTypeAdapter(RuClassInfos.class, new RuClassInfosDeserializer())
+            .create();
     Retrofit retrofit =
         new Retrofit.Builder()
             .baseUrl(COURSES_URL)
@@ -84,8 +86,9 @@ public final class RequestService {
     for (RuSubject subject : subjects) {
       // TODO: User actual variables.
       courseService
-          .getCourses(subject.code, /* semester= */ "92023", /* campus= */ "NB", /* level= */ "U")
-          .enqueue(coursesDeserializationCallback);
+          .getClassInfos(
+              subject.code, /* semester= */ "92023", /* campus= */ "NB", /* level= */ "U")
+          .enqueue(classInfosDeserializationCallback);
     }
   }
 }

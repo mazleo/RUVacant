@@ -6,18 +6,24 @@ import androidx.room.PrimaryKey;
 /** A Rutgers course. */
 @Entity
 public final class RuCourse {
+  /** Format: "SUBJECT.COURSE" */
   @PrimaryKey public String code;
+
   public String title;
   public String expandedTitle;
   public String subjectCode;
-  public String campusCode;
+  public String uniCampusCode;
 
   public RuCourse(
-      String code, String title, String expandedTitle, String subjectCode, String campusCode) {
-    this.code = code;
+      String courseCode,
+      String title,
+      String expandedTitle,
+      String subjectCode,
+      String uniCampusCode) {
+    code = String.format("%s.%s", subjectCode, courseCode);
     this.title = title;
     this.expandedTitle = expandedTitle;
     this.subjectCode = subjectCode;
-    this.campusCode = campusCode;
+    this.uniCampusCode = uniCampusCode;
   }
 }
