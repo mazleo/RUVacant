@@ -44,9 +44,11 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
               String expandedTitle = getLowerCaseStringOrNull(courseObject, "expandedTitle");
               String subjectCode = getStringNonNull(courseObject, "subject");
               String uniCampusCode = getStringNonNull(courseObject, "campusCode");
-              courses.add(
-                  new RuCourse(courseCode, title, expandedTitle, subjectCode, uniCampusCode));
-              collectFromSections(courseObject, uniCampusCode, meetings, buildings, classRooms);
+              RuCourse newCourse =
+                  new RuCourse(courseCode, title, expandedTitle, subjectCode, uniCampusCode);
+              courses.add(newCourse);
+              collectFromSections(
+                  courseObject, uniCampusCode, newCourse, meetings, buildings, classRooms);
             });
     return new RuClassInfos(courses, meetings, buildings, classRooms);
   }
@@ -54,6 +56,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
   private void collectFromSections(
       JsonObject courseObject,
       String uniCampusCode,
+      RuCourse newCourse,
       List<RuMeeting> meetings,
       List<RuBuilding> buildings,
       List<RuClassRoom> classRooms) {
@@ -70,7 +73,13 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
               JsonObject sectionObject = sectionJsonElement.getAsJsonObject();
               String sectionCode = getStringNonNull(sectionObject, "number");
               collectFromMeetingTimes(
-                  sectionObject, sectionCode, uniCampusCode, meetings, buildings, classRooms);
+                  sectionObject,
+                  sectionCode,
+                  uniCampusCode,
+                  newCourse,
+                  meetings,
+                  buildings,
+                  classRooms);
             });
   }
 
@@ -78,6 +87,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
       JsonObject sectionObject,
       String sectionCode,
       String uniCampusCode,
+      RuCourse newCourse,
       List<RuMeeting> meetings,
       List<RuBuilding> buildings,
       List<RuClassRoom> classRooms) {
@@ -116,6 +126,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
                           pmCode,
                           meetingDay,
                           sectionCode,
+                          newCourse.key,
                           roomCode,
                           buildingCode,
                           uniCampusCode));

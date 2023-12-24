@@ -9,18 +9,17 @@ import androidx.room.PrimaryKey;
 public final class RuClassRoom {
 
   /** Format: "BUILDING.ROOM" */
-  @PrimaryKey public String code;
+  @PrimaryKey public String key;
 
-  public String roomCode;
+  public String code;
   public String buildingCode;
   public String campusName;
   public String uniCampusCode;
 
   @Ignore
-  public RuClassRoom(
-      String roomCode, String buildingCode, String campusName, String uniCampusCode) {
-    code = String.format("%s:%s", buildingCode, roomCode);
-    this.roomCode = roomCode;
+  public RuClassRoom(String code, String buildingCode, String campusName, String uniCampusCode) {
+    key = String.format("%s.%s", buildingCode, code);
+    this.code = code;
     this.buildingCode = buildingCode;
     this.campusName = campusName;
     this.uniCampusCode = uniCampusCode;

@@ -9,8 +9,9 @@ import javax.annotation.Nullable;
 @Entity
 public final class RuCourse {
   /** Format: "SUBJECT.COURSE" */
-  @PrimaryKey public String code;
+  @PrimaryKey public String key;
 
+  public String code;
   public String title;
   @Nullable public String expandedTitle;
   public String subjectCode;
@@ -18,12 +19,13 @@ public final class RuCourse {
 
   @Ignore
   public RuCourse(
-      String courseCode,
+      String code,
       String title,
       @Nullable String expandedTitle,
       String subjectCode,
       String uniCampusCode) {
-    code = String.format("%s.%s", subjectCode, courseCode);
+    key = String.format("%s.%s", subjectCode, code);
+    this.code = code;
     this.title = title;
     this.expandedTitle = expandedTitle;
     this.subjectCode = subjectCode;

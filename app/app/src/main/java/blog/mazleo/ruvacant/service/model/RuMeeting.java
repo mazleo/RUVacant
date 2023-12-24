@@ -49,7 +49,7 @@ public final class RuMeeting {
   }
 
   /** Format: "BUILDING.ROOM.DAY.START" */
-  @PrimaryKey public String code;
+  @PrimaryKey public String key;
 
   /** Minute of the day. */
   public int start;
@@ -61,6 +61,7 @@ public final class RuMeeting {
   public int dayOfWeek;
 
   public String sectionCode;
+  public String courseKey;
   public String roomCode;
   public String buildingCode;
   public String uniCampusCode;
@@ -72,6 +73,7 @@ public final class RuMeeting {
       String pmCode,
       String ruMeetingDay,
       String sectionCode,
+      String courseKey,
       String roomCode,
       String buildingCode,
       String uniCampusCode) {
@@ -79,9 +81,10 @@ public final class RuMeeting {
     end = convertRuEndToMinuteOfDay(ruEnd, start);
     dayOfWeek = convertDayOfWeek(ruMeetingDay);
     this.sectionCode = sectionCode;
+    this.courseKey = courseKey;
     this.roomCode = roomCode;
     this.buildingCode = buildingCode;
     this.uniCampusCode = uniCampusCode;
-    code = String.format("%s.%s.%s.%s", buildingCode, roomCode, dayOfWeek, start);
+    key = String.format("%s.%s.%s.%s", buildingCode, roomCode, dayOfWeek, start);
   }
 }
