@@ -1,6 +1,7 @@
 package blog.mazleo.ruvacant.service.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import java.util.Calendar;
 
@@ -64,6 +65,7 @@ public final class RuMeeting {
   public String buildingCode;
   public String uniCampusCode;
 
+  @Ignore
   public RuMeeting(
       String ruStart,
       String ruEnd,

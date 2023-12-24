@@ -1,6 +1,8 @@
 package blog.mazleo.ruvacant.service.serialization;
 
+import static blog.mazleo.ruvacant.service.serialization.util.DeserializerUtil.getLowerCaseStringNonNull;
 import static blog.mazleo.ruvacant.service.serialization.util.DeserializerUtil.getLowerCaseStringOrNull;
+import static blog.mazleo.ruvacant.service.serialization.util.DeserializerUtil.getStringNonNull;
 import static blog.mazleo.ruvacant.service.serialization.util.DeserializerUtil.getStringOrNull;
 
 import blog.mazleo.ruvacant.service.model.RuBuilding;
@@ -27,6 +29,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
     if (json.isJsonNull()) {
       return null;
     }
+
     List<RuCourse> courses = new ArrayList<>();
     List<RuMeeting> meetings = new ArrayList<>();
     List<RuBuilding> buildings = new ArrayList<>();
@@ -36,11 +39,11 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
         .forEachRemaining(
             courseJsonElement -> {
               JsonObject courseObject = courseJsonElement.getAsJsonObject();
-              String courseCode = getStringOrNull(courseObject, "courseNumber");
-              String title = getLowerCaseStringOrNull(courseObject, "title");
+              String courseCode = getStringNonNull(courseObject, "courseNumber");
+              String title = getLowerCaseStringNonNull(courseObject, "title");
               String expandedTitle = getLowerCaseStringOrNull(courseObject, "expandedTitle");
-              String subjectCode = getStringOrNull(courseObject, "subject");
-              String uniCampusCode = getStringOrNull(courseObject, "campusCode");
+              String subjectCode = getStringNonNull(courseObject, "subject");
+              String uniCampusCode = getStringNonNull(courseObject, "campusCode");
               courses.add(
                   new RuCourse(courseCode, title, expandedTitle, subjectCode, uniCampusCode));
               collectFromSections(courseObject, uniCampusCode, meetings, buildings, classRooms);
@@ -57,6 +60,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
     if (courseObject.get("sections").isJsonNull()) {
       return;
     }
+
     courseObject
         .get("sections")
         .getAsJsonArray()
@@ -64,7 +68,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
         .forEachRemaining(
             sectionJsonElement -> {
               JsonObject sectionObject = sectionJsonElement.getAsJsonObject();
-              String sectionCode = getStringOrNull(sectionObject, "number");
+              String sectionCode = getStringNonNull(sectionObject, "number");
               collectFromMeetingTimes(
                   sectionObject, sectionCode, uniCampusCode, meetings, buildings, classRooms);
             });
@@ -80,6 +84,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
     if (sectionObject.get("meetingTimes").isJsonNull()) {
       return;
     }
+
     sectionObject
         .get("meetingTimes")
         .getAsJsonArray()
@@ -95,10 +100,15 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
               String start = getStringOrNull(meetingObject, "startTime");
               String end = getStringOrNull(meetingObject, "endTime");
               if (buildingCode != null) {
+                assert roomCode != null;
+                assert campusName != null;
                 buildings.add(
                     new RuBuilding(buildingCode, /* name= */ null, campusName, uniCampusCode));
                 classRooms.add(new RuClassRoom(roomCode, buildingCode, campusName, uniCampusCode));
-                if (start != null || end != null) {
+                if (start != null) {
+                  assert end != null;
+                  assert pmCode != null;
+                  assert meetingDay != null;
                   meetings.add(
                       new RuMeeting(
                           start,
