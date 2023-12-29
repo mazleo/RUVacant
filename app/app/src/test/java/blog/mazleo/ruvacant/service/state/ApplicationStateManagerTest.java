@@ -1,6 +1,5 @@
 package blog.mazleo.ruvacant.service.state;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -40,7 +39,7 @@ public final class ApplicationStateManagerTest {
 
   /** Checks that all state bindings associated with a state runs when the state is set. */
   @Test
-  public void setState() {
+  public void addState() {
     final RunCheck runCheck = new RunCheck();
     ApplicationStateBinding stateBinding = () -> runCheck.hasRun = true;
     String fakeState = "fake-state";
@@ -48,8 +47,8 @@ public final class ApplicationStateManagerTest {
         stateManager -> stateManager.registerStateBinding(fakeState, stateBinding);
     stateManager.registerBinder(stateBinder);
     stateManager.bind();
-    stateManager.setState(fakeState);
-    assertEquals(fakeState, stateManager.getCurrentState());
+    stateManager.enterState(fakeState);
+    assertTrue(stateManager.isInState(fakeState));
     assertTrue(runCheck.hasRun);
   }
 
