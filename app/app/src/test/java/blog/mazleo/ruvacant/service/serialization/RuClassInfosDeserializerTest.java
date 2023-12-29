@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNull;
 
 import blog.mazleo.ruvacant.service.model.RuBuilding;
 import blog.mazleo.ruvacant.service.model.RuClassInfos;
-import blog.mazleo.ruvacant.service.model.RuClassRoom;
+import blog.mazleo.ruvacant.service.model.RuClassroom;
 import blog.mazleo.ruvacant.service.model.RuCourse;
 import blog.mazleo.ruvacant.service.model.RuMeeting;
 import com.google.gson.Gson;
@@ -88,7 +88,7 @@ public final class RuClassInfosDeserializerTest {
     assertNotNull(buildings.get(0).code);
     assertNotNull(buildings.get(0).campusName);
     assertNotNull(buildings.get(0).uniCampusCode);
-    List<RuClassRoom> classRooms = assertNotNull(classInfos.classRooms);
+    List<RuClassroom> classRooms = assertNotNull(classInfos.classrooms);
     assertNotNull(classRooms.get(0).key);
     assertNotNull(classRooms.get(0).code);
     assertNotNull(classRooms.get(0).buildingCode);

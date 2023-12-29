@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 /** A Rutgers classroom. */
 @Entity
-public final class RuClassRoom {
+public final class RuClassroom {
 
   /** Format: "BUILDING.ROOM" */
   @PrimaryKey public String key;
@@ -17,7 +17,7 @@ public final class RuClassRoom {
   public String uniCampusCode;
 
   @Ignore
-  public RuClassRoom(String code, String buildingCode, String campusName, String uniCampusCode) {
+  public RuClassroom(String code, String buildingCode, String campusName, String uniCampusCode) {
     key = String.format("%s.%s", buildingCode, code);
     this.code = code;
     this.buildingCode = buildingCode;

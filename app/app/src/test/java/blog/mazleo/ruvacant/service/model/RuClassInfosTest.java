@@ -12,7 +12,7 @@ public final class RuClassInfosTest {
   private List<RuCourse> expectedCourses;
   private List<RuMeeting> expectedMeetings;
   private List<RuBuilding> expectedBuildings;
-  private List<RuClassRoom> expectedClassRooms;
+  private List<RuClassroom> expectedClassRooms;
 
   @Before
   public void setup() {
@@ -28,13 +28,13 @@ public final class RuClassInfosTest {
     expectedMeetings.add(
         new RuMeeting("0215", "0415", "P", "T", "02", "283.294", "109", "SC", "NB"));
     expectedBuildings.add(new RuBuilding("TLL", "tillete hall", "busch", "NB"));
-    expectedClassRooms.add(new RuClassRoom("287", "LC", "cac", "NB"));
+    expectedClassRooms.add(new RuClassroom("287", "LC", "cac", "NB"));
     RuClassInfos classInfos =
         new RuClassInfos(expectedCourses, expectedMeetings, expectedBuildings, expectedClassRooms);
     assertSame(expectedCourses, classInfos.courses);
     assertSame(expectedMeetings, classInfos.meetings);
     assertSame(expectedBuildings, classInfos.buildings);
-    assertSame(expectedClassRooms, classInfos.classRooms);
+    assertSame(expectedClassRooms, classInfos.classrooms);
   }
 
   @Test
@@ -44,10 +44,10 @@ public final class RuClassInfosTest {
     assertSame(expectedCourses, classInfos.courses);
     assertSame(expectedMeetings, classInfos.meetings);
     assertSame(expectedBuildings, classInfos.buildings);
-    assertSame(expectedClassRooms, classInfos.classRooms);
+    assertSame(expectedClassRooms, classInfos.classrooms);
     assertEquals(/* actual= */ 0, classInfos.courses.size());
     assertEquals(/* actual= */ 0, classInfos.meetings.size());
     assertEquals(/* actual= */ 0, classInfos.buildings.size());
-    assertEquals(/* actual= */ 0, classInfos.classRooms.size());
+    assertEquals(/* actual= */ 0, classInfos.classrooms.size());
   }
 }

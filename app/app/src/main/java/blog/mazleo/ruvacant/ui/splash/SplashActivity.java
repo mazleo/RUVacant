@@ -4,13 +4,16 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.RuVacantApplication;
-import blog.mazleo.ruvacant.service.web.RequestService;
+import blog.mazleo.ruvacant.service.bootstrap.ApplicationBootstrapper;
+import blog.mazleo.ruvacant.service.state.ApplicationState;
+import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import javax.inject.Inject;
 
 /** The splash activity. */
 public class SplashActivity extends AppCompatActivity {
 
-  @Inject RequestService requestService;
+  @Inject ApplicationBootstrapper bootstrapper;
+  @Inject ApplicationStateManager stateManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
   @Override
   protected void onStart() {
     super.onStart();
-    requestService.initiateDataRequest();
+    bootstrapper.bootstrap();
+    stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
   }
 }

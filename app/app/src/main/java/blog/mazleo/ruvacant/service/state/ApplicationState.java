@@ -4,7 +4,9 @@ package blog.mazleo.ruvacant.service.state;
 public enum ApplicationState {
   APPLICATION_START("application-start"),
   SUBJECTS_REQUEST("subjects-request"),
+  SUBJECTS_REQUESTED("subjects-requested"),
   COURSES_REQUEST("courses-request"),
+  COURSES_REQUESTED("courses-requested"),
   PLACES_READ("places-read"),
   DATA_SAVE("data-save"),
   BUILDING_VIEW_DATA_LOADING("building-view-data-loading"),

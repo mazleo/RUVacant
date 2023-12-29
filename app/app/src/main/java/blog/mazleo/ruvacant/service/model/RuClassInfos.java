@@ -8,16 +8,16 @@ public final class RuClassInfos {
   public List<RuCourse> courses;
   public List<RuMeeting> meetings;
   public List<RuBuilding> buildings;
-  public List<RuClassRoom> classRooms;
+  public List<RuClassroom> classrooms;
 
   public RuClassInfos(
       List<RuCourse> courses,
       List<RuMeeting> meetings,
       List<RuBuilding> buildings,
-      List<RuClassRoom> classRooms) {
+      List<RuClassroom> classrooms) {
     this.courses = courses;
     this.meetings = meetings;
     this.buildings = buildings;
-    this.classRooms = classRooms;
+    this.classrooms = classrooms;
   }
 }

@@ -7,7 +7,7 @@ import static blog.mazleo.ruvacant.service.serialization.util.DeserializerUtil.g
 
 import blog.mazleo.ruvacant.service.model.RuBuilding;
 import blog.mazleo.ruvacant.service.model.RuClassInfos;
-import blog.mazleo.ruvacant.service.model.RuClassRoom;
+import blog.mazleo.ruvacant.service.model.RuClassroom;
 import blog.mazleo.ruvacant.service.model.RuCourse;
 import blog.mazleo.ruvacant.service.model.RuMeeting;
 import com.google.gson.JsonDeserializationContext;
@@ -33,7 +33,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
     List<RuCourse> courses = new ArrayList<>();
     List<RuMeeting> meetings = new ArrayList<>();
     List<RuBuilding> buildings = new ArrayList<>();
-    List<RuClassRoom> classRooms = new ArrayList<>();
+    List<RuClassroom> classRooms = new ArrayList<>();
     json.getAsJsonArray()
         .iterator()
         .forEachRemaining(
@@ -59,7 +59,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
       RuCourse newCourse,
       List<RuMeeting> meetings,
       List<RuBuilding> buildings,
-      List<RuClassRoom> classRooms) {
+      List<RuClassroom> classRooms) {
     if (courseObject.get("sections").isJsonNull()) {
       return;
     }
@@ -90,7 +90,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
       RuCourse newCourse,
       List<RuMeeting> meetings,
       List<RuBuilding> buildings,
-      List<RuClassRoom> classRooms) {
+      List<RuClassroom> classRooms) {
     if (sectionObject.get("meetingTimes").isJsonNull()) {
       return;
     }
@@ -114,7 +114,7 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
                 assert campusName != null;
                 buildings.add(
                     new RuBuilding(buildingCode, /* name= */ null, campusName, uniCampusCode));
-                classRooms.add(new RuClassRoom(roomCode, buildingCode, campusName, uniCampusCode));
+                classRooms.add(new RuClassroom(roomCode, buildingCode, campusName, uniCampusCode));
                 if (start != null) {
                   assert end != null;
                   assert pmCode != null;

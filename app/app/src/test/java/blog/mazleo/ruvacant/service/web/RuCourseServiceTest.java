@@ -39,10 +39,10 @@ public final class RuCourseServiceTest {
     assertNotNull(classInfos.courses);
     assertNotNull(classInfos.meetings);
     assertNotNull(classInfos.buildings);
-    assertNotNull(classInfos.classRooms);
+    assertNotNull(classInfos.classrooms);
     assertTrue(classInfos.courses.size() != 0);
     assertTrue(classInfos.meetings.size() != 0);
     assertTrue(classInfos.buildings.size() != 0);
-    assertTrue(classInfos.classRooms.size() != 0);
+    assertTrue(classInfos.classrooms.size() != 0);
   }
 }
