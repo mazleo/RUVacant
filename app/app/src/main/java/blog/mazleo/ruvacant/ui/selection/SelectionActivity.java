@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.ui.splash;
+package blog.mazleo.ruvacant.ui.selection;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
