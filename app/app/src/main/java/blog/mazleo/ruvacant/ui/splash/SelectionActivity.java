@@ -23,6 +23,7 @@ public final class SelectionActivity extends AppCompatActivity {
   @Override
   protected void onStart() {
     super.onStart();
+    stateManager.exitState(ApplicationState.APPLICATION_START.getState());
     stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
   }
 }

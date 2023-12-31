@@ -13,7 +13,7 @@ public final class ApplicationStateManagerTest {
 
   @Before
   public void setup() {
-    stateManager = new ApplicationStateManager();
+    stateManager = new ApplicationStateManager("RuVacantTest");
   }
 
   /** Checks that a state binder is registered. */

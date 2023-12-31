@@ -2,6 +2,7 @@ package blog.mazleo.ruvacant.service.state;
 
 import android.util.Log;
 import androidx.annotation.VisibleForTesting;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import javax.inject.Singleton;
 @Singleton
 public final class ApplicationStateManager {
 
+  private final String appName;
   private final Set<String> currentState = new HashSet<>();
 
   @VisibleForTesting
@@ -24,7 +26,8 @@ public final class ApplicationStateManager {
 
   @VisibleForTesting
   @Inject
-  public ApplicationStateManager() {
+  public ApplicationStateManager(@AppName String appName) {
+    this.appName = appName;
     currentState.add(ApplicationState.APPLICATION_START.getState());
   }
 
@@ -34,7 +37,7 @@ public final class ApplicationStateManager {
     if (!stateBindingMap.containsKey(state)) {
       return;
     }
-    Log.d("RuVacant", String.format("Entering State: %s.", state));
+    Log.d(appName, String.format("Entering State: %s.", state));
     for (ApplicationStateBinding stateBinding : stateBindingMap.get(state)) {
       stateBinding.onState();
     }
@@ -43,7 +46,7 @@ public final class ApplicationStateManager {
   /** Removes a state from the current state. */
   public void exitState(String state) {
     if (currentState.contains(state)) {
-      Log.d("RuVacant", String.format("Exiting state: %s.", state));
+      Log.d(appName, String.format("Exiting state: %s.", state));
       currentState.remove(state);
     }
   }

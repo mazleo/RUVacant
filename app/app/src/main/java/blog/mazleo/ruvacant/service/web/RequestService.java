@@ -1,6 +1,7 @@
 package blog.mazleo.ruvacant.service.web;
 
 import android.util.Log;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
 import blog.mazleo.ruvacant.service.model.RuBuilding;
 import blog.mazleo.ruvacant.service.model.RuClassInfos;
 import blog.mazleo.ruvacant.service.model.RuClassroom;
@@ -42,17 +43,17 @@ public final class RequestService {
         .build();
   }
 
-  private static void handleError(
-      int currentNumRetries, Call call, Callback callback, String message) {
+  private void handleError(int currentNumRetries, Call call, Callback callback, String message) {
     if (currentNumRetries <= MAX_NUM_RETRIES) {
-      Log.d("RuVacant", message + " Trying again...");
+      Log.d(appName, message + " Trying again...");
     } else {
       call.clone().enqueue(callback);
-      Log.d("RuVacant", message);
+      Log.d(appName, message);
       // TODO: Handle error.
     }
   }
 
+  private final String appName;
   private final ApplicationStateManager stateManager;
   private final SharedApplicationData sharedApplicationData;
 
@@ -116,7 +117,10 @@ public final class RequestService {
 
   @Inject
   RequestService(
-      ApplicationStateManager stateManager, SharedApplicationData sharedApplicationData) {
+      @AppName String appName,
+      ApplicationStateManager stateManager,
+      SharedApplicationData sharedApplicationData) {
+    this.appName = appName;
     this.stateManager = stateManager;
     this.sharedApplicationData = sharedApplicationData;
   }
