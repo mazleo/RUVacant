@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import blog.mazleo.ruvacant.R;
+import blog.mazleo.ruvacant.info.UniversitySemesterUtil;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.ui.dialogs.UniversitySelection;
@@ -35,6 +36,9 @@ public final class SelectionActivity extends AppCompatActivity {
     campusButton = (Button) findViewById(R.id.campus_selection);
     levelButton = (Button) findViewById(R.id.level_selection);
 
+    semesterDialog =
+        UniversitySelectionDialogFactory.create(
+            UniversitySelection.SEMESTER.getSelection(), semesterButton, SelectionActivity.this);
     campusDialog =
         UniversitySelectionDialogFactory.create(
             UniversitySelection.CAMPUS.getSelection(), campusButton, SelectionActivity.this);
@@ -42,6 +46,13 @@ public final class SelectionActivity extends AppCompatActivity {
         UniversitySelectionDialogFactory.create(
             UniversitySelection.LEVEL.getSelection(), levelButton, SelectionActivity.this);
 
+    semesterButton.setText(
+        String.format(
+            "%s %s",
+            UniversitySemesterUtil.getCurrentSemester(),
+            UniversitySemesterUtil.getCurrentSemesterYear()));
+
+    semesterButton.setOnClickListener(view -> semesterDialog.show());
     campusButton.setOnClickListener(view -> campusDialog.show());
     levelButton.setOnClickListener(view -> levelDialog.show());
   }

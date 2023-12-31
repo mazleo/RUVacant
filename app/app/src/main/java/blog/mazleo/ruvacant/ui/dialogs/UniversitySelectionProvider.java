@@ -2,6 +2,7 @@ package blog.mazleo.ruvacant.ui.dialogs;
 
 import blog.mazleo.ruvacant.info.UniversityCampus;
 import blog.mazleo.ruvacant.info.UniversityLevel;
+import blog.mazleo.ruvacant.info.UniversitySemesterUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +11,33 @@ public final class UniversitySelectionProvider {
 
   public static List<String> get(String selection) {
     if (selection.equals(UniversitySelection.SEMESTER.getSelection())) {
-      return null;
+      return provideSemesterSelections();
     } else if (selection.equals(UniversitySelection.CAMPUS.getSelection())) {
       return provideCampusSelections();
     } else if (selection.equals(UniversitySelection.LEVEL.getSelection())) {
       return provideLevelSelections();
     }
     throw new IllegalArgumentException(String.format("Selection %s not supported.", selection));
+  }
+
+  private static List<String> provideSemesterSelections() {
+    List<String> semesterSelections = new ArrayList<>();
+    semesterSelections.add(
+        String.format(
+            "%s %s",
+            UniversitySemesterUtil.getNextSemester(),
+            UniversitySemesterUtil.getNextSemesterYear()));
+    semesterSelections.add(
+        String.format(
+            "%s %s",
+            UniversitySemesterUtil.getCurrentSemester(),
+            UniversitySemesterUtil.getCurrentSemesterYear()));
+    semesterSelections.add(
+        String.format(
+            "%s %s",
+            UniversitySemesterUtil.getPreviousSemester(),
+            UniversitySemesterUtil.getPreviousSemesterYear()));
+    return semesterSelections;
   }
 
   private static List<String> provideCampusSelections() {
