@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 
 /** The file reading service. */
@@ -55,10 +55,10 @@ public final class FileService {
     stateManager.enterState(ApplicationState.PLACES_READ.getState());
   }
 
-  private List<RuPlace> parseJsonString(String jsonString) {
+  private Map<String, RuPlace> parseJsonString(String jsonString) {
     Gson gson = new GsonBuilder().create();
     JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);
-    List<RuPlace> places =
+    Map<String, RuPlace> places =
         new RuPlacesDeserializer()
             .deserialize(jsonElement, /* typeOfT= */ null, /* context= */ null);
     return places;

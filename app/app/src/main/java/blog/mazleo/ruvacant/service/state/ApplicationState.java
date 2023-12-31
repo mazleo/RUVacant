@@ -9,6 +9,8 @@ public enum ApplicationState {
   COURSES_REQUESTED("courses-requested"),
   PLACES_READING("places-reading"),
   PLACES_READ("places-read"),
+  PLACES_AGGREGATING("places-aggregating"),
+  PLACES_AGGREGATED("places-aggregated"),
   DATA_SAVE("data-save"),
   BUILDING_VIEW_DATA_LOADING("building-view-data-loading"),
   BUILDING_VIEW_DATA_LOADED("building-view-data-loaded"),

@@ -52,7 +52,7 @@ public final class FileReadBinder implements ApplicationStateBinder {
         stateBinderUtil.getAsyncBinding(
             unused -> {
               stateManager.exitState(ApplicationState.PLACES_READ.getState());
-              // TODO: Go to next state
+              stateManager.enterState(ApplicationState.PLACES_AGGREGATING.getState());
               return null;
             }));
   }

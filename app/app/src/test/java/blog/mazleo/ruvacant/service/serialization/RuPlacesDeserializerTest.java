@@ -10,6 +10,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.Test;
 
 /** Test cases for RuPlacesDeserializer. */
@@ -31,21 +33,22 @@ public final class RuPlacesDeserializerTest {
     Gson gson = new GsonBuilder().create();
     JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);
     RuPlacesDeserializer deserializer = new RuPlacesDeserializer();
-    List<RuPlace> places =
+    Map<String, RuPlace> places =
         deserializer.deserialize(jsonElement, /* typeOfT= */ null, /* context= */ null);
     assertNotNull(places);
-    assertNotNull(places.get(0));
-    assertNotNull(places.get(0).code);
-    assertNotNull(places.get(0).name);
-    assertEquals("SC", places.get(0).code);
-    assertEquals("scott hall", places.get(0).name);
+    List<String> keys = places.keySet().stream().map(key -> key).collect(Collectors.toList());
+    assertNotNull(places.get(keys.get(0)));
+    assertNotNull(places.get(keys.get(0)).code);
+    assertNotNull(places.get(keys.get(0)).name);
+    assertEquals("SC", places.get(keys.get(0)).code);
+    assertEquals("scott hall", places.get(keys.get(0)).name);
   }
 
   @Test
   public void deserialize_null() {
     JsonNull jsonNull = JsonNull.INSTANCE;
     RuPlacesDeserializer deserializer = new RuPlacesDeserializer();
-    List<RuPlace> places =
+    Map<String, RuPlace> places =
         deserializer.deserialize(jsonNull, /* typeOfT= */ null, /* context= */ null);
     assertNull(places);
   }
