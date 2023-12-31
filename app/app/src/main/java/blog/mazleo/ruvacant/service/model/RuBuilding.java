@@ -1,7 +1,7 @@
 package blog.mazleo.ruvacant.service.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import javax.annotation.Nullable;
 
@@ -9,12 +9,11 @@ import javax.annotation.Nullable;
 @Entity
 public final class RuBuilding {
 
-  @PrimaryKey public String code;
+  @PrimaryKey @NonNull public String code;
   @Nullable public String name;
   public String campusName;
   public String uniCampusCode;
 
-  @Ignore
   public RuBuilding(String code, @Nullable String name, String campusName, String uniCampusCode) {
     this.code = code;
     this.name = name;

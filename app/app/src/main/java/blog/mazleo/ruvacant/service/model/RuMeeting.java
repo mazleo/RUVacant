@@ -1,5 +1,6 @@
 package blog.mazleo.ruvacant.service.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -49,7 +50,7 @@ public final class RuMeeting {
   }
 
   /** Format: "BUILDING.ROOM.DAY.START" */
-  @PrimaryKey public String key;
+  @PrimaryKey @NonNull public String key;
 
   /** Minute of the day. */
   public int start;
@@ -65,6 +66,27 @@ public final class RuMeeting {
   public String roomCode;
   public String buildingCode;
   public String uniCampusCode;
+
+  public RuMeeting(
+      String key,
+      int start,
+      int end,
+      int dayOfWeek,
+      String sectionCode,
+      String courseKey,
+      String roomCode,
+      String buildingCode,
+      String uniCampusCode) {
+    this.key = key;
+    this.start = start;
+    this.end = end;
+    this.dayOfWeek = dayOfWeek;
+    this.sectionCode = sectionCode;
+    this.courseKey = courseKey;
+    this.roomCode = roomCode;
+    this.buildingCode = buildingCode;
+    this.uniCampusCode = uniCampusCode;
+  }
 
   @Ignore
   public RuMeeting(

@@ -44,7 +44,7 @@ public final class PlacesAggregatorBinder implements ApplicationStateBinder {
         stateBinderUtil.getAsyncBinding(
             unused -> {
               stateManager.exitState(ApplicationState.PLACES_AGGREGATED.getState());
-              // TODO: Start next state.
+              stateManager.enterState(ApplicationState.DATA_SAVING.getState());
               return null;
             }));
   }
