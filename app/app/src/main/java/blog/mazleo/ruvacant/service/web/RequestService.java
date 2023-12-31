@@ -15,6 +15,7 @@ import blog.mazleo.ruvacant.shared.ApplicationData;
 import blog.mazleo.ruvacant.shared.SharedApplicationData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,26 @@ public final class RequestService {
 
   private static final String COURSES_URL = "https://sis.rutgers.edu/";
   private static final int MAX_NUM_RETRIES = 5;
+
+  private static Retrofit createRetrofit(
+      Class outputClass, JsonDeserializer deserializerInstance, String baseUrl) {
+    Gson gson = new GsonBuilder().registerTypeAdapter(outputClass, deserializerInstance).create();
+    return new Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build();
+  }
+
+  private static void handleError(
+      int currentNumRetries, Call call, Callback callback, String message) {
+    if (currentNumRetries <= MAX_NUM_RETRIES) {
+      Log.d("RuVacant", message + " Trying again...");
+    } else {
+      call.clone().enqueue(callback);
+      Log.d("RuVacant", message);
+      // TODO: Handle error.
+    }
+  }
 
   private final ApplicationStateManager stateManager;
   private final SharedApplicationData sharedApplicationData;
@@ -57,18 +78,11 @@ public final class RequestService {
         @Override
         public void onFailure(Call<List<RuSubject>> call, Throwable t) {
           subjectsRetries++;
-          if (subjectsRetries <= MAX_NUM_RETRIES) {
-            Log.d(
-                "RuVacant",
-                "An error occured while attempting to request course subject information. Trying"
-                    + " again...");
-            call.clone().enqueue(subjectsResponseCallback);
-          } else {
-            Log.d(
-                "RuVacant",
-                "An error occured while attempting to request course subject information.");
-            // TODO: Handle error.
-          }
+          handleError(
+              subjectsRetries,
+              call,
+              subjectsResponseCallback,
+              "An error occured while attempting to request course subject information.");
         }
       };
 
@@ -92,15 +106,11 @@ public final class RequestService {
         @Override
         public void onFailure(Call<RuClassInfos> call, Throwable t) {
           coursesRetries++;
-          if (coursesRetries <= MAX_NUM_RETRIES) {
-            Log.d(
-                "RuVacant",
-                "An error occured while requesting course information. Trying again...");
-            call.clone().enqueue(classInfosResponseCallback);
-          } else {
-            // TODO: Handle failure.
-            Log.d("RuVacant", "An error occured while requesting course information.");
-          }
+          handleError(
+              coursesRetries,
+              call,
+              classInfosResponseCallback,
+              "An error occured while requesting course information.");
         }
       };
 
@@ -112,13 +122,7 @@ public final class RequestService {
   }
 
   public void initiateSubjectsRequest() {
-    Gson gson =
-        new GsonBuilder().registerTypeAdapter(List.class, new RuSubjectsDeserializer()).create();
-    Retrofit retrofit =
-        new Retrofit.Builder()
-            .baseUrl(COURSES_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build();
+    Retrofit retrofit = createRetrofit(List.class, new RuSubjectsDeserializer(), COURSES_URL);
     RuSubjectsService subjectsService = retrofit.create(RuSubjectsService.class);
     // TODO: Use variables for subject queries.
     subjectsService
@@ -134,15 +138,8 @@ public final class RequestService {
     List<RuSubject> subjects =
         (List<RuSubject>)
             sharedApplicationData.getData(ApplicationData.SUBJECTS_LIST_CACHE.getTag());
-    Gson gson =
-        new GsonBuilder()
-            .registerTypeAdapter(RuClassInfos.class, new RuClassInfosDeserializer())
-            .create();
     Retrofit retrofit =
-        new Retrofit.Builder()
-            .baseUrl(COURSES_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build();
+        createRetrofit(RuClassInfos.class, new RuClassInfosDeserializer(), COURSES_URL);
     RuCourseService courseService = retrofit.create(RuCourseService.class);
     for (RuSubject subject : subjects) {
       // TODO: User actual variables.
