@@ -18,12 +18,16 @@ public final class DeserializerUtil {
   @Nullable
   public static String getStringOrNull(JsonObject jsonObject, String memberName) {
     JsonElement jsonElement = jsonObject.get(memberName);
-    return !jsonElement.isJsonNull() ? jsonElement.getAsString().trim() : null;
+    return jsonElement != null && !jsonElement.isJsonNull()
+        ? jsonElement.getAsString().trim()
+        : null;
   }
 
   @Nullable
   public static String getLowerCaseStringOrNull(JsonObject jsonObject, String memberName) {
     JsonElement jsonElement = jsonObject.get(memberName);
-    return !jsonElement.isJsonNull() ? jsonElement.getAsString().toLowerCase().trim() : null;
+    return jsonElement != null && !jsonElement.isJsonNull()
+        ? jsonElement.getAsString().toLowerCase().trim()
+        : null;
   }
 }

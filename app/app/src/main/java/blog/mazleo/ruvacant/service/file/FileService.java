@@ -5,12 +5,18 @@ import android.content.res.Resources;
 import android.util.Log;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
+import blog.mazleo.ruvacant.service.model.RuPlace;
+import blog.mazleo.ruvacant.service.serialization.RuPlacesDeserializer;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.shared.ApplicationData;
 import blog.mazleo.ruvacant.shared.SharedApplicationData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import javax.inject.Inject;
 
 /** The file reading service. */
@@ -43,9 +49,19 @@ public final class FileService {
   public void initiateParsePlacesFile() {
     String filename = resources.getString(R.string.places_file_name);
     String jsonString = attemptReadFile(filename);
-    sharedApplicationData.addData(ApplicationData.PLACES_JSON_CACHE.getTag(), jsonString);
+    sharedApplicationData.addData(
+        ApplicationData.PLACES_CACHE.getTag(), parseJsonString(jsonString));
     stateManager.exitState(ApplicationState.PLACES_READING.getState());
     stateManager.enterState(ApplicationState.PLACES_READ.getState());
+  }
+
+  private List<RuPlace> parseJsonString(String jsonString) {
+    Gson gson = new GsonBuilder().create();
+    JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);
+    List<RuPlace> places =
+        new RuPlacesDeserializer()
+            .deserialize(jsonElement, /* typeOfT= */ null, /* context= */ null);
+    return places;
   }
 
   private String attemptReadFile(String filename) {
