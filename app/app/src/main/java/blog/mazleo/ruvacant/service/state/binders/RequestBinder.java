@@ -8,17 +8,23 @@ import blog.mazleo.ruvacant.service.web.RequestService;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 /** State binder for the request service. */
+@Singleton
 public final class RequestBinder implements ApplicationStateBinder {
 
-  private final RequestService requestService;
+  private final Provider<RequestService> requestServiceProvider;
   private final ExecutorService executorService;
 
+  private RequestService requestService;
+
   @Inject
-  RequestBinder(RequestService requestService, ExecutorService executorService) {
-    this.requestService = requestService;
+  RequestBinder(Provider<RequestService> requestServiceProvider, ExecutorService executorService) {
+    this.requestServiceProvider = requestServiceProvider;
     this.executorService = executorService;
+    requestService = requestServiceProvider.get();
   }
 
   @Override
@@ -27,6 +33,11 @@ public final class RequestBinder implements ApplicationStateBinder {
     bindSubjectsRequested(stateManager);
     bindCoursesRequest(stateManager);
     bindCoursesRequested(stateManager);
+  }
+
+  @Override
+  public void reset() {
+    requestService = requestServiceProvider.get();
   }
 
   private void bindSubjectsRequest(ApplicationStateManager stateManager) {

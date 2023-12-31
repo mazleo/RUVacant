@@ -35,10 +35,10 @@ public final class RequestService {
   private final ApplicationStateManager stateManager;
   private final SharedApplicationData sharedApplicationData;
 
-  private Set<String> cachedCourses = new HashSet<>();
-  private Set<String> cachedMeetings = new HashSet<>();
-  private Set<String> cachedBuildings = new HashSet<>();
-  private Set<String> cachedClassrooms = new HashSet<>();
+  private final Set<String> cachedCourses = new HashSet<>();
+  private final Set<String> cachedMeetings = new HashSet<>();
+  private final Set<String> cachedBuildings = new HashSet<>();
+  private final Set<String> cachedClassrooms = new HashSet<>();
   private int coursesNumSubjectsRetrieved = 0;
   private int subjectsRetries = 0;
   private int coursesRetries = 0;

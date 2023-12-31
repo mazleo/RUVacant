@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -29,6 +30,10 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -42,10 +47,18 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.dagger:hilt-android:2.50")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.50")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("com.google.dagger:dagger:2.50")
     annotationProcessor("com.google.dagger:dagger-compiler:2.50")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("com.google.dagger:hilt-android-testing:2.50")
+    testAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.50")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
+    androidTestAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.50")
+    testImplementation("org.robolectric:robolectric:4.11.1")
+    androidTestImplementation("org.robolectric:robolectric:4.11.1")
 }

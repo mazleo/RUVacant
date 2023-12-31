@@ -4,8 +4,10 @@ import android.util.Log;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.service.state.binders.RequestBinder;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /** Bootstraps the application. */
+@Singleton
 public final class ApplicationBootstrapper {
 
   private final ApplicationStateManager stateManager;

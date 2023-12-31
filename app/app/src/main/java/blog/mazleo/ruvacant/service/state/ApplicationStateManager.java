@@ -28,7 +28,7 @@ public final class ApplicationStateManager {
     currentState.add(ApplicationState.APPLICATION_START.getState());
   }
 
-  /** Adds a current state and runs all state binders associated asynchronously. */
+  /** Adds a current state and runs all state bindings associated. */
   public void enterState(String state) {
     currentState.add(state);
     if (!stateBindingMap.containsKey(state)) {
@@ -64,6 +64,12 @@ public final class ApplicationStateManager {
   public void bind() {
     for (ApplicationStateBinder stateBinder : stateBinders) {
       stateBinder.bind(this);
+    }
+  }
+
+  public void resetStateBinders() {
+    for (ApplicationStateBinder stateBinder : stateBinders) {
+      stateBinder.reset();
     }
   }
 
