@@ -4,9 +4,9 @@ import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinder;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinding;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
+import blog.mazleo.ruvacant.service.state.util.StateBinderUtil;
 import blog.mazleo.ruvacant.service.web.RequestService;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -16,14 +16,17 @@ import javax.inject.Singleton;
 public final class RequestBinder implements ApplicationStateBinder {
 
   private final Provider<RequestService> requestServiceProvider;
-  private final ExecutorService executorService;
+  private final StateBinderUtil stateBinderUtil;
 
   private RequestService requestService;
 
   @Inject
-  RequestBinder(Provider<RequestService> requestServiceProvider, ExecutorService executorService) {
+  RequestBinder(
+      Provider<RequestService> requestServiceProvider,
+      ExecutorService executorService,
+      StateBinderUtil stateBinderUtil) {
     this.requestServiceProvider = requestServiceProvider;
-    this.executorService = executorService;
+    this.stateBinderUtil = stateBinderUtil;
     requestService = requestServiceProvider.get();
   }
 
@@ -42,7 +45,7 @@ public final class RequestBinder implements ApplicationStateBinder {
 
   private void bindSubjectsRequest(ApplicationStateManager stateManager) {
     ApplicationStateBinding subjectsRequestBinding =
-        getAsyncBinding(
+        stateBinderUtil.getAsyncBinding(
             unused -> {
               requestService.initiateSubjectsRequest();
               return null;
@@ -53,7 +56,7 @@ public final class RequestBinder implements ApplicationStateBinder {
 
   private void bindSubjectsRequested(ApplicationStateManager stateManager) {
     ApplicationStateBinding subjectsRequestedBinding =
-        getAsyncBinding(
+        stateBinderUtil.getAsyncBinding(
             unused -> {
               stateManager.exitState(ApplicationState.SUBJECTS_REQUESTED.getState());
               stateManager.enterState(ApplicationState.COURSES_REQUEST.getState());
@@ -65,7 +68,7 @@ public final class RequestBinder implements ApplicationStateBinder {
 
   private void bindCoursesRequest(ApplicationStateManager stateManager) {
     ApplicationStateBinding coursesRequestBinding =
-        getAsyncBinding(
+        stateBinderUtil.getAsyncBinding(
             unused -> {
               requestService.initiateClassInfosRequests();
               return null;
@@ -76,16 +79,12 @@ public final class RequestBinder implements ApplicationStateBinder {
 
   private void bindCoursesRequested(ApplicationStateManager stateManager) {
     ApplicationStateBinding coursesRequestedBinding =
-        getAsyncBinding(
+        stateBinderUtil.getAsyncBinding(
             unused -> {
               stateManager.exitState(ApplicationState.COURSES_REQUESTED.getState());
               return null;
             });
     stateManager.registerStateBinding(
         ApplicationState.COURSES_REQUESTED.getState(), coursesRequestedBinding);
-  }
-
-  private ApplicationStateBinding getAsyncBinding(Function<Void, Void> function) {
-    return () -> executorService.execute(() -> function.apply(null));
   }
 }

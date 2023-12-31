@@ -1,0 +1,76 @@
+package blog.mazleo.ruvacant.service.file;
+
+import android.content.res.AssetManager;
+import android.content.res.Resources;
+import android.util.Log;
+import blog.mazleo.ruvacant.R;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
+import blog.mazleo.ruvacant.service.state.ApplicationState;
+import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
+import blog.mazleo.ruvacant.shared.ApplicationData;
+import blog.mazleo.ruvacant.shared.SharedApplicationData;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.inject.Inject;
+
+/** The file reading service. */
+public final class FileService {
+
+  private static final int MAX_NUM_FILE_READ_TRIES = 5;
+
+  private final String appName;
+  private final AssetManager assetManager;
+  private final Resources resources;
+  private final ApplicationStateManager stateManager;
+  private final SharedApplicationData sharedApplicationData;
+
+  private int numFileReadTries = 0;
+
+  @Inject
+  FileService(
+      @AppName String appName,
+      AssetManager assetManager,
+      Resources resources,
+      ApplicationStateManager stateManager,
+      SharedApplicationData sharedApplicationData) {
+    this.appName = appName;
+    this.assetManager = assetManager;
+    this.resources = resources;
+    this.stateManager = stateManager;
+    this.sharedApplicationData = sharedApplicationData;
+  }
+
+  public void initiateParsePlacesFile() {
+    String filename = resources.getString(R.string.places_file_name);
+    String jsonString = attemptReadFile(filename);
+    sharedApplicationData.addData(ApplicationData.PLACES_JSON_CACHE.getTag(), jsonString);
+    stateManager.exitState(ApplicationState.PLACES_READING.getState());
+    stateManager.enterState(ApplicationState.PLACES_READ.getState());
+  }
+
+  private String attemptReadFile(String filename) {
+    numFileReadTries++;
+    String errorMessage = "An error occurred while attempting to read file.";
+    String jsonString = "";
+    try {
+      InputStream inputStream = assetManager.open(filename);
+      int fileLength = inputStream.available();
+      int numBytesRead = 0;
+      while (numBytesRead != -1) {
+        byte[] bytes = new byte[fileLength];
+        numBytesRead = inputStream.read(bytes);
+        String partialJsonString = new String(bytes);
+        jsonString += partialJsonString;
+      }
+    } catch (IOException exception) {
+      if (numFileReadTries <= MAX_NUM_FILE_READ_TRIES) {
+        Log.d(appName, errorMessage + " Trying again...");
+        jsonString = attemptReadFile(filename);
+      } else {
+        Log.d(appName, errorMessage);
+        // TODO: Handle error.
+      }
+    }
+    return jsonString.trim();
+  }
+}

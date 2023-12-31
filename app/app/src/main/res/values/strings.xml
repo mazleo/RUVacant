@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RuVacant</string>
+
+    <!-- Services -->
+    <string name="places_file_name">ruplaces.json</string>
 </resources>

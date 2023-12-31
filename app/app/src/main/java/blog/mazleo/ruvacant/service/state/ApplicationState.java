@@ -7,6 +7,7 @@ public enum ApplicationState {
   SUBJECTS_REQUESTED("subjects-requested"),
   COURSES_REQUEST("courses-request"),
   COURSES_REQUESTED("courses-requested"),
+  PLACES_READING("places-reading"),
   PLACES_READ("places-read"),
   DATA_SAVE("data-save"),
   BUILDING_VIEW_DATA_LOADING("building-view-data-loading"),

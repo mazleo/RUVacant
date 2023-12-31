@@ -2,6 +2,7 @@ package blog.mazleo.ruvacant.core;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
@@ -40,5 +41,10 @@ public abstract class ApplicationModule {
   @Provides
   static Context provideContext(Application application) {
     return application.getApplicationContext();
+  }
+
+  @Provides
+  static AssetManager provideAssetManager(Resources resources) {
+    return resources.getAssets();
   }
 }

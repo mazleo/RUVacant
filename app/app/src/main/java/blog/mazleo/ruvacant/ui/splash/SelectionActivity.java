@@ -8,7 +8,7 @@ import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import dagger.hilt.android.AndroidEntryPoint;
 import javax.inject.Inject;
 
-/** The splash activity. */
+/** The selection activity. */
 @AndroidEntryPoint
 public final class SelectionActivity extends AppCompatActivity {
 
@@ -25,5 +25,6 @@ public final class SelectionActivity extends AppCompatActivity {
     super.onStart();
     stateManager.exitState(ApplicationState.APPLICATION_START.getState());
     stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
+    stateManager.enterState(ApplicationState.PLACES_READING.getState());
   }
 }
