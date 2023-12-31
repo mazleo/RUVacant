@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.selection.SelectionActivity">
+    tools:context=".ui.activities.SelectionActivity">
 
     <ImageView
         android:id="@+id/logo_selection"
+        android:transitionName="logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/logo_v2"

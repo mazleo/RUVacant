@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.ui.selection;
+package blog.mazleo.ruvacant.ui.activities;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
