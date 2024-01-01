@@ -49,7 +49,7 @@ public final class RuMeeting {
     }
   }
 
-  /** Format: "BUILDING.ROOM.DAY.START" */
+  /** Format: "CAMPUS.BUILDING.ROOM.DAY.START" */
   @PrimaryKey @NonNull public String key;
 
   /** Minute of the day. */
@@ -115,6 +115,6 @@ public final class RuMeeting {
     this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
     this.levelCode = levelCode;
-    key = String.format("%s.%s.%s.%s", buildingCode, roomCode, dayOfWeek, start);
+    key = String.format("%s.%s.%s.%s.%s", uniCampusCode, buildingCode, roomCode, dayOfWeek, start);
   }
 }

@@ -1,5 +1,8 @@
 package blog.mazleo.ruvacant.info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** The Rutgers university campus. */
 public enum UniversityCampus {
   NEW_BRUNSWICK("New Brunswick", "NB"),
@@ -20,5 +23,13 @@ public enum UniversityCampus {
 
   public String getCode() {
     return code;
+  }
+
+  public static List<UniversityCampus> getAllCampuses() {
+    List<UniversityCampus> campuses = new ArrayList<>();
+    campuses.add(NEW_BRUNSWICK);
+    campuses.add(NEWARK);
+    campuses.add(CAMDEN);
+    return campuses;
   }
 }

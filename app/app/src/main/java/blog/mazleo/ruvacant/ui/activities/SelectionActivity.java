@@ -96,17 +96,16 @@ public final class SelectionActivity extends AppCompatActivity {
           sharedApplicationData.addData(ApplicationData.SEMESTER_CODE.getTag(), semesterCode);
           sharedApplicationData.addData(ApplicationData.CAMPUS_CODE.getTag(), campusCode);
           sharedApplicationData.addData(ApplicationData.LEVEL_CODE.getTag(), levelCode);
-
-          stateManager.exitState(ApplicationState.APPLICATION_START.getState());
-          stateManager.enterState(ApplicationState.REQUESTING_DATA.getState());
-          stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
         });
   }
 
   @Override
   protected void onStart() {
     super.onStart();
+    stateManager.exitState(ApplicationState.APPLICATION_START.getState());
     stateManager.enterState(ApplicationState.PLACES_READING.getState());
+    stateManager.enterState(ApplicationState.REQUESTING_DATA.getState());
+    stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
   }
 
   private void enableSaveButton() {

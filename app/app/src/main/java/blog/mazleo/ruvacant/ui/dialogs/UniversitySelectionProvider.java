@@ -25,11 +25,6 @@ public final class UniversitySelectionProvider {
     semesterSelections.add(
         String.format(
             "%s %s",
-            UniversitySemesterUtil.getNextSemester(),
-            UniversitySemesterUtil.getNextSemesterYear()));
-    semesterSelections.add(
-        String.format(
-            "%s %s",
             UniversitySemesterUtil.getCurrentSemester(),
             UniversitySemesterUtil.getCurrentSemesterYear()));
     semesterSelections.add(
@@ -37,6 +32,11 @@ public final class UniversitySelectionProvider {
             "%s %s",
             UniversitySemesterUtil.getPreviousSemester(),
             UniversitySemesterUtil.getPreviousSemesterYear()));
+    semesterSelections.add(
+        String.format(
+            "%s %s",
+            UniversitySemesterUtil.getPreviousPreviousSemester(),
+            UniversitySemesterUtil.getPreviousPreviousSemesterYear()));
     return semesterSelections;
   }
 

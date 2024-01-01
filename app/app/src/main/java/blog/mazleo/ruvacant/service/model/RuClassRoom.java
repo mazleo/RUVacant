@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public final class RuClassroom {
 
-  /** Format: "BUILDING.ROOM" */
+  /** Format: "CAMPUS.BUILDING.ROOM" */
   @PrimaryKey @NonNull public String key;
 
   public String code;
@@ -44,7 +44,7 @@ public final class RuClassroom {
       String semesterCode,
       String uniCampusCode,
       String levelCode) {
-    key = String.format("%s.%s", buildingCode, code);
+    key = String.format("%s.%s.%s", uniCampusCode, buildingCode, code);
     this.code = code;
     this.buildingCode = buildingCode;
     this.campusName = campusName;

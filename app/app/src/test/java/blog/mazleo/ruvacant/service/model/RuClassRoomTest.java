@@ -12,7 +12,8 @@ public final class RuClassroomTest {
     String expectedBuildingCode = "ACH";
     String expectedCampusName = "cac";
     String expectedUniCampusCode = "NWK";
-    String expectedCode = String.format("%s.%s", expectedBuildingCode, expectedRoomCode);
+    String expectedCode =
+        String.format("%s.%s.%s", expectedUniCampusCode, expectedBuildingCode, expectedRoomCode);
     RuClassroom classRoom =
         new RuClassroom(
             expectedRoomCode,
@@ -34,7 +35,8 @@ public final class RuClassroomTest {
     String expectedBuildingCode = null;
     String expectedCampusName = null;
     String expectedUniCampusCode = null;
-    String expectedCode = String.format("%s.%s", expectedBuildingCode, expectedRoomCode);
+    String expectedCode =
+        String.format("%s.%s.%s", expectedUniCampusCode, expectedBuildingCode, expectedRoomCode);
     RuClassroom classRoom =
         new RuClassroom(
             expectedRoomCode,

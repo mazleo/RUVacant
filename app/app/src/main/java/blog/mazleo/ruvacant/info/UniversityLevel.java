@@ -1,5 +1,8 @@
 package blog.mazleo.ruvacant.info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** The university level. */
 public enum UniversityLevel {
   UNDERGRADUATE("Undergraduate", "U"),
@@ -19,5 +22,12 @@ public enum UniversityLevel {
 
   public String getCode() {
     return code;
+  }
+
+  public static List<UniversityLevel> getAllLevels() {
+    List<UniversityLevel> levels = new ArrayList<>();
+    levels.add(UNDERGRADUATE);
+    levels.add(GRADUATE);
+    return levels;
   }
 }
