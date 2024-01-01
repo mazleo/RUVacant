@@ -32,7 +32,12 @@ public final class UniversitySemesterUtil {
   }
 
   public static String getCurrentSemesterYear() {
-    return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+    int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+    if (currentMonth < 12) {
+      return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+    } else {
+      return String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1);
+    }
   }
 
   public static String getNextSemester() {
@@ -62,7 +67,8 @@ public final class UniversitySemesterUtil {
   public static String getNextSemesterYear(int currentMonth) {
     String nextSemester = getNextSemester(currentMonth);
     int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-    if (nextSemester.equals(UniversitySemester.SPRING.getSemester())) {
+    if (nextSemester.equals(UniversitySemester.WINTER.getSemester())
+        || nextSemester.equals(UniversitySemester.SPRING.getSemester())) {
       return String.valueOf(currentYear + 1);
     }
     return String.valueOf(currentYear);
@@ -88,16 +94,24 @@ public final class UniversitySemesterUtil {
   }
 
   public static String getPreviousSemesterYear() {
-    int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-    return getPreviousSemesterYear(currentMonth);
+    return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
   }
 
-  public static String getPreviousSemesterYear(int currentMonth) {
-    String previousSemester = getPreviousSemester(currentMonth);
-    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-    if (previousSemester.equals(UniversitySemester.WINTER.getSemester())) {
-      return String.valueOf(currentYear - 1);
+  public static String getSemesterCodeFromString(String semesterString) {
+    String semester = semesterString.split(" ")[0].trim();
+    if (semester.equals(UniversitySemester.FALL.getSemester())) {
+      return "9";
+    } else if (semester.equals(UniversitySemester.WINTER.getSemester())) {
+      return "0";
+    } else if (semester.equals(UniversitySemester.SPRING.getSemester())) {
+      return "1";
+    } else if (semester.equals(UniversitySemester.SUMMER.getSemester())) {
+      return "5";
     }
-    return String.valueOf(currentYear);
+    throw new IllegalArgumentException(String.format("Semester %s not supported.", semesterString));
+  }
+
+  public static String getSemesterYearFromString(String semesterString) {
+    return semesterString.split(" ")[1].trim();
   }
 }

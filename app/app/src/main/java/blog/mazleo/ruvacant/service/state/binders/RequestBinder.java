@@ -82,6 +82,7 @@ public final class RequestBinder implements ApplicationStateBinder {
         stateBinderUtil.getAsyncBinding(
             unused -> {
               stateManager.exitState(ApplicationState.COURSES_REQUESTED.getState());
+              stateManager.exitState(ApplicationState.REQUESTING_DATA.getState());
               stateManager.enterState(ApplicationState.PLACES_AGGREGATING.getState());
               return null;
             });

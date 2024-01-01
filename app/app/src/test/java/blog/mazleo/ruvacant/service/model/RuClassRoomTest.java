@@ -15,7 +15,12 @@ public final class RuClassroomTest {
     String expectedCode = String.format("%s.%s", expectedBuildingCode, expectedRoomCode);
     RuClassroom classRoom =
         new RuClassroom(
-            expectedRoomCode, expectedBuildingCode, expectedCampusName, expectedUniCampusCode);
+            expectedRoomCode,
+            expectedBuildingCode,
+            expectedCampusName,
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedCode, classRoom.key);
     assertEquals(expectedRoomCode, classRoom.code);
     assertEquals(expectedBuildingCode, classRoom.buildingCode);
@@ -32,7 +37,12 @@ public final class RuClassroomTest {
     String expectedCode = String.format("%s.%s", expectedBuildingCode, expectedRoomCode);
     RuClassroom classRoom =
         new RuClassroom(
-            expectedRoomCode, expectedBuildingCode, expectedCampusName, expectedUniCampusCode);
+            expectedRoomCode,
+            expectedBuildingCode,
+            expectedCampusName,
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedCode, classRoom.key);
     assertEquals(expectedRoomCode, classRoom.code);
     assertEquals(expectedBuildingCode, classRoom.buildingCode);

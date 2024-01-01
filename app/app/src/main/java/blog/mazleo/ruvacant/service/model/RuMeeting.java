@@ -41,7 +41,7 @@ public final class RuMeeting {
         return Calendar.FRIDAY;
       case "S":
         return Calendar.SATURDAY;
-      case "SU":
+      case "U":
         return Calendar.SUNDAY;
       default:
         throw new IllegalArgumentException(
@@ -65,7 +65,9 @@ public final class RuMeeting {
   public String courseKey;
   public String roomCode;
   public String buildingCode;
+  public String semesterCode;
   public String uniCampusCode;
+  public String levelCode;
 
   public RuMeeting(
       String key,
@@ -76,7 +78,9 @@ public final class RuMeeting {
       String courseKey,
       String roomCode,
       String buildingCode,
-      String uniCampusCode) {
+      String semesterCode,
+      String uniCampusCode,
+      String levelCode) {
     this.key = key;
     this.start = start;
     this.end = end;
@@ -98,7 +102,9 @@ public final class RuMeeting {
       String courseKey,
       String roomCode,
       String buildingCode,
-      String uniCampusCode) {
+      String semesterCode,
+      String uniCampusCode,
+      String levelCode) {
     start = convertToMinuteOfDay(ruStart, pmCode);
     end = convertRuEndToMinuteOfDay(ruEnd, start);
     dayOfWeek = convertDayOfWeek(ruMeetingDay);
@@ -106,7 +112,9 @@ public final class RuMeeting {
     this.courseKey = courseKey;
     this.roomCode = roomCode;
     this.buildingCode = buildingCode;
+    this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
+    this.levelCode = levelCode;
     key = String.format("%s.%s.%s.%s", buildingCode, roomCode, dayOfWeek, start);
   }
 }

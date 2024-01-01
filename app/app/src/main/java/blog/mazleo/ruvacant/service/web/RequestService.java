@@ -130,7 +130,10 @@ public final class RequestService {
     RuSubjectsService subjectsService = retrofit.create(RuSubjectsService.class);
     // TODO: Use variables for subject queries.
     subjectsService
-        .getSubjects(/* semester= */ "92023", /* campus= */ "NB", /* level= */ "U")
+        .getSubjects(
+            /* semester= */ getCachedSemesterCode(),
+            /* campus= */ getCachedCampusCode(),
+            /* level= */ getCachedLevelCode())
         .enqueue(subjectsResponseCallback);
   }
 
@@ -149,7 +152,10 @@ public final class RequestService {
       // TODO: User actual variables.
       courseService
           .getClassInfos(
-              subject.code, /* semester= */ "92023", /* campus= */ "NB", /* level= */ "U")
+              subject.code,
+              /* semester= */ getCachedSemesterCode(),
+              /* campus= */ getCachedCampusCode(),
+              /* level= */ getCachedLevelCode())
           .enqueue(classInfosResponseCallback);
     }
   }
@@ -179,6 +185,9 @@ public final class RequestService {
     for (RuCourse courseResponse : classInfosResponse.courses) {
       if (!cachedCourses.contains(courseResponse.key)) {
         cachedCourses.add(courseResponse.key);
+        courseResponse.semesterCode = getCachedSemesterCode();
+        courseResponse.uniCampusCode = getCachedCampusCode();
+        courseResponse.levelCode = getCachedLevelCode();
         cachedClassInfos.courses.add(courseResponse);
       }
     }
@@ -188,6 +197,9 @@ public final class RequestService {
     for (RuMeeting meetingResponse : classInfosResponse.meetings) {
       if (!cachedMeetings.contains(meetingResponse.key)) {
         cachedMeetings.add(meetingResponse.key);
+        meetingResponse.semesterCode = getCachedSemesterCode();
+        meetingResponse.uniCampusCode = getCachedCampusCode();
+        meetingResponse.levelCode = getCachedLevelCode();
         cachedClassInfos.meetings.add(meetingResponse);
       }
     }
@@ -197,6 +209,9 @@ public final class RequestService {
     for (RuBuilding buildingResponse : classInfosResponse.buildings) {
       if (!cachedBuildings.contains(buildingResponse.code)) {
         cachedBuildings.add(buildingResponse.code);
+        buildingResponse.semesterCode = getCachedSemesterCode();
+        buildingResponse.uniCampusCode = getCachedCampusCode();
+        buildingResponse.levelCode = getCachedLevelCode();
         cachedClassInfos.buildings.add(buildingResponse);
       }
     }
@@ -206,8 +221,23 @@ public final class RequestService {
     for (RuClassroom classroomResponse : classInfosResponse.classrooms) {
       if (!cachedClassrooms.contains(classroomResponse.key)) {
         cachedClassrooms.add(classroomResponse.key);
+        classroomResponse.semesterCode = getCachedSemesterCode();
+        classroomResponse.uniCampusCode = getCachedCampusCode();
+        classroomResponse.levelCode = getCachedLevelCode();
         cachedClassInfos.classrooms.add(classroomResponse);
       }
     }
+  }
+
+  private String getCachedSemesterCode() {
+    return (String) sharedApplicationData.getData(ApplicationData.SEMESTER_CODE.getTag());
+  }
+
+  private String getCachedCampusCode() {
+    return (String) sharedApplicationData.getData(ApplicationData.CAMPUS_CODE.getTag());
+  }
+
+  private String getCachedLevelCode() {
+    return (String) sharedApplicationData.getData(ApplicationData.LEVEL_CODE.getTag());
   }
 }

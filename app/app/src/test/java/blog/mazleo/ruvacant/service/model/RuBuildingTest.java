@@ -14,7 +14,13 @@ public final class RuBuildingTest {
     String expectedCampusName = "busch";
     String expectedUniCampusCode = "NB";
     RuBuilding building =
-        new RuBuilding(expectedCode, expectedName, expectedCampusName, expectedUniCampusCode);
+        new RuBuilding(
+            expectedCode,
+            expectedName,
+            expectedCampusName,
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedCode, building.code);
     assertEquals(expectedName, building.name);
     assertEquals(expectedCampusName, building.campusName);
@@ -28,7 +34,13 @@ public final class RuBuildingTest {
     String expectedCampusName = null;
     String expectedUniCampusCode = null;
     RuBuilding building =
-        new RuBuilding(expectedCode, expectedName, expectedCampusName, expectedUniCampusCode);
+        new RuBuilding(
+            expectedCode,
+            expectedName,
+            expectedCampusName,
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedCode, building.code);
     assertEquals(expectedName, building.name);
     assertEquals(expectedCampusName, building.campusName);

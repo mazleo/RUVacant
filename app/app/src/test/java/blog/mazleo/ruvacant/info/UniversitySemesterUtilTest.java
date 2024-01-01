@@ -72,9 +72,9 @@ public final class UniversitySemesterUtilTest {
     assertEquals(currentYear, UniversitySemesterUtil.getNextSemesterYear(6));
     assertEquals(currentYear, UniversitySemesterUtil.getNextSemesterYear(7));
     assertEquals(currentYear, UniversitySemesterUtil.getNextSemesterYear(8));
-    assertEquals(currentYear, UniversitySemesterUtil.getNextSemesterYear(9));
-    assertEquals(currentYear, UniversitySemesterUtil.getNextSemesterYear(10));
-    assertEquals(currentYear, UniversitySemesterUtil.getNextSemesterYear(11));
+    assertEquals(nextYear, UniversitySemesterUtil.getNextSemesterYear(9));
+    assertEquals(nextYear, UniversitySemesterUtil.getNextSemesterYear(10));
+    assertEquals(nextYear, UniversitySemesterUtil.getNextSemesterYear(11));
     assertEquals(nextYear, UniversitySemesterUtil.getNextSemesterYear(12));
   }
 
@@ -109,18 +109,30 @@ public final class UniversitySemesterUtilTest {
   @Test
   public void getPreviousSemesterYear() {
     String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-    String previousYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1);
-    assertEquals(previousYear, UniversitySemesterUtil.getPreviousSemesterYear(1));
-    assertEquals(previousYear, UniversitySemesterUtil.getPreviousSemesterYear(2));
-    assertEquals(previousYear, UniversitySemesterUtil.getPreviousSemesterYear(3));
-    assertEquals(previousYear, UniversitySemesterUtil.getPreviousSemesterYear(4));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(5));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(6));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(7));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(8));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(9));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(10));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(11));
-    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear(12));
+    assertEquals(currentYear, UniversitySemesterUtil.getPreviousSemesterYear());
+  }
+
+  @Test
+  public void getSemesterCodeFromString() {
+    assertEquals("1", UniversitySemesterUtil.getSemesterCodeFromString("Spring 2023"));
+    assertEquals("5", UniversitySemesterUtil.getSemesterCodeFromString("Summer 2023"));
+    assertEquals("9", UniversitySemesterUtil.getSemesterCodeFromString("Fall 2023"));
+    assertEquals("0", UniversitySemesterUtil.getSemesterCodeFromString("Winter 2023"));
+  }
+
+  @Test
+  public void getSemesterYearFromString() {
+    assertEquals("2023", UniversitySemesterUtil.getSemesterYearFromString("Spring 2023"));
+    assertEquals("2023", UniversitySemesterUtil.getSemesterYearFromString("Summer 2023"));
+    assertEquals("2023", UniversitySemesterUtil.getSemesterYearFromString("Fall 2023"));
+    assertEquals("2023", UniversitySemesterUtil.getSemesterYearFromString("Winter 2023"));
+    assertEquals("2024", UniversitySemesterUtil.getSemesterYearFromString("Spring 2024"));
+    assertEquals("2024", UniversitySemesterUtil.getSemesterYearFromString("Summer 2024"));
+    assertEquals("2024", UniversitySemesterUtil.getSemesterYearFromString("Fall 2024"));
+    assertEquals("2024", UniversitySemesterUtil.getSemesterYearFromString("Winter 2024"));
+    assertEquals("2025", UniversitySemesterUtil.getSemesterYearFromString("Spring 2025"));
+    assertEquals("2025", UniversitySemesterUtil.getSemesterYearFromString("Summer 2025"));
+    assertEquals("2025", UniversitySemesterUtil.getSemesterYearFromString("Fall 2025"));
+    assertEquals("2025", UniversitySemesterUtil.getSemesterYearFromString("Winter 2025"));
   }
 }

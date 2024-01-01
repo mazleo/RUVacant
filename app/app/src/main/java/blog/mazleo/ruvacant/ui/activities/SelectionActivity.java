@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import blog.mazleo.ruvacant.R;
+import blog.mazleo.ruvacant.info.UniversityCampusUtil;
+import blog.mazleo.ruvacant.info.UniversityLevelUtil;
 import blog.mazleo.ruvacant.info.UniversitySemesterUtil;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
+import blog.mazleo.ruvacant.shared.ApplicationData;
+import blog.mazleo.ruvacant.shared.SharedApplicationData;
 import blog.mazleo.ruvacant.ui.dialogs.UniversitySelection;
 import blog.mazleo.ruvacant.ui.dialogs.UniversitySelectionDialogFactory;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -18,6 +22,7 @@ import javax.inject.Inject;
 public final class SelectionActivity extends AppCompatActivity {
 
   @Inject ApplicationStateManager stateManager;
+  @Inject SharedApplicationData sharedApplicationData;
 
   private Button semesterButton;
   private Button campusButton;
@@ -73,13 +78,34 @@ public final class SelectionActivity extends AppCompatActivity {
     semesterButton.setOnClickListener(view -> semesterDialog.show());
     campusButton.setOnClickListener(view -> campusDialog.show());
     levelButton.setOnClickListener(view -> levelDialog.show());
+
+    selectButton.setOnClickListener(
+        view -> {
+          String semesterCode =
+              String.format(
+                  "%s%s",
+                  UniversitySemesterUtil.getSemesterCodeFromString(
+                      String.valueOf(semesterButton.getText())),
+                  UniversitySemesterUtil.getSemesterYearFromString(
+                      String.valueOf(semesterButton.getText())));
+          String campusCode =
+              UniversityCampusUtil.getCampusCodeFromString(String.valueOf(campusButton.getText()));
+          String levelCode =
+              UniversityLevelUtil.getLevelCodeFromString(String.valueOf(levelButton.getText()));
+
+          sharedApplicationData.addData(ApplicationData.SEMESTER_CODE.getTag(), semesterCode);
+          sharedApplicationData.addData(ApplicationData.CAMPUS_CODE.getTag(), campusCode);
+          sharedApplicationData.addData(ApplicationData.LEVEL_CODE.getTag(), levelCode);
+
+          stateManager.exitState(ApplicationState.APPLICATION_START.getState());
+          stateManager.enterState(ApplicationState.REQUESTING_DATA.getState());
+          stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
+        });
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    stateManager.exitState(ApplicationState.APPLICATION_START.getState());
-    stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
     stateManager.enterState(ApplicationState.PLACES_READING.getState());
   }
 

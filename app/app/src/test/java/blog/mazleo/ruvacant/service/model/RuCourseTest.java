@@ -20,7 +20,9 @@ public final class RuCourseTest {
             expectedTitle,
             expectedExpandedTitle,
             expectedSubjectCode,
-            expectedUniCampusCode);
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedCode, course.key);
     assertEquals(expectedCourseCode, course.code);
     assertEquals(expectedTitle, course.title);
@@ -43,7 +45,9 @@ public final class RuCourseTest {
             expectedTitle,
             expectedExpandedTitle,
             expectedSubjectCode,
-            expectedUniCampusCode);
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedCode, course.key);
     assertEquals(expectedCourseCode, course.code);
     assertEquals(expectedTitle, course.title);

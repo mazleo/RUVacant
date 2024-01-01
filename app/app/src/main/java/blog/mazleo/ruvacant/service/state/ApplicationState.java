@@ -3,6 +3,7 @@ package blog.mazleo.ruvacant.service.state;
 /** All Application states. */
 public enum ApplicationState {
   APPLICATION_START("application-start"),
+  REQUESTING_DATA("requesting-data"),
   SUBJECTS_REQUEST("subjects-request"),
   SUBJECTS_REQUESTED("subjects-requested"),
   COURSES_REQUEST("courses-request"),

@@ -16,7 +16,9 @@ public final class RuCourse {
   public String title;
   @Nullable public String expandedTitle;
   public String subjectCode;
+  public String semesterCode;
   public String uniCampusCode;
+  public String levelCode;
 
   public RuCourse(
       String key,
@@ -24,13 +26,17 @@ public final class RuCourse {
       String title,
       String expandedTitle,
       String subjectCode,
-      String uniCampusCode) {
+      String semesterCode,
+      String uniCampusCode,
+      String levelCode) {
     this.key = key;
     this.code = code;
     this.title = title;
     this.expandedTitle = expandedTitle;
     this.subjectCode = subjectCode;
+    this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
+    this.levelCode = levelCode;
   }
 
   @Ignore
@@ -39,12 +45,16 @@ public final class RuCourse {
       String title,
       @Nullable String expandedTitle,
       String subjectCode,
-      String uniCampusCode) {
+      String semesterCode,
+      String uniCampusCode,
+      String levelCode) {
     key = String.format("%s.%s", subjectCode, code);
     this.code = code;
     this.title = title;
     this.expandedTitle = expandedTitle;
     this.subjectCode = subjectCode;
+    this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
+    this.levelCode = levelCode;
   }
 }

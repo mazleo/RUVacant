@@ -45,7 +45,14 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
               String subjectCode = getStringNonNull(courseObject, "subject");
               String uniCampusCode = getStringNonNull(courseObject, "campusCode");
               RuCourse newCourse =
-                  new RuCourse(courseCode, title, expandedTitle, subjectCode, uniCampusCode);
+                  new RuCourse(
+                      courseCode,
+                      title,
+                      expandedTitle,
+                      subjectCode,
+                      /* semesterCode= */ null,
+                      uniCampusCode,
+                      /* levelCode= */ null);
               courses.add(newCourse);
               collectFromSections(
                   courseObject, uniCampusCode, newCourse, meetings, buildings, classRooms);
@@ -113,8 +120,21 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
                 assert roomCode != null;
                 assert campusName != null;
                 buildings.add(
-                    new RuBuilding(buildingCode, /* name= */ null, campusName, uniCampusCode));
-                classRooms.add(new RuClassroom(roomCode, buildingCode, campusName, uniCampusCode));
+                    new RuBuilding(
+                        buildingCode,
+                        /* name= */ null,
+                        campusName,
+                        /* semesterCode= */ null,
+                        uniCampusCode,
+                        /* levelCode= */ null));
+                classRooms.add(
+                    new RuClassroom(
+                        roomCode,
+                        buildingCode,
+                        campusName,
+                        /* semesterCode= */ null,
+                        uniCampusCode,
+                        /* levelCode= */ null));
                 if (start != null) {
                   assert end != null;
                   assert pmCode != null;
@@ -129,7 +149,9 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
                           newCourse.key,
                           roomCode,
                           buildingCode,
-                          uniCampusCode));
+                          /* semesterCode= */ null,
+                          uniCampusCode,
+                          /* levelCode= */ null));
                 }
               }
             });

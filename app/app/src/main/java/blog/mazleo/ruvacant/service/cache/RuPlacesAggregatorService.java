@@ -25,8 +25,8 @@ public final class RuPlacesAggregatorService {
   }
 
   public void initiatePlacesAggregation() {
-    if (!stateManager.isInState(ApplicationState.COURSES_REQUEST.getState())
-        && !stateManager.isInState(ApplicationState.COURSES_REQUESTED.getState())
+    if (!stateManager.isInState(ApplicationState.APPLICATION_START.getState())
+        && !stateManager.isInState(ApplicationState.REQUESTING_DATA.getState())
         && !stateManager.isInState(ApplicationState.PLACES_READING.getState())
         && !stateManager.isInState(ApplicationState.PLACES_READ.getState())) {
       RuClassInfos cachedClassInfos =

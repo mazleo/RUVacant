@@ -27,7 +27,9 @@ public final class RuMeetingTest {
             expectedCourseKey,
             expectedRoomCode,
             expectedBuildingCode,
-            expectedUniCampusCode);
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedStart, meeting.start);
     assertEquals(expectedEnd, meeting.end);
     assertEquals(expectedDayOfWeek, meeting.dayOfWeek);
@@ -58,7 +60,9 @@ public final class RuMeetingTest {
             expectedCourseKey,
             expectedRoomCode,
             expectedBuildingCode,
-            expectedUniCampusCode);
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedStart, meeting.start);
     assertEquals(expectedEnd, meeting.end);
     assertEquals(expectedDayOfWeek, meeting.dayOfWeek);
@@ -89,7 +93,9 @@ public final class RuMeetingTest {
             expectedCourseKey,
             expectedRoomCode,
             expectedBuildingCode,
-            expectedUniCampusCode);
+            /* semesterCode= */ null,
+            expectedUniCampusCode,
+            /* levelCode= */ null);
     assertEquals(expectedStart, meeting.start);
     assertEquals(expectedEnd, meeting.end);
     assertEquals(expectedDayOfWeek, meeting.dayOfWeek);
