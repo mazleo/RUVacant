@@ -3,7 +3,7 @@
     <style name="Theme.RuVacant" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red_main</item>
-        <item name="colorPrimaryVariant">@color/red_light</item>
+        <item name="colorPrimaryVariant">@color/red_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">?attr/colorPrimary</item>

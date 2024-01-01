@@ -54,9 +54,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:backgroundTint="@color/red_main"
+        android:backgroundTint="#FFEAE9E9"
         android:textColor="@color/white"
         android:text="SELECT"
+        android:enabled="false"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

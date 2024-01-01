@@ -22,10 +22,15 @@ public final class SelectionActivity extends AppCompatActivity {
   private Button semesterButton;
   private Button campusButton;
   private Button levelButton;
+  private Button selectButton;
 
   private Dialog semesterDialog;
   private Dialog campusDialog;
   private Dialog levelDialog;
+
+  private boolean isSemesterSelected = true;
+  private boolean isCampusSelected = false;
+  private boolean isLevelSelected = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +40,29 @@ public final class SelectionActivity extends AppCompatActivity {
     semesterButton = (Button) findViewById(R.id.semester_selection);
     campusButton = (Button) findViewById(R.id.campus_selection);
     levelButton = (Button) findViewById(R.id.level_selection);
+    selectButton = (Button) findViewById(R.id.select_button_selections);
 
     semesterDialog =
         UniversitySelectionDialogFactory.create(
-            UniversitySelection.SEMESTER.getSelection(), semesterButton, SelectionActivity.this);
+            UniversitySelection.SEMESTER.getSelection(),
+            semesterButton,
+            SelectionActivity.this,
+            () -> {},
+            this::enableSaveButton);
     campusDialog =
         UniversitySelectionDialogFactory.create(
-            UniversitySelection.CAMPUS.getSelection(), campusButton, SelectionActivity.this);
+            UniversitySelection.CAMPUS.getSelection(),
+            campusButton,
+            SelectionActivity.this,
+            () -> isCampusSelected = true,
+            this::enableSaveButton);
     levelDialog =
         UniversitySelectionDialogFactory.create(
-            UniversitySelection.LEVEL.getSelection(), levelButton, SelectionActivity.this);
+            UniversitySelection.LEVEL.getSelection(),
+            levelButton,
+            SelectionActivity.this,
+            () -> isLevelSelected = true,
+            this::enableSaveButton);
 
     semesterButton.setText(
         String.format(
@@ -63,5 +81,12 @@ public final class SelectionActivity extends AppCompatActivity {
     stateManager.exitState(ApplicationState.APPLICATION_START.getState());
     stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
     stateManager.enterState(ApplicationState.PLACES_READING.getState());
+  }
+
+  private void enableSaveButton() {
+    if (isSemesterSelected && isCampusSelected && isLevelSelected) {
+      selectButton.setEnabled(true);
+      selectButton.setBackgroundColor(getResources().getColor(R.color.red_main, getTheme()));
+    }
   }
 }

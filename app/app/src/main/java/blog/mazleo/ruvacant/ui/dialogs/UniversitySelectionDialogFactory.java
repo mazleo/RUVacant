@@ -13,7 +13,12 @@ import java.util.List;
 /** Creates the selection dialog. */
 public final class UniversitySelectionDialogFactory {
 
-  public static Dialog create(String selection, Button dialogSelectionButton, Context context) {
+  public static Dialog create(
+      String selection,
+      Button dialogSelectionButton,
+      Context context,
+      Runnable setSelected,
+      Runnable enableSaveButton) {
     Dialog dialog = new Dialog(context);
     LinearLayout layout =
         (LinearLayout)
@@ -27,18 +32,24 @@ public final class UniversitySelectionDialogFactory {
         (Button) layout.findViewById(R.id.uni_selection_option_1),
         dialogSelectionButton,
         options.get(0),
-        dialog);
+        dialog,
+        setSelected,
+        enableSaveButton);
     setupButton(
         (Button) layout.findViewById(R.id.uni_selection_option_2),
         dialogSelectionButton,
         options.get(1),
-        dialog);
+        dialog,
+        setSelected,
+        enableSaveButton);
     if (options.size() == 3) {
       setupButton(
           (Button) layout.findViewById(R.id.uni_selection_option_3),
           dialogSelectionButton,
           options.get(2),
-          dialog);
+          dialog,
+          setSelected,
+          enableSaveButton);
     } else {
       layout.findViewById(R.id.uni_selection_option_3).setVisibility(View.GONE);
     }
@@ -48,11 +59,18 @@ public final class UniversitySelectionDialogFactory {
   }
 
   private static void setupButton(
-      Button buttonOption, Button dialogSelectionButton, String text, Dialog dialog) {
+      Button buttonOption,
+      Button dialogSelectionButton,
+      String text,
+      Dialog dialog,
+      Runnable setSelected,
+      Runnable enableSaveButton) {
     buttonOption.setText(text);
     buttonOption.setOnClickListener(
         clickedButton -> {
           dialogSelectionButton.setText(((Button) clickedButton).getText());
+          setSelected.run();
+          enableSaveButton.run();
           dialog.dismiss();
         });
   }
