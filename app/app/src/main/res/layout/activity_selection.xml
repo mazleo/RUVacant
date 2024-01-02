@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.selectionview.activities.SelectionActivity">
+
+    <ImageView
+        android:id="@+id/logo_selection"
+        android:transitionName="logo"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_v2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/selection_buttons"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="Logo" />
+
+    <LinearLayout
+        android:id="@+id/selection_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/logo_selection"
+        app:layout_constraintBottom_toTopOf="@id/select_button_selections"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/semester_selection"
+            style="@style/SelectionButton"
+            app:icon="@drawable/baseline_calendar_month_24"
+            android:text="Semester" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/campus_selection"
+            style="@style/SelectionButton"
+            app:icon="@drawable/location_on"
+            android:text="Campus" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/level_selection"
+            style="@style/SelectionButton"
+            app:icon="@drawable/school"
+            android:text="Level" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/select_button_selections"
+        style="@style/SelectionButton"
+        app:layout_constraintTop_toBottomOf="@id/selection_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:backgroundTint="#FFEAE9E9"
+        android:textColor="@color/white"
+        android:text="SELECT"
+        android:enabled="false"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
