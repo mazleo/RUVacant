@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.ui.dialogs;
+package blog.mazleo.ruvacant.ui.selectionview.dialogs;
 
 import blog.mazleo.ruvacant.info.UniversityCampus;
 import blog.mazleo.ruvacant.info.UniversityLevel;

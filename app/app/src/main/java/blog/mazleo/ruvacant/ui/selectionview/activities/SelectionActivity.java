@@ -1,6 +1,7 @@
-package blog.mazleo.ruvacant.ui.activities;
+package blog.mazleo.ruvacant.ui.selectionview.activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +13,9 @@ import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.shared.ApplicationData;
 import blog.mazleo.ruvacant.shared.SharedApplicationData;
-import blog.mazleo.ruvacant.ui.dialogs.UniversitySelection;
-import blog.mazleo.ruvacant.ui.dialogs.UniversitySelectionDialogFactory;
+import blog.mazleo.ruvacant.ui.content.ContentActivity;
+import blog.mazleo.ruvacant.ui.selectionview.dialogs.UniversitySelection;
+import blog.mazleo.ruvacant.ui.selectionview.dialogs.UniversitySelectionDialogFactory;
 import dagger.hilt.android.AndroidEntryPoint;
 import javax.inject.Inject;
 
@@ -96,6 +98,9 @@ public final class SelectionActivity extends AppCompatActivity {
           sharedApplicationData.addData(ApplicationData.SEMESTER_CODE.getTag(), semesterCode);
           sharedApplicationData.addData(ApplicationData.CAMPUS_CODE.getTag(), campusCode);
           sharedApplicationData.addData(ApplicationData.LEVEL_CODE.getTag(), levelCode);
+
+          Intent intent = new Intent(this, ContentActivity.class);
+          startActivity(intent);
         });
   }
 

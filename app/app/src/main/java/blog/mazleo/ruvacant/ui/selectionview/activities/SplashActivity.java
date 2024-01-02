@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.ui.activities;
+package blog.mazleo.ruvacant.ui.selectionview.activities;
 
 import android.app.ActivityOptions;
 import android.content.Intent;

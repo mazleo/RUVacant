@@ -1,4 +1,4 @@
-package blog.mazleo.ruvacant.ui.dialogs;
+package blog.mazleo.ruvacant.ui.selectionview.dialogs;
 
 /** The selection type. */
 public enum UniversitySelection {
