@@ -31,7 +31,7 @@ public final class ApplicationStateManagerTest {
   public void registerStateBinding() {
     ApplicationStateBinding noopStateBinding = () -> {};
     String fakeState = "fake-state";
-    stateManager.registerStateBinding(fakeState, noopStateBinding);
+    stateManager.registerStateBinding(fakeState, noopStateBinding, "fake-state-binding");
     assertTrue(stateManager.stateBindingMap.containsKey(fakeState));
     assertNotNull(stateManager.stateBindingMap.get(fakeState));
     assertTrue(stateManager.stateBindingMap.get(fakeState).contains(noopStateBinding));
@@ -44,7 +44,8 @@ public final class ApplicationStateManagerTest {
     ApplicationStateBinding stateBinding = () -> runCheck.hasRun = true;
     String fakeState = "fake-state";
     ApplicationStateBinder stateBinder =
-        stateManager -> stateManager.registerStateBinding(fakeState, stateBinding);
+        stateManager ->
+            stateManager.registerStateBinding(fakeState, stateBinding, "fake-state-binding");
     stateManager.registerBinder(stateBinder);
     stateManager.bind();
     stateManager.enterState(fakeState);

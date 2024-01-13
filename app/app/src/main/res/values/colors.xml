@@ -6,4 +6,12 @@
     <color name="red_main">#FFDE2E4D</color>
     <color name="gray_light">#FFF3F1F1</color>
     <color name="dark_text">@color/black</color>
+    <color name="yellow_main">#FFFFC83C</color>
+    <color name="yellow_accent">#FFE6AF20</color>
+    <color name="blue_main">#FF267EE4</color>
+    <color name="blue_accent">#FF1265C7</color>
+    <color name="green_main">#FF01D8B2</color>
+    <color name="green_accent">#FF12BD9E</color>
+    <color name="purple_main">#FF8000FF</color>
+    <color name="purple_accent">#FF6601CB</color>
 </resources>

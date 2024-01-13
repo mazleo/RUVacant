@@ -1,7 +1,6 @@
 package blog.mazleo.ruvacant.core;
 
 import android.app.Application;
-import android.content.res.Resources;
 import androidx.room.Room;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.service.bootstrap.ApplicationBootstrapper;
@@ -19,7 +18,6 @@ public final class RuVacantApplication extends Application {
   @Inject ApplicationBootstrapper bootstrapper;
   @Inject ApplicationStateManager stateManager;
   @Inject RuVacantDatabase ruVacantDatabase;
-  @Inject Resources resources;
 
   @Override
   public void onCreate() {
@@ -29,7 +27,7 @@ public final class RuVacantApplication extends Application {
         Room.databaseBuilder(
                 getApplicationContext(),
                 ApplicationDatabase.class,
-                resources.getString(R.string.database_name))
+                getResources().getString(R.string.database_name))
             .build());
     bootstrapper.bootstrap();
   }

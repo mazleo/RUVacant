@@ -8,6 +8,7 @@ import blog.mazleo.ruvacant.service.model.RuClassInfos;
 import blog.mazleo.ruvacant.service.serialization.RuClassInfosDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import java.io.IOException;
 import org.junit.Test;
 import retrofit2.Retrofit;
@@ -31,7 +32,11 @@ public final class RuCourseServiceTest {
     RuCourseService courseService = retrofit.create(RuCourseService.class);
     RuClassInfos classInfos = null;
     try {
-      classInfos = courseService.getClassInfos("198", "92023", "NB", "U").execute().body();
+      JsonElement jsonElement =
+          courseService.getClassInfos("198", "92023", "NB", "U").execute().body();
+      classInfos =
+          (new RuClassInfosDeserializer())
+              .deserialize(jsonElement, /* typeOfT= */ null, /* context= */ null);
     } catch (IOException exception) {
       fail();
     }

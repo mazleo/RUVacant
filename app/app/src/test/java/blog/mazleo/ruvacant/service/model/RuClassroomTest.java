@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-/** Test cases for RuClassRoomTest. */
+/** Test cases for RuClassroomTest. */
 public final class RuClassroomTest {
   @Test
   public void construct_expectedValues() {
@@ -16,12 +16,7 @@ public final class RuClassroomTest {
         String.format("%s.%s.%s", expectedUniCampusCode, expectedBuildingCode, expectedRoomCode);
     RuClassroom classRoom =
         new RuClassroom(
-            expectedRoomCode,
-            expectedBuildingCode,
-            expectedCampusName,
-            /* semesterCode= */ null,
-            expectedUniCampusCode,
-            /* levelCode= */ null);
+            expectedRoomCode, expectedBuildingCode, expectedCampusName, expectedUniCampusCode);
     assertEquals(expectedCode, classRoom.key);
     assertEquals(expectedRoomCode, classRoom.code);
     assertEquals(expectedBuildingCode, classRoom.buildingCode);
@@ -39,12 +34,7 @@ public final class RuClassroomTest {
         String.format("%s.%s.%s", expectedUniCampusCode, expectedBuildingCode, expectedRoomCode);
     RuClassroom classRoom =
         new RuClassroom(
-            expectedRoomCode,
-            expectedBuildingCode,
-            expectedCampusName,
-            /* semesterCode= */ null,
-            expectedUniCampusCode,
-            /* levelCode= */ null);
+            expectedRoomCode, expectedBuildingCode, expectedCampusName, expectedUniCampusCode);
     assertEquals(expectedCode, classRoom.key);
     assertEquals(expectedRoomCode, classRoom.code);
     assertEquals(expectedBuildingCode, classRoom.buildingCode);

@@ -51,7 +51,9 @@ public final class RequestBinder implements ApplicationStateBinder {
               return null;
             });
     stateManager.registerStateBinding(
-        ApplicationState.SUBJECTS_REQUEST.getState(), subjectsRequestBinding);
+        ApplicationState.SUBJECTS_REQUEST.getState(),
+        subjectsRequestBinding,
+        StateBinding.REQUEST_SUBJECT_INFO.getId());
   }
 
   private void bindSubjectsRequested(ApplicationStateManager stateManager) {
@@ -63,7 +65,9 @@ public final class RequestBinder implements ApplicationStateBinder {
               return null;
             });
     stateManager.registerStateBinding(
-        ApplicationState.SUBJECTS_REQUESTED.getState(), subjectsRequestedBinding);
+        ApplicationState.SUBJECTS_REQUESTED.getState(),
+        subjectsRequestedBinding,
+        StateBinding.REQUEST_SUBJECT_INFO.getId());
   }
 
   private void bindCoursesRequest(ApplicationStateManager stateManager) {
@@ -74,7 +78,9 @@ public final class RequestBinder implements ApplicationStateBinder {
               return null;
             });
     stateManager.registerStateBinding(
-        ApplicationState.COURSES_REQUEST.getState(), coursesRequestBinding);
+        ApplicationState.COURSES_REQUEST.getState(),
+        coursesRequestBinding,
+        StateBinding.REQUEST_COURSE_INFO.getId());
   }
 
   private void bindCoursesRequested(ApplicationStateManager stateManager) {
@@ -87,6 +93,8 @@ public final class RequestBinder implements ApplicationStateBinder {
               return null;
             });
     stateManager.registerStateBinding(
-        ApplicationState.COURSES_REQUESTED.getState(), coursesRequestedBinding);
+        ApplicationState.COURSES_REQUESTED.getState(),
+        coursesRequestedBinding,
+        StateBinding.REQUEST_COURSE_INFO.getId());
   }
 }

@@ -1,7 +1,6 @@
 package blog.mazleo.ruvacant.core;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import blog.mazleo.ruvacant.R;
@@ -9,6 +8,7 @@ import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,30 +21,26 @@ public abstract class ApplicationModule {
 
   @Provides
   @Singleton
+  @ApplicationContext
+  static Resources provideResources(Application application) {
+    return application.getResources();
+  }
+
+  @Provides
+  @Singleton
   @AppName
-  static String provideAppName(Resources resources) {
+  static String provideAppName(@ApplicationContext Resources resources) {
     return resources.getString(R.string.app_name);
+  }
+
+  @Provides
+  static AssetManager provideAssetManager(@ApplicationContext Resources resources) {
+    return resources.getAssets();
   }
 
   @Provides
   @Singleton
   static ExecutorService provideExecutorService() {
     return Executors.newCachedThreadPool();
-  }
-
-  @Provides
-  @Singleton
-  static Resources provideResources(Context context) {
-    return context.getResources();
-  }
-
-  @Provides
-  static Context provideContext(Application application) {
-    return application.getApplicationContext();
-  }
-
-  @Provides
-  static AssetManager provideAssetManager(Resources resources) {
-    return resources.getAssets();
   }
 }

@@ -22,6 +22,8 @@ public final class ApplicationStateManager {
   @VisibleForTesting
   final Map<String, List<ApplicationStateBinding>> stateBindingMap = new HashMap<>();
 
+  private final Map<String, List<String>> stateBindingCache = new HashMap<>();
+
   @VisibleForTesting final List<ApplicationStateBinder> stateBinders = new ArrayList<>();
 
   @VisibleForTesting
@@ -77,16 +79,22 @@ public final class ApplicationStateManager {
   }
 
   /** Helper function to register a single state binding. */
-  public void registerStateBinding(String state, ApplicationStateBinding stateBinding) {
+  public void registerStateBinding(
+      String state, ApplicationStateBinding stateBinding, String stateBindingKey) {
     if (stateBindingMap.containsKey(state)) {
       List<ApplicationStateBinding> stateBindings = stateBindingMap.get(state);
-      if (!stateBindings.contains(stateBinding)) {
+      List<String> stateBindingKeys = stateBindingCache.get(state);
+      if (!stateBindingKeys.contains(stateBindingKey)) {
         stateBindings.add(stateBinding);
+        stateBindingKeys.add(stateBindingKey);
       }
     } else {
       List<ApplicationStateBinding> stateBindings = new ArrayList<>();
+      List<String> stateBindingKeys = new ArrayList<>();
       stateBindings.add(stateBinding);
+      stateBindingKeys.add(stateBindingKey);
       stateBindingMap.put(state, stateBindings);
+      stateBindingCache.put(state, stateBindingKeys);
     }
   }
 

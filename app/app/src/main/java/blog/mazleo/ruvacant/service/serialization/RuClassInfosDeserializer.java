@@ -116,29 +116,11 @@ public final class RuClassInfosDeserializer implements JsonDeserializer<RuClassI
               String buildingCode = getStringOrNull(meetingObject, "buildingCode");
               String start = getStringOrNull(meetingObject, "startTime");
               String end = getStringOrNull(meetingObject, "endTime");
-              if (buildingCode != null) {
-                assert roomCode != null;
-                assert campusName != null;
+              if (buildingCode != null && roomCode != null && campusName != null) {
                 buildings.add(
-                    new RuBuilding(
-                        buildingCode,
-                        /* name= */ null,
-                        campusName,
-                        /* semesterCode= */ null,
-                        uniCampusCode,
-                        /* levelCode= */ null));
-                classRooms.add(
-                    new RuClassroom(
-                        roomCode,
-                        buildingCode,
-                        campusName,
-                        /* semesterCode= */ null,
-                        uniCampusCode,
-                        /* levelCode= */ null));
-                if (start != null) {
-                  assert end != null;
-                  assert pmCode != null;
-                  assert meetingDay != null;
+                    new RuBuilding(buildingCode, /* name= */ null, campusName, uniCampusCode));
+                classRooms.add(new RuClassroom(roomCode, buildingCode, campusName, uniCampusCode));
+                if (start != null && end != null && pmCode != null && meetingDay != null) {
                   meetings.add(
                       new RuMeeting(
                           start,

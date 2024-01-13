@@ -41,8 +41,8 @@ public final class RuPlacesAggregatorService {
             cachedPlaces.containsKey(building.code) ? cachedPlaces.get(building.code).name : null;
       }
 
-      sharedApplicationData.removeData(ApplicationData.CLASS_INFOS_CACHE.getTag());
-      sharedApplicationData.addData(ApplicationData.CLASS_INFOS_CACHE.getTag(), cachedClassInfos);
+      sharedApplicationData.replaceData(
+          ApplicationData.CLASS_INFOS_CACHE.getTag(), cachedClassInfos);
 
       stateManager.exitState(ApplicationState.PLACES_AGGREGATING.getState());
       stateManager.enterState(ApplicationState.PLACES_AGGREGATED.getState());

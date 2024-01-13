@@ -19,7 +19,11 @@ public enum ApplicationState {
   ROOM_VIEW_DATA_LOADING("room-view-data-loading"),
   ROOM_VIEW_DATA_LOADED("room-view-data-loaded"),
   CLASSROOM_VIEW_DATA_LOADING("classroom-view-data-loading"),
-  CLASSROOM_VIEW_DATA_LOADED("classroom-view-data-loaded");
+  CLASSROOM_VIEW_DATA_LOADED("classroom-view-data-loaded"),
+  SELECTION_SCENE("selection-scene"),
+  SELECTION_ACTIVITY_END("selection-scene-end"),
+  UNIVERSITY_VIEW_ACTIVITY("university-view-scene"),
+  UNIVERSITY_VIEW_ACTIVITY_END("university-view-scene-end");
 
   private final String state;
 

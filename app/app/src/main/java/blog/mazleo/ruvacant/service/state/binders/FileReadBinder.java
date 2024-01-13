@@ -43,7 +43,8 @@ public final class FileReadBinder implements ApplicationStateBinder {
             unused -> {
               fileService.initiateParsePlacesFile();
               return null;
-            }));
+            }),
+        StateBinding.READ_PLACES_FILE.getId());
   }
 
   private void bindPlacesRead(ApplicationStateManager stateManager) {
@@ -54,6 +55,7 @@ public final class FileReadBinder implements ApplicationStateBinder {
               stateManager.exitState(ApplicationState.PLACES_READ.getState());
               stateManager.enterState(ApplicationState.PLACES_AGGREGATING.getState());
               return null;
-            }));
+            }),
+        StateBinding.READ_PLACES_FILE.getId());
   }
 }

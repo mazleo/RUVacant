@@ -16,41 +16,23 @@ public final class RuBuilding {
   public String code;
   @Nullable public String name;
   public String campusName;
-  public String semesterCode;
   public String uniCampusCode;
-  public String levelCode;
 
   public RuBuilding(
-      String key,
-      String code,
-      @Nullable String name,
-      String campusName,
-      String semesterCode,
-      String uniCampusCode,
-      String levelCode) {
+      String key, String code, @Nullable String name, String campusName, String uniCampusCode) {
     this.key = key;
     this.code = code;
     this.name = name;
     this.campusName = campusName;
-    this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
-    this.levelCode = levelCode;
   }
 
   @Ignore
-  public RuBuilding(
-      String code,
-      @Nullable String name,
-      String campusName,
-      String semesterCode,
-      String uniCampusCode,
-      String levelCode) {
+  public RuBuilding(String code, @Nullable String name, String campusName, String uniCampusCode) {
     key = String.format("%s.%s", uniCampusCode, code);
     this.code = code;
     this.name = name;
     this.campusName = campusName;
-    this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
-    this.levelCode = levelCode;
   }
 }
