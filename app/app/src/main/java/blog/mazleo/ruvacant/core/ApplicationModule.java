@@ -3,8 +3,11 @@ package blog.mazleo.ruvacant.core;
 import android.app.Application;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Looper;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.MainThread;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -42,5 +45,12 @@ public abstract class ApplicationModule {
   @Singleton
   static ExecutorService provideExecutorService() {
     return Executors.newCachedThreadPool();
+  }
+
+  @Provides
+  @Singleton
+  @MainThread
+  static Handler provideMainThreadHandler() {
+    return new Handler(Looper.getMainLooper());
   }
 }

@@ -2,18 +2,26 @@ package blog.mazleo.ruvacant.service.state.binders;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyFragment;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinder;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.service.state.util.StateBinderUtil;
 import blog.mazleo.ruvacant.ui.ApplicationActivity;
 import blog.mazleo.ruvacant.ui.content.ContentFragment;
+import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneAdapter;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneDataManager;
 import dagger.hilt.android.scopes.ActivityScoped;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 @ActivityScoped
 public final class UiBinder implements ApplicationStateBinder {
@@ -24,7 +32,9 @@ public final class UiBinder implements ApplicationStateBinder {
   private final FragmentManager fragmentManager;
   private final StateBinderUtil stateBinderUtil;
 
+  private final Provider<View> contentBodyViewProvider;
   private final UniversitySceneDataManager universitySceneDataManager;
+  private final UniversitySceneAdapter universitySceneAdapter;
 
   /** Binds UI tasks to certain states. */
   @Inject
@@ -34,14 +44,18 @@ public final class UiBinder implements ApplicationStateBinder {
       ApplicationActivity activity,
       FragmentManager fragmentManager,
       StateBinderUtil stateBinderUtil,
-      UniversitySceneDataManager universitySceneDataManager) {
+      @ContentBodyFragment Provider<View> contentBodyViewProvider,
+      UniversitySceneDataManager universitySceneDataManager,
+      UniversitySceneAdapter universitySceneAdapter) {
     this.appName = appName;
     this.context = context;
     this.activity = activity;
     this.fragmentManager = fragmentManager;
     this.stateBinderUtil = stateBinderUtil;
 
+    this.contentBodyViewProvider = contentBodyViewProvider;
     this.universitySceneDataManager = universitySceneDataManager;
+    this.universitySceneAdapter = universitySceneAdapter;
   }
 
   @Override
@@ -49,6 +63,7 @@ public final class UiBinder implements ApplicationStateBinder {
     bindSelectionSceneEnd(stateManager);
     bindUniversityScene(stateManager);
     bindUniversitySceneDataLoading(stateManager);
+    bindUniversitySceneDataLoaded(stateManager);
   }
 
   private void bindSelectionSceneEnd(ApplicationStateManager stateManager) {
@@ -74,7 +89,9 @@ public final class UiBinder implements ApplicationStateBinder {
             unused -> {
               fragmentManager
                   .beginTransaction()
-                  .replace(R.id.app_fragment, ContentFragment.class, null)
+                  .replace(R.id.app_fragment, ContentFragment.class, null, "university-scene")
+                  .setReorderingAllowed(true)
+                  .addToBackStack(/* name= */ null)
                   .commit();
               return null;
             }),
@@ -97,6 +114,28 @@ public final class UiBinder implements ApplicationStateBinder {
               return null;
             }),
         StateBinding.UNIVERSITY_SCENE_BUILD_CARDS.getId());
+  }
+
+  private void bindUniversitySceneDataLoaded(ApplicationStateManager stateManager) {
+    stateManager.registerStateBinding(
+        ApplicationState.UNIVERSITY_SCENE_DATA_LOADED.getState(),
+        stateBinderUtil.getAsyncMainThreadBinding(
+            unused -> {
+              View contentBody = contentBodyViewProvider.get();
+              RecyclerView buildingsListing =
+                  (RecyclerView)
+                      ((ViewGroup)
+                              LayoutInflater.from(contentBody.getContext())
+                                  .inflate(
+                                      R.layout.content_recycler_view,
+                                      (ViewGroup) contentBody,
+                                      /* attachToRoot= */ true))
+                          .getChildAt(0);
+              buildingsListing.setLayoutManager(new LinearLayoutManager(contentBody.getContext()));
+              buildingsListing.setAdapter(universitySceneAdapter);
+              return null;
+            }),
+        StateBinding.UNIVERSITY_SCENE_PRESENT_CARDS.getId());
   }
 
   @Override

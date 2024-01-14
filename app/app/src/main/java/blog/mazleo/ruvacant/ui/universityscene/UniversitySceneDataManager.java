@@ -18,6 +18,7 @@ import blog.mazleo.ruvacant.ui.base.CampusCardColorUtil;
 import blog.mazleo.ruvacant.ui.base.CardSegment;
 import blog.mazleo.ruvacant.ui.base.CardValue;
 import blog.mazleo.ruvacant.ui.base.SceneDataManager;
+import dagger.hilt.android.scopes.ActivityScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;
 
+@ActivityScoped
 /** Data manager for the University scene. */
 public final class UniversitySceneDataManager implements SceneDataManager {
 

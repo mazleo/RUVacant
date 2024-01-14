@@ -3,8 +3,11 @@ package blog.mazleo.ruvacant.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import blog.mazleo.ruvacant.R;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyFragment;
 import blog.mazleo.ruvacant.ui.ApplicationActivity;
 import dagger.Module;
 import dagger.Provides;
@@ -44,5 +47,11 @@ public abstract class ActivityModule {
   @Provides
   static FragmentManager provideFragmentManager(AppCompatActivity activity) {
     return activity.getSupportFragmentManager();
+  }
+
+  @Provides
+  @ContentBodyFragment
+  static View provideContentBodyFragment(ApplicationActivity activity) {
+    return activity.findViewById(R.id.content_body);
   }
 }
