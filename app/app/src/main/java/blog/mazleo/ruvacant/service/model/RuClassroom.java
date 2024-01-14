@@ -15,41 +15,23 @@ public final class RuClassroom {
   public String code;
   public String buildingCode;
   public String campusName;
-  public String semesterCode;
   public String uniCampusCode;
-  public String levelCode;
 
   public RuClassroom(
-      String key,
-      String code,
-      String buildingCode,
-      String campusName,
-      String semesterCode,
-      String uniCampusCode,
-      String levelCode) {
+      String key, String code, String buildingCode, String campusName, String uniCampusCode) {
     this.key = key;
     this.code = code;
     this.buildingCode = buildingCode;
     this.campusName = campusName;
-    this.semesterCode = semesterCode;
-    this.uniCampusCode = campusName;
-    this.levelCode = levelCode;
+    this.uniCampusCode = uniCampusCode;
   }
 
   @Ignore
-  public RuClassroom(
-      String code,
-      String buildingCode,
-      String campusName,
-      String semesterCode,
-      String uniCampusCode,
-      String levelCode) {
+  public RuClassroom(String code, String buildingCode, String campusName, String uniCampusCode) {
     key = String.format("%s.%s.%s", uniCampusCode, buildingCode, code);
     this.code = code;
     this.buildingCode = buildingCode;
     this.campusName = campusName;
-    this.semesterCode = semesterCode;
     this.uniCampusCode = uniCampusCode;
-    this.levelCode = levelCode;
   }
 }

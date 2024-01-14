@@ -13,4 +13,11 @@ public final class UniversityCampusUtilTest {
     assertEquals("NK", UniversityCampusUtil.getCampusCodeFromString("Newark"));
     assertEquals("CM", UniversityCampusUtil.getCampusCodeFromString("Camden"));
   }
+
+  @Test
+  public void getNameFromCampusCode() {
+    assertEquals("New Brunswick", UniversityCampusUtil.getNameFromCampusCode("NB"));
+    assertEquals("Newark", UniversityCampusUtil.getNameFromCampusCode("NK"));
+    assertEquals("Camden", UniversityCampusUtil.getNameFromCampusCode("CM"));
+  }
 }

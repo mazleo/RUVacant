@@ -9,6 +9,7 @@ import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.shared.ApplicationData;
 import blog.mazleo.ruvacant.shared.SharedApplicationData;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -28,6 +29,26 @@ public final class DatabaseService {
     this.ruVacantDatabase = ruVacantDatabase;
     this.stateManager = stateManager;
     this.sharedApplicationData = sharedApplicationData;
+  }
+
+  public boolean hasData() {
+    return ruVacantDatabase.getDatabase().buildingDao().getCount() > 0;
+  }
+
+  public List<RuBuilding> getAllBuildingsInUniCampus(String uniCampusCode) {
+    return ruVacantDatabase.getDatabase().buildingDao().getAllBuildingsInUniCampus(uniCampusCode);
+  }
+
+  public List<RuClassroom> getAllClassroomsInBuilding(String buildingCode) {
+    return ruVacantDatabase.getDatabase().classroomDao().getAllClassroomsInBuilding(buildingCode);
+  }
+
+  public List<RuMeeting> getMeetings(
+      String semesterCode, String buildingCode, String roomCode, int dayOfWeek) {
+    return ruVacantDatabase
+        .getDatabase()
+        .meetingDao()
+        .getMeetings(semesterCode, buildingCode, roomCode, dayOfWeek);
   }
 
   public void saveAllData() {

@@ -14,6 +14,7 @@ import blog.mazleo.ruvacant.shared.SharedApplicationData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -36,7 +37,7 @@ public final class FileService {
   FileService(
       @AppName String appName,
       AssetManager assetManager,
-      Resources resources,
+      @ApplicationContext Resources resources,
       ApplicationStateManager stateManager,
       SharedApplicationData sharedApplicationData) {
     this.appName = appName;
@@ -49,10 +50,14 @@ public final class FileService {
   public void initiateParsePlacesFile() {
     String filename = resources.getString(R.string.places_file_name);
     String jsonString = attemptReadFile(filename);
-    sharedApplicationData.addData(
+    sharedApplicationData.replaceData(
         ApplicationData.PLACES_CACHE.getTag(), parseJsonString(jsonString));
     stateManager.exitState(ApplicationState.PLACES_READING.getState());
     stateManager.enterState(ApplicationState.PLACES_READ.getState());
+  }
+
+  public void reset() {
+    numFileReadTries = 0;
   }
 
   private Map<String, RuPlace> parseJsonString(String jsonString) {

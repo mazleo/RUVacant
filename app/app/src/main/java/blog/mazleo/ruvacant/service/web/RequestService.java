@@ -1,6 +1,8 @@
 package blog.mazleo.ruvacant.service.web;
 
 import android.util.Log;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableInt;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
 import blog.mazleo.ruvacant.info.UniversityCampus;
 import blog.mazleo.ruvacant.info.UniversityLevel;
@@ -20,12 +22,14 @@ import blog.mazleo.ruvacant.shared.SharedApplicationData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;
 import okhttp3.HttpUrl;
 import retrofit2.Call;
@@ -89,7 +93,9 @@ public final class RequestService {
   private final String appName;
   private final ApplicationStateManager stateManager;
   private final SharedApplicationData sharedApplicationData;
+  private final ExecutorService executorService;
 
+  private final List<RuSubject> subjects = new ArrayList<>();
   private final Set<String> cachedSubjects = new HashSet<>();
   private final Set<String> cachedCourses = new HashSet<>();
   private final Set<String> cachedMeetings = new HashSet<>();
@@ -98,27 +104,18 @@ public final class RequestService {
   private final Map<String, Integer> subjectsRetries = new HashMap<>();
   private final Map<String, Integer> classInfosRetries = new HashMap<>();
   private final List<Call> cachedCalls = new ArrayList<>();
-  private int coursesNumSubjectsRetrieved = 0;
-  private int subjectRequests = 0;
+  private ObservableInt classInfoCallNumStack = new ObservableInt(0);
+  private ObservableInt subjectsCallNumStack = new ObservableInt(0);
 
   private final Callback<List<RuSubject>> subjectsResponseCallback =
       new Callback<List<RuSubject>>() {
         @Override
         public void onResponse(Call<List<RuSubject>> call, Response<List<RuSubject>> response) {
-          subjectRequests++;
           List<RuSubject> subjects = response.body();
           if (subjects != null) {
             cacheSubjects(subjects);
           }
-          if (subjectRequests == NUM_SUBJECT_REQUESTS) {
-            int numSubjects =
-                ((List<RuSubject>)
-                        sharedApplicationData.getData(ApplicationData.SUBJECTS_LIST_CACHE.getTag()))
-                    .size();
-            sharedApplicationData.addData(ApplicationData.SUBJECTS_NUM.getTag(), numSubjects);
-            stateManager.exitState(ApplicationState.SUBJECTS_REQUEST.getState());
-            stateManager.enterState(ApplicationState.SUBJECTS_REQUESTED.getState());
-          }
+          subjectsCallNumStack.set(subjectsCallNumStack.get() - 1);
         }
 
         @Override
@@ -144,25 +141,15 @@ public final class RequestService {
         }
       };
 
-  private final Callback<RuClassInfos> classInfosResponseCallback =
-      new Callback<RuClassInfos>() {
+  private final Callback<JsonElement> classInfosResponseCallback =
+      new Callback<JsonElement>() {
         @Override
-        public void onResponse(Call<RuClassInfos> call, Response<RuClassInfos> response) {
-          coursesNumSubjectsRetrieved++;
-          RuClassInfos classInfosResponse = response.body();
-          if (classInfosResponse != null) {
-            cacheClassInfos(classInfosResponse, call.request().url());
-          }
-          Integer numSubjects =
-              (Integer) sharedApplicationData.getData(ApplicationData.SUBJECTS_NUM.getTag());
-          if (coursesNumSubjectsRetrieved == numSubjects * NUM_SUBJECT_REQUESTS) {
-            stateManager.exitState(ApplicationState.COURSES_REQUEST.getState());
-            stateManager.enterState(ApplicationState.COURSES_REQUESTED.getState());
-          }
+        public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+          executorService.execute(() -> handleClassInfosResponse(response.body(), call));
         }
 
         @Override
-        public void onFailure(Call<RuClassInfos> call, Throwable t) {
+        public void onFailure(Call<JsonElement> call, Throwable t) {
           HttpUrl url = call.request().url();
           String retryKey =
               String.format(
@@ -189,13 +176,17 @@ public final class RequestService {
   RequestService(
       @AppName String appName,
       ApplicationStateManager stateManager,
-      SharedApplicationData sharedApplicationData) {
+      SharedApplicationData sharedApplicationData,
+      ExecutorService executorService) {
     this.appName = appName;
     this.stateManager = stateManager;
     this.sharedApplicationData = sharedApplicationData;
+    this.executorService = executorService;
+    classInfoCallNumStack.addOnPropertyChangedCallback(endCourseRequestStateIfComplete());
+    subjectsCallNumStack.addOnPropertyChangedCallback(endSubjectsRequestStateIfComplete());
   }
 
-  public void initiateSubjectsRequest() {
+  public synchronized void initiateSubjectsRequest() {
     Retrofit retrofit = createRetrofit(List.class, new RuSubjectsDeserializer(), COURSES_URL);
     RuSubjectsService subjectsService = retrofit.create(RuSubjectsService.class);
 
@@ -209,21 +200,22 @@ public final class RequestService {
           Call call = subjectsService.getSubjects(semester, campus.getCode(), level.getCode());
           cachedCalls.add(call);
           call.enqueue(subjectsResponseCallback);
+          subjectsCallNumStack.set(subjectsCallNumStack.get() + 1);
         }
       }
     }
   }
 
-  public void initiateClassInfosRequests() {
-    if (!sharedApplicationData.containsData(ApplicationData.SUBJECTS_LIST_CACHE.getTag())) {
+  public synchronized void initiateClassInfosRequests() {
+    if (subjects.size() == 0) {
       throw new IllegalStateException(
           "Subjects should be stored if calling initiateClassInfosRequests.");
     }
-    List<RuSubject> subjects =
-        (List<RuSubject>)
-            sharedApplicationData.getData(ApplicationData.SUBJECTS_LIST_CACHE.getTag());
     Retrofit retrofit =
-        createRetrofit(RuClassInfos.class, new RuClassInfosDeserializer(), COURSES_URL);
+        new Retrofit.Builder()
+            .baseUrl(COURSES_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
     RuCourseService courseService = retrofit.create(RuCourseService.class);
     List<String> semesters = new ArrayList<>();
     semesters.add(UniversitySemesterUtil.getCurrentSemesterCode());
@@ -238,27 +230,44 @@ public final class RequestService {
                     subject.code, semester, campus.getCode(), level.getCode());
             cachedCalls.add(call);
             call.enqueue(classInfosResponseCallback);
+            classInfoCallNumStack.set(classInfoCallNumStack.get() + 1);
           }
         }
       }
     }
   }
 
-  private synchronized void cacheSubjects(List<RuSubject> subjectsResponse) {
-    List<RuSubject> subjects = new ArrayList<>();
-    if (sharedApplicationData.containsData(ApplicationData.SUBJECTS_LIST_CACHE.getTag())) {
-      subjects =
-          (List<RuSubject>)
-              sharedApplicationData.getData(ApplicationData.SUBJECTS_LIST_CACHE.getTag());
+  public void reset() {
+    subjects.clear();
+    cachedSubjects.clear();
+    cachedCourses.clear();
+    cachedMeetings.clear();
+    cachedBuildings.clear();
+    cachedClassrooms.clear();
+    subjectsRetries.clear();
+    classInfosRetries.clear();
+    cachedCalls.clear();
+    classInfoCallNumStack = new ObservableInt(0);
+    subjectsCallNumStack = new ObservableInt(0);
+  }
+
+  private void handleClassInfosResponse(JsonElement jsonElement, Call call) {
+    RuClassInfosDeserializer deserializer = new RuClassInfosDeserializer();
+    RuClassInfos classInfosResponse =
+        deserializer.deserialize(jsonElement, /* typeOfT= */ null, /* context= */ null);
+    if (classInfosResponse != null) {
+      cacheClassInfos(classInfosResponse, call.request().url());
     }
+    classInfoCallNumStack.set(classInfoCallNumStack.get() - 1);
+  }
+
+  private synchronized void cacheSubjects(List<RuSubject> subjectsResponse) {
     for (RuSubject subjectResponse : subjectsResponse) {
       if (!cachedSubjects.contains(subjectResponse.code)) {
         cachedSubjects.add(subjectResponse.code);
         subjects.add(subjectResponse);
       }
     }
-    sharedApplicationData.removeData(ApplicationData.SUBJECTS_LIST_CACHE.getTag());
-    sharedApplicationData.addData(ApplicationData.SUBJECTS_LIST_CACHE.getTag(), subjects);
   }
 
   private synchronized void cacheClassInfos(RuClassInfos classInfosResponse, HttpUrl url) {
@@ -313,9 +322,7 @@ public final class RequestService {
     for (RuBuilding buildingResponse : classInfosResponse.buildings) {
       if (!cachedBuildings.contains(buildingResponse.key)) {
         cachedBuildings.add(buildingResponse.key);
-        buildingResponse.semesterCode = getSemesterCodeFromUrl(url);
         buildingResponse.uniCampusCode = getCampusCodeFromUrl(url);
-        buildingResponse.levelCode = getLevelCodeFromUrl(url);
         cachedClassInfos.buildings.add(buildingResponse);
       }
     }
@@ -326,12 +333,34 @@ public final class RequestService {
     for (RuClassroom classroomResponse : classInfosResponse.classrooms) {
       if (!cachedClassrooms.contains(classroomResponse.key)) {
         cachedClassrooms.add(classroomResponse.key);
-        classroomResponse.semesterCode = getSemesterCodeFromUrl(url);
         classroomResponse.uniCampusCode = getCampusCodeFromUrl(url);
-        classroomResponse.levelCode = getLevelCodeFromUrl(url);
         cachedClassInfos.classrooms.add(classroomResponse);
       }
     }
+  }
+
+  private Observable.OnPropertyChangedCallback endCourseRequestStateIfComplete() {
+    return new Observable.OnPropertyChangedCallback() {
+      @Override
+      public void onPropertyChanged(Observable sender, int propertyId) {
+        if (((ObservableInt) sender).get() == 0) {
+          stateManager.exitState(ApplicationState.COURSES_REQUEST.getState());
+          stateManager.enterState(ApplicationState.COURSES_REQUESTED.getState());
+        }
+      }
+    };
+  }
+
+  private Observable.OnPropertyChangedCallback endSubjectsRequestStateIfComplete() {
+    return new Observable.OnPropertyChangedCallback() {
+      @Override
+      public void onPropertyChanged(Observable sender, int propertyId) {
+        if (((ObservableInt) sender).get() == 0) {
+          stateManager.exitState(ApplicationState.SUBJECTS_REQUEST.getState());
+          stateManager.enterState(ApplicationState.SUBJECTS_REQUESTED.getState());
+        }
+      }
+    };
   }
 
   private String getSemesterCodeFromUrl(HttpUrl url) {

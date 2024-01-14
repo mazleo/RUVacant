@@ -29,11 +29,19 @@ public final class SharedApplicationData {
   }
 
   public Object getData(String tag) {
+
     if (dataMap.containsKey(tag)) {
       return dataMap.get(tag);
     }
     throw new IllegalArgumentException(
         String.format("Attempting to get data tag %s that does not exist", tag));
+  }
+
+  public void replaceData(String tag, Object data) {
+    if (containsData(tag)) {
+      removeData(tag);
+    }
+    addData(tag, data);
   }
 
   public void removeData(String tag) {

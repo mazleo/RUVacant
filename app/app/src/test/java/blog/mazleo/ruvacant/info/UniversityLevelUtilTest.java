@@ -12,4 +12,10 @@ public final class UniversityLevelUtilTest {
     assertEquals("U", UniversityLevelUtil.getLevelCodeFromString("Undergraduate"));
     assertEquals("G", UniversityLevelUtil.getLevelCodeFromString("Graduate"));
   }
+
+  @Test
+  public void getLevelNameFromCode() {
+    assertEquals("Undergraduate", UniversityLevelUtil.getLevelNameFromCode("U"));
+    assertEquals("Graduate", UniversityLevelUtil.getLevelNameFromCode("G"));
+  }
 }

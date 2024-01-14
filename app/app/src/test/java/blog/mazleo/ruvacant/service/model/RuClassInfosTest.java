@@ -28,8 +28,8 @@ public final class RuClassInfosTest {
         new RuCourse("101", "comp arch", "computer architecture", "198", null, "NB", null));
     expectedMeetings.add(
         new RuMeeting("0215", "0415", "P", "T", "02", "283.294", "109", "SC", null, "NB", null));
-    expectedBuildings.add(new RuBuilding("TLL", "tillete hall", "busch", null, "NB", null));
-    expectedClassRooms.add(new RuClassroom("287", "LC", "cac", null, "NB", null));
+    expectedBuildings.add(new RuBuilding("TLL", "tillete hall", "busch", "NB"));
+    expectedClassRooms.add(new RuClassroom("287", "LC", "cac", "NB"));
     RuClassInfos classInfos =
         new RuClassInfos(expectedCourses, expectedMeetings, expectedBuildings, expectedClassRooms);
     assertSame(expectedCourses, classInfos.courses);

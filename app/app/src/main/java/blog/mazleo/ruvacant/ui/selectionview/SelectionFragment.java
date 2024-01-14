@@ -1,30 +1,38 @@
-package blog.mazleo.ruvacant.ui.selectionview.activities;
+package blog.mazleo.ruvacant.ui.selectionview;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.info.UniversityCampusUtil;
 import blog.mazleo.ruvacant.info.UniversityLevelUtil;
 import blog.mazleo.ruvacant.info.UniversitySemesterUtil;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
+import blog.mazleo.ruvacant.service.state.UniversityContext;
 import blog.mazleo.ruvacant.shared.ApplicationData;
 import blog.mazleo.ruvacant.shared.SharedApplicationData;
-import blog.mazleo.ruvacant.ui.content.ContentActivity;
+import blog.mazleo.ruvacant.ui.content.ContentActivityInfo;
+import blog.mazleo.ruvacant.ui.content.ContentActivityInfoUtil;
+import blog.mazleo.ruvacant.ui.content.ContentActivityType;
 import blog.mazleo.ruvacant.ui.selectionview.dialogs.UniversitySelection;
 import blog.mazleo.ruvacant.ui.selectionview.dialogs.UniversitySelectionDialogFactory;
 import dagger.hilt.android.AndroidEntryPoint;
 import javax.inject.Inject;
 
-/** The selection activity. */
+/** The selection UI. */
 @AndroidEntryPoint
-public final class SelectionActivity extends AppCompatActivity {
+public final class SelectionFragment extends Fragment {
 
   @Inject ApplicationStateManager stateManager;
   @Inject SharedApplicationData sharedApplicationData;
+  @Inject ContentActivityInfoUtil contentActivityInfoUtil;
 
   private Button semesterButton;
   private Button campusButton;
@@ -40,34 +48,47 @@ public final class SelectionActivity extends AppCompatActivity {
   private boolean isLevelSelected = false;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_selection);
+  }
 
-    semesterButton = (Button) findViewById(R.id.semester_selection);
-    campusButton = (Button) findViewById(R.id.campus_selection);
-    levelButton = (Button) findViewById(R.id.level_selection);
-    selectButton = (Button) findViewById(R.id.select_button_selections);
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_selection, container, /* attachToRoot= */ false);
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    semesterButton = (Button) getView().findViewById(R.id.semester_selection);
+    campusButton = (Button) getView().findViewById(R.id.campus_selection);
+    levelButton = (Button) getView().findViewById(R.id.level_selection);
+    selectButton = (Button) getView().findViewById(R.id.select_button_selections);
 
     semesterDialog =
         UniversitySelectionDialogFactory.create(
             UniversitySelection.SEMESTER.getSelection(),
             semesterButton,
-            SelectionActivity.this,
+            getContext(),
             () -> {},
             this::enableSaveButton);
     campusDialog =
         UniversitySelectionDialogFactory.create(
             UniversitySelection.CAMPUS.getSelection(),
             campusButton,
-            SelectionActivity.this,
+            getContext(),
             () -> isCampusSelected = true,
             this::enableSaveButton);
     levelDialog =
         UniversitySelectionDialogFactory.create(
             UniversitySelection.LEVEL.getSelection(),
             levelButton,
-            SelectionActivity.this,
+            getContext(),
             () -> isLevelSelected = true,
             this::enableSaveButton);
 
@@ -77,46 +98,43 @@ public final class SelectionActivity extends AppCompatActivity {
             UniversitySemesterUtil.getCurrentSemester(),
             UniversitySemesterUtil.getCurrentSemesterYear()));
 
-    semesterButton.setOnClickListener(view -> semesterDialog.show());
-    campusButton.setOnClickListener(view -> campusDialog.show());
-    levelButton.setOnClickListener(view -> levelDialog.show());
+    semesterButton.setOnClickListener(v -> semesterDialog.show());
+    campusButton.setOnClickListener(v -> campusDialog.show());
+    levelButton.setOnClickListener(v -> levelDialog.show());
 
     selectButton.setOnClickListener(
-        view -> {
-          String semesterCode =
-              String.format(
-                  "%s%s",
-                  UniversitySemesterUtil.getSemesterCodeFromString(
-                      String.valueOf(semesterButton.getText())),
-                  UniversitySemesterUtil.getSemesterYearFromString(
-                      String.valueOf(semesterButton.getText())));
+        v -> {
+          String semesterString = semesterButton.getText().toString().trim();
           String campusCode =
               UniversityCampusUtil.getCampusCodeFromString(String.valueOf(campusButton.getText()));
           String levelCode =
               UniversityLevelUtil.getLevelCodeFromString(String.valueOf(levelButton.getText()));
 
-          sharedApplicationData.addData(ApplicationData.SEMESTER_CODE.getTag(), semesterCode);
-          sharedApplicationData.addData(ApplicationData.CAMPUS_CODE.getTag(), campusCode);
-          sharedApplicationData.addData(ApplicationData.LEVEL_CODE.getTag(), levelCode);
+          sharedApplicationData.replaceData(
+              ApplicationData.UNIVERSITY_CONTEXT.getTag(),
+              new UniversityContext(semesterString, campusCode, levelCode));
+          ContentActivityInfo contentActivityInfo =
+              contentActivityInfoUtil.getNewContentActivityInfo();
+          contentActivityInfo.contentActivityType = ContentActivityType.UNIVERSITY;
+          sharedApplicationData.replaceData(
+              ApplicationData.CONTENT_ACTIVITY.getTag(), contentActivityInfo);
 
-          Intent intent = new Intent(this, ContentActivity.class);
-          startActivity(intent);
+          stateManager.exitState(ApplicationState.SELECTION_SCENE.getState());
+          stateManager.enterState(ApplicationState.SELECTION_SCENE_END.getState());
         });
   }
 
   @Override
-  protected void onStart() {
+  public void onStart() {
     super.onStart();
     stateManager.exitState(ApplicationState.APPLICATION_START.getState());
-    stateManager.enterState(ApplicationState.PLACES_READING.getState());
-    stateManager.enterState(ApplicationState.REQUESTING_DATA.getState());
-    stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
   }
 
   private void enableSaveButton() {
     if (isSemesterSelected && isCampusSelected && isLevelSelected) {
       selectButton.setEnabled(true);
-      selectButton.setBackgroundColor(getResources().getColor(R.color.red_main, getTheme()));
+      selectButton.setBackgroundColor(
+          getResources().getColor(R.color.red_main, getContext().getTheme()));
     }
   }
 }

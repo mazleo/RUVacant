@@ -35,7 +35,8 @@ public final class PlacesAggregatorBinder implements ApplicationStateBinder {
             unused -> {
               aggregatorService.initiatePlacesAggregation();
               return null;
-            }));
+            }),
+        StateBinding.AGGREGATE_PLACES_AND_COURSES.getId());
   }
 
   private void bindPlacesAggregated(ApplicationStateManager stateManager) {
@@ -46,6 +47,7 @@ public final class PlacesAggregatorBinder implements ApplicationStateBinder {
               stateManager.exitState(ApplicationState.PLACES_AGGREGATED.getState());
               stateManager.enterState(ApplicationState.DATA_SAVING.getState());
               return null;
-            }));
+            }),
+        StateBinding.AGGREGATE_PLACES_AND_COURSES.getId());
   }
 }
