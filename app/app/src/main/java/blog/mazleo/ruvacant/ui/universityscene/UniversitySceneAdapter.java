@@ -46,6 +46,7 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
     viewHolder.setTitle(card.title());
     viewHolder.setDescription(card.description());
     viewHolder.setSegments(card.segments());
+    viewHolder.setLetterDivider(card.title(), position, dataManager.getLetterIndex());
   }
 
   @Override
@@ -61,6 +62,7 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
     private TextView title;
     private TextView description;
     private ConstraintLayout segments;
+    private TextView letterDivider;
 
     public ViewHolder(View view) {
       super(view);
@@ -71,6 +73,7 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
       title = (TextView) view.findViewById(R.id.card_title);
       description = (TextView) view.findViewById(R.id.card_description);
       segments = (ConstraintLayout) view.findViewById(R.id.card_segments);
+      letterDivider = (TextView) view.findViewById(R.id.letter_divider);
     }
 
     public void setCode(String codeString) {
@@ -148,6 +151,17 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
           weights,
           ConstraintSet.CHAIN_SPREAD);
       constraintSet.applyTo(segments);
+    }
+
+    private void setLetterDivider(String title, int position, int[] letterIndex) {
+      char letter = title.charAt(0);
+      int index = letter - 'a';
+      if (letterIndex[index] == position) {
+        letterDivider.setText(String.valueOf(letter).toUpperCase());
+        letterDivider.setVisibility(View.VISIBLE);
+      } else {
+        letterDivider.setVisibility(View.GONE);
+      }
     }
 
     private View buildSegmentView(CardSegment cardSegment) {

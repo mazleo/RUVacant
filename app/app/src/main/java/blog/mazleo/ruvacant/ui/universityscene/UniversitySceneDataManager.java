@@ -20,6 +20,7 @@ import blog.mazleo.ruvacant.ui.base.CardValue;
 import blog.mazleo.ruvacant.ui.base.SceneDataManager;
 import dagger.hilt.android.scopes.ActivityScoped;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +36,7 @@ public final class UniversitySceneDataManager implements SceneDataManager {
   private static final int MINUTES_TIME_BLOCK = 5;
   private static final int NUM_TIME_BLOCKS =
       (HOURS_PER_DAY * MINUTES_PER_HOUR) / MINUTES_TIME_BLOCK;
+  private static final int NUM_LETTERS = 27;
 
   private final String appName;
   private final ApplicationStateManager stateManager;
@@ -43,6 +45,7 @@ public final class UniversitySceneDataManager implements SceneDataManager {
   private final ExecutorService executorService;
 
   private final List<CardValue> cards = new ArrayList<>();
+  private final int[] letterIndex = new int[NUM_LETTERS];
   private UniversityContext universityContext;
   private ObservableInt cardStack = new ObservableInt();
 
@@ -59,6 +62,7 @@ public final class UniversitySceneDataManager implements SceneDataManager {
     this.sharedApplicationData = sharedApplicationData;
     this.executorService = executorService;
     cardStack.addOnPropertyChangedCallback(endCardBuildIfComplete());
+    Arrays.fill(letterIndex, -1);
   }
 
   @Override
@@ -79,8 +83,26 @@ public final class UniversitySceneDataManager implements SceneDataManager {
   @Override
   public void sortCards() {
     cards.sort(Comparator.comparing(CardValue::title, String::compareTo));
+    buildLetterIndex();
     stateManager.exitState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADING.getState());
     stateManager.enterState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADED.getState());
+  }
+
+  public int[] getLetterIndex() {
+    return letterIndex;
+  }
+
+  private void buildLetterIndex() {
+    int c = 0;
+    char lastLetter = 0;
+    for (CardValue card : cards) {
+      char letter = card.title().charAt(0);
+      if (letter != lastLetter) {
+        letterIndex[letter - 'a'] = c;
+        lastLetter = letter;
+      }
+      c++;
+    }
   }
 
   private void buildCardForEachBuilding() {
