@@ -20,5 +20,10 @@ public class ApplicationAnnotations {
   @Qualifier
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+  public @interface ContentBodyParentFragment {}
+
+  @Qualifier
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
   public @interface MainThread {}
 }

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyFragment;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyParentFragment;
 import blog.mazleo.ruvacant.ui.ApplicationActivity;
 import dagger.Module;
 import dagger.Provides;
@@ -51,7 +53,15 @@ public abstract class ActivityModule {
 
   @Provides
   @ContentBodyFragment
+  @Nullable
   static View provideContentBodyFragment(ApplicationActivity activity) {
     return activity.findViewById(R.id.content_body);
+  }
+
+  @Provides
+  @ContentBodyParentFragment
+  @Nullable
+  static View provideContentBodyParentFragment(ApplicationActivity activity) {
+    return activity.findViewById(R.id.content_body_parent);
   }
 }

@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import blog.mazleo.ruvacant.R;
+import blog.mazleo.ruvacant.service.state.ApplicationState;
+import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.shared.ApplicationData;
 import blog.mazleo.ruvacant.shared.SharedApplicationData;
 import com.google.android.material.button.MaterialButton;
@@ -35,6 +37,7 @@ public class ContentFragment extends Fragment {
 
   @Inject SharedApplicationData sharedApplicationData;
   @Inject ContentActivityInfoUtil contentActivityInfoUtil;
+  @Inject ApplicationStateManager stateManager;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,14 @@ public class ContentFragment extends Fragment {
     setBackground();
     setBackgroundImage();
     setMenuButtonColor();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (stateManager.isInState(ApplicationState.UNIVERSITY_SCENE.getState())) {
+      stateManager.enterState(ApplicationState.UNIVERSITY_SCENE_ON_RUN.getState());
+    }
   }
 
   private void setTitle() {

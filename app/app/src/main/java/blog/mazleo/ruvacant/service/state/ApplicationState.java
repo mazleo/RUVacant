@@ -23,6 +23,7 @@ public enum ApplicationState {
   SELECTION_SCENE("selection-scene"),
   SELECTION_SCENE_END("selection-scene-end"),
   UNIVERSITY_SCENE("university-scene"),
+  UNIVERSITY_SCENE_ON_RUN("university-scene-on-run"),
   UNIVERSITY_SCENE_END("university-scene-end");
 
   private final String state;

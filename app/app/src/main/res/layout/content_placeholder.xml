@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/content_placeholder"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:shimmer_repeat_mode="restart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/content_padding_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/khula_semibold"
+            android:text="A"
+            android:textSize="15sp"
+            android:textColor="@color/dark_text"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp" />
+
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+        <androidx.cardview.widget.CardView
+            style="@style/ContentCardPlaceholder" />
+
+    </LinearLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

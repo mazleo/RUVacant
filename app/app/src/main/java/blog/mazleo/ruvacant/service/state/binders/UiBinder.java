@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyFragment;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyParentFragment;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinder;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
@@ -19,6 +20,7 @@ import blog.mazleo.ruvacant.ui.ApplicationActivity;
 import blog.mazleo.ruvacant.ui.content.ContentFragment;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneAdapter;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneDataManager;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import dagger.hilt.android.scopes.ActivityScoped;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -33,6 +35,7 @@ public final class UiBinder implements ApplicationStateBinder {
   private final StateBinderUtil stateBinderUtil;
 
   private final Provider<View> contentBodyViewProvider;
+  private final Provider<View> contentBodyParentViewProvider;
   private final UniversitySceneDataManager universitySceneDataManager;
   private final UniversitySceneAdapter universitySceneAdapter;
 
@@ -45,6 +48,7 @@ public final class UiBinder implements ApplicationStateBinder {
       FragmentManager fragmentManager,
       StateBinderUtil stateBinderUtil,
       @ContentBodyFragment Provider<View> contentBodyViewProvider,
+      @ContentBodyParentFragment Provider<View> contentBodyParentViewProvider,
       UniversitySceneDataManager universitySceneDataManager,
       UniversitySceneAdapter universitySceneAdapter) {
     this.appName = appName;
@@ -54,6 +58,7 @@ public final class UiBinder implements ApplicationStateBinder {
     this.stateBinderUtil = stateBinderUtil;
 
     this.contentBodyViewProvider = contentBodyViewProvider;
+    this.contentBodyParentViewProvider = contentBodyParentViewProvider;
     this.universitySceneDataManager = universitySceneDataManager;
     this.universitySceneAdapter = universitySceneAdapter;
   }
@@ -62,6 +67,7 @@ public final class UiBinder implements ApplicationStateBinder {
   public void bind(ApplicationStateManager stateManager) {
     bindSelectionSceneEnd(stateManager);
     bindUniversityScene(stateManager);
+    bindUniversitySceneOnRun(stateManager);
     bindUniversitySceneDataLoading(stateManager);
     bindUniversitySceneDataLoaded(stateManager);
   }
@@ -93,6 +99,21 @@ public final class UiBinder implements ApplicationStateBinder {
                   .setReorderingAllowed(true)
                   .addToBackStack(/* name= */ null)
                   .commit();
+
+              return null;
+            }),
+        StateBinding.UNIVERSITY_SCENE.getId());
+  }
+
+  private void bindUniversitySceneOnRun(ApplicationStateManager stateManager) {
+    stateManager.registerStateBinding(
+        ApplicationState.UNIVERSITY_SCENE_ON_RUN.getState(),
+        stateBinderUtil.getAsyncMainThreadBinding(
+            unused -> {
+              View contentBodyParent = contentBodyParentViewProvider.get();
+              View contentPlaceholder = contentBodyParent.findViewById(R.id.content_placeholder);
+              contentPlaceholder.setVisibility(View.VISIBLE);
+              ((ShimmerFrameLayout) contentPlaceholder).startShimmer();
               return null;
             }),
         StateBinding.UNIVERSITY_SCENE.getId());
@@ -111,6 +132,7 @@ public final class UiBinder implements ApplicationStateBinder {
                 Log.d(appName, "Not ready to begin loading university scene data.");
                 stateManager.exitState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADING.getState());
               }
+
               return null;
             }),
         StateBinding.UNIVERSITY_SCENE_BUILD_CARDS.getId());
@@ -121,6 +143,12 @@ public final class UiBinder implements ApplicationStateBinder {
         ApplicationState.UNIVERSITY_SCENE_DATA_LOADED.getState(),
         stateBinderUtil.getAsyncMainThreadBinding(
             unused -> {
+              ShimmerFrameLayout contentPlaceholder =
+                  (ShimmerFrameLayout)
+                      contentBodyParentViewProvider.get().findViewById(R.id.content_placeholder);
+              contentPlaceholder.stopShimmer();
+              contentPlaceholder.setVisibility(View.GONE);
+
               View contentBody = contentBodyViewProvider.get();
               RecyclerView buildingsListing =
                   (RecyclerView)

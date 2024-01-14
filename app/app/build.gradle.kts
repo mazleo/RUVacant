@@ -58,6 +58,7 @@ dependencies {
     annotationProcessor("com.google.dagger:dagger-compiler:2.50")
     implementation("com.google.auto.value:auto-value-annotations:1.6")
     annotationProcessor("com.google.auto.value:auto-value:1.6")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

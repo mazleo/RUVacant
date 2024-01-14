@@ -31,7 +31,7 @@
         android:height="72dp"
         android:width="72dp"
         android:bottom="-20dp"
-        android:left="-250dp"
+        android:left="-330dp"
         android:gravity="center">
         <shape
             android:shape="oval">
@@ -45,7 +45,7 @@
         android:height="42dp"
         android:width="42dp"
         android:bottom="-70dp"
-        android:left="-130dp"
+        android:left="-210dp"
         android:gravity="center">
         <shape
             android:shape="oval">
