@@ -1,37 +1,36 @@
 package blog.mazleo.ruvacant.service.state.binders;
 
+import blog.mazleo.ruvacant.service.database.DatabaseService;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinder;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinding;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.service.state.util.StateBinderUtil;
 import blog.mazleo.ruvacant.service.web.RequestService;
-import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /** State binder for the request service. */
 @Singleton
 public final class RequestBinder implements ApplicationStateBinder {
 
-  private final Provider<RequestService> requestServiceProvider;
+  private final RequestService requestService;
   private final StateBinderUtil stateBinderUtil;
-
-  private RequestService requestService;
+  private DatabaseService databaseService;
 
   @Inject
   RequestBinder(
-      Provider<RequestService> requestServiceProvider,
-      ExecutorService executorService,
-      StateBinderUtil stateBinderUtil) {
-    this.requestServiceProvider = requestServiceProvider;
+      RequestService requestService,
+      StateBinderUtil stateBinderUtil,
+      DatabaseService databaseService) {
+    this.requestService = requestService;
     this.stateBinderUtil = stateBinderUtil;
-    requestService = requestServiceProvider.get();
+    this.databaseService = databaseService;
   }
 
   @Override
   public void bind(ApplicationStateManager stateManager) {
+    bindApplicationStart(stateManager);
     bindSubjectsRequest(stateManager);
     bindSubjectsRequested(stateManager);
     bindCoursesRequest(stateManager);
@@ -40,7 +39,22 @@ public final class RequestBinder implements ApplicationStateBinder {
 
   @Override
   public void reset() {
-    requestService = requestServiceProvider.get();
+    requestService.reset();
+  }
+
+  private void bindApplicationStart(ApplicationStateManager stateManager) {
+    stateManager.registerStateBinding(
+        ApplicationState.APPLICATION_START.getState(),
+        stateBinderUtil.getAsyncBinding(
+            unused -> {
+              if (!databaseService.hasData()) {
+                stateManager.enterState(ApplicationState.REQUESTING_DATA.getState());
+                stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
+              }
+              stateManager.exitState(ApplicationState.APPLICATION_START.getState());
+              return null;
+            }),
+        StateBinding.REQUEST_SUBJECT_INFO.getId());
   }
 
   private void bindSubjectsRequest(ApplicationStateManager stateManager) {

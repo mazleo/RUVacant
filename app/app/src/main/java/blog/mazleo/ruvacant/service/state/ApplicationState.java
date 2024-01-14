@@ -14,16 +14,16 @@ public enum ApplicationState {
   PLACES_AGGREGATED("places-aggregated"),
   DATA_SAVING("data-saving"),
   DATA_SAVED("data-saved"),
-  BUILDING_VIEW_DATA_LOADING("building-view-data-loading"),
-  BUILDING_VIEW_DATA_LOADED("building-view-data-loaded"),
+  UNIVERSITY_SCENE_DATA_LOADING("university-scene-data-loading"),
+  UNIVERSITY_SCENE_DATA_LOADED("university-scene-data-loaded"),
   ROOM_VIEW_DATA_LOADING("room-view-data-loading"),
   ROOM_VIEW_DATA_LOADED("room-view-data-loaded"),
   CLASSROOM_VIEW_DATA_LOADING("classroom-view-data-loading"),
   CLASSROOM_VIEW_DATA_LOADED("classroom-view-data-loaded"),
   SELECTION_SCENE("selection-scene"),
-  SELECTION_ACTIVITY_END("selection-scene-end"),
-  UNIVERSITY_VIEW_ACTIVITY("university-view-scene"),
-  UNIVERSITY_VIEW_ACTIVITY_END("university-view-scene-end");
+  SELECTION_SCENE_END("selection-scene-end"),
+  UNIVERSITY_SCENE("university-scene"),
+  UNIVERSITY_SCENE_END("university-scene-end");
 
   private final String state;
 

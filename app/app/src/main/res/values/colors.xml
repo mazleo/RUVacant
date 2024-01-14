@@ -14,4 +14,6 @@
     <color name="green_accent">#FF12BD9E</color>
     <color name="purple_main">#FF8000FF</color>
     <color name="purple_accent">#FF6601CB</color>
+    <color name="green_available">#FF56FBBF</color>
+    <color name="red_unavailable">#FFCA6F6F</color>
 </resources>

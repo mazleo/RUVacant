@@ -120,16 +120,13 @@ public final class SelectionFragment extends Fragment {
               ApplicationData.CONTENT_ACTIVITY.getTag(), contentActivityInfo);
 
           stateManager.exitState(ApplicationState.SELECTION_SCENE.getState());
-          stateManager.enterState(ApplicationState.SELECTION_ACTIVITY_END.getState());
+          stateManager.enterState(ApplicationState.SELECTION_SCENE_END.getState());
         });
   }
 
   @Override
   public void onStart() {
     super.onStart();
-    stateManager.enterState(ApplicationState.PLACES_READING.getState());
-    stateManager.enterState(ApplicationState.REQUESTING_DATA.getState());
-    stateManager.enterState(ApplicationState.SUBJECTS_REQUEST.getState());
     stateManager.exitState(ApplicationState.APPLICATION_START.getState());
   }
 

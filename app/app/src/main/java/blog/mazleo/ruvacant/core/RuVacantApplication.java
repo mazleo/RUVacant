@@ -9,6 +9,7 @@ import blog.mazleo.ruvacant.service.database.RuVacantDatabase;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import dagger.hilt.android.HiltAndroidApp;
+import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;
 
 /** The RuVacant Application class. */
@@ -18,11 +19,11 @@ public final class RuVacantApplication extends Application {
   @Inject ApplicationBootstrapper bootstrapper;
   @Inject ApplicationStateManager stateManager;
   @Inject RuVacantDatabase ruVacantDatabase;
+  @Inject ExecutorService executorService;
 
   @Override
   public void onCreate() {
     super.onCreate();
-    stateManager.enterState(ApplicationState.APPLICATION_START.getState());
     ruVacantDatabase.initialize(
         Room.databaseBuilder(
                 getApplicationContext(),
@@ -30,5 +31,6 @@ public final class RuVacantApplication extends Application {
                 getResources().getString(R.string.database_name))
             .build());
     bootstrapper.bootstrap();
+    stateManager.enterState(ApplicationState.APPLICATION_START.getState());
   }
 }

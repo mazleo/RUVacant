@@ -56,6 +56,10 @@ public final class FileService {
     stateManager.enterState(ApplicationState.PLACES_READ.getState());
   }
 
+  public void reset() {
+    numFileReadTries = 0;
+  }
+
   private Map<String, RuPlace> parseJsonString(String jsonString) {
     Gson gson = new GsonBuilder().create();
     JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);

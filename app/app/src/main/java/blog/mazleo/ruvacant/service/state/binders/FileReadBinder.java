@@ -1,39 +1,54 @@
 package blog.mazleo.ruvacant.service.state.binders;
 
+import blog.mazleo.ruvacant.service.database.DatabaseService;
 import blog.mazleo.ruvacant.service.file.FileService;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinder;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
 import blog.mazleo.ruvacant.service.state.util.StateBinderUtil;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /** Binds the file reading service. */
 @Singleton
 public final class FileReadBinder implements ApplicationStateBinder {
 
-  private final Provider<FileService> fileServiceProvider;
+  private final FileService fileService;
+  private final DatabaseService databaseService;
   private final StateBinderUtil stateBinderUtil;
 
-  private FileService fileService;
-
   @Inject
-  FileReadBinder(Provider<FileService> fileServiceProvider, StateBinderUtil stateBinderUtil) {
-    this.fileServiceProvider = fileServiceProvider;
+  FileReadBinder(
+      FileService fileService, DatabaseService databaseService, StateBinderUtil stateBinderUtil) {
+    this.fileService = fileService;
+    this.databaseService = databaseService;
     this.stateBinderUtil = stateBinderUtil;
-    fileService = fileServiceProvider.get();
   }
 
   @Override
   public void bind(ApplicationStateManager stateManager) {
+    bindApplicationStart(stateManager);
     bindPlacesReading(stateManager);
     bindPlacesRead(stateManager);
   }
 
   @Override
   public void reset() {
-    fileService = fileServiceProvider.get();
+    fileService.reset();
+  }
+
+  private void bindApplicationStart(ApplicationStateManager stateManager) {
+    stateManager.registerStateBinding(
+        ApplicationState.APPLICATION_START.getState(),
+        stateBinderUtil.getAsyncBinding(
+            unused -> {
+              if (!databaseService.hasData()) {
+                stateManager.enterState(ApplicationState.PLACES_READING.getState());
+              }
+              stateManager.exitState(ApplicationState.APPLICATION_START.getState());
+              return null;
+            }),
+        StateBinding.READ_PLACES_FILE.getId());
   }
 
   private void bindPlacesReading(ApplicationStateManager stateManager) {

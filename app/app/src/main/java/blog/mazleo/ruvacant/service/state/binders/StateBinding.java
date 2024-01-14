@@ -8,7 +8,8 @@ public enum StateBinding {
   REQUEST_SUBJECT_INFO("request-subject-info"),
   REQUEST_COURSE_INFO("request-course-info"),
   SELECTION_SCENE("selection-scene"),
-  UNIVERSITY_SCENE("university-scene");
+  UNIVERSITY_SCENE("university-scene"),
+  UNIVERSITY_SCENE_BUILD_CARDS("university-scene-build-cards");
 
   private final String id;
 

@@ -49,7 +49,10 @@ public final class DatabaseBinder implements ApplicationStateBinder {
         stateBinderUtil.getAsyncBinding(
             unused -> {
               stateManager.exitState(ApplicationState.DATA_SAVED.getState());
-              // TODO: Go to next state.
+              if (!stateManager.isInState(
+                  ApplicationState.UNIVERSITY_SCENE_DATA_LOADING.getState())) {
+                stateManager.enterState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADING.getState());
+              }
               return null;
             }),
         StateBinding.SAVE_TO_DATABASE.getId());
