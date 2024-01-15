@@ -88,7 +88,8 @@ public final class UniversitySceneDataManager implements SceneDataManager {
     stateManager.enterState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADED.getState());
   }
 
-  public int[] getLetterIndex() {
+  @Override
+  public int[] getScrollerPositionIndex() {
     return letterIndex;
   }
 

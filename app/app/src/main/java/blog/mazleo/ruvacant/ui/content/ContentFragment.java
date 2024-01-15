@@ -34,6 +34,7 @@ public class ContentFragment extends Fragment {
   private @Nullable String campusName;
   private String uniCampusName;
   private String level;
+  private RecyclerViewScroller scroller;
 
   @Inject SharedApplicationData sharedApplicationData;
   @Inject ContentActivityInfoUtil contentActivityInfoUtil;
@@ -79,6 +80,10 @@ public class ContentFragment extends Fragment {
     if (stateManager.isInState(ApplicationState.UNIVERSITY_SCENE.getState())) {
       stateManager.enterState(ApplicationState.UNIVERSITY_SCENE_ON_RUN.getState());
     }
+  }
+
+  public void setScroller(RecyclerViewScroller scroller) {
+    this.scroller = scroller;
   }
 
   private void setTitle() {

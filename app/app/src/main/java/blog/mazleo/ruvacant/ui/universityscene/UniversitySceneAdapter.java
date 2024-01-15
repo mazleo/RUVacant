@@ -46,7 +46,7 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
     viewHolder.setTitle(card.title());
     viewHolder.setDescription(card.description());
     viewHolder.setSegments(card.segments());
-    viewHolder.setLetterDivider(card.title(), position, dataManager.getLetterIndex());
+    viewHolder.setLetterDivider(card.title(), position, dataManager.getScrollerPositionIndex());
   }
 
   @Override

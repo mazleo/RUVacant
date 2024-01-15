@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import blog.mazleo.ruvacant.ui.ApplicationActivity;
 import blog.mazleo.ruvacant.ui.content.ContentFragment;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneAdapter;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneDataManager;
+import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneScroller;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import dagger.hilt.android.scopes.ActivityScoped;
 import javax.inject.Inject;
@@ -143,9 +145,9 @@ public final class UiBinder implements ApplicationStateBinder {
         ApplicationState.UNIVERSITY_SCENE_DATA_LOADED.getState(),
         stateBinderUtil.getAsyncMainThreadBinding(
             unused -> {
+              View contentBodyParent = contentBodyParentViewProvider.get();
               ShimmerFrameLayout contentPlaceholder =
-                  (ShimmerFrameLayout)
-                      contentBodyParentViewProvider.get().findViewById(R.id.content_placeholder);
+                  (ShimmerFrameLayout) contentBodyParent.findViewById(R.id.content_placeholder);
               contentPlaceholder.stopShimmer();
               contentPlaceholder.setVisibility(View.GONE);
 
@@ -161,6 +163,23 @@ public final class UiBinder implements ApplicationStateBinder {
                           .getChildAt(0);
               buildingsListing.setLayoutManager(new LinearLayoutManager(contentBody.getContext()));
               buildingsListing.setAdapter(universitySceneAdapter);
+
+              FrameLayout scrollerTab =
+                  (FrameLayout)
+                      contentBodyParent.getRootView().findViewById(R.id.content_scroller_tab);
+              UniversitySceneScroller scroller =
+                  (UniversitySceneScroller)
+                      ((ViewGroup)
+                              LayoutInflater.from(contentBody.getContext())
+                                  .inflate(
+                                      R.layout.university_scene_scroller,
+                                      scrollerTab,
+                                      /* attachToRoot= */ true))
+                          .getChildAt(0);
+              scroller.setDataManager(universitySceneDataManager);
+              scroller.setRecyclerView(buildingsListing);
+              scroller.buildScroller();
+
               return null;
             }),
         StateBinding.UNIVERSITY_SCENE_PRESENT_CARDS.getId());

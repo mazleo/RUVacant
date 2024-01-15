@@ -10,4 +10,6 @@ public interface SceneDataManager {
   void buildCards();
 
   void sortCards();
+
+  int[] getScrollerPositionIndex();
 }
