@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog.mazleo.ruvacant.ui.universityscene.UniversitySceneScroller
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_scroller"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp"
+    android:background="@drawable/scroller_background" />

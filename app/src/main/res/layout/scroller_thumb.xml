@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_scroller_thumb"
+    android:text="A"
+    android:textSize="20sp"
+    android:textColor="@color/white"
+    android:paddingHorizontal="13dp"
+    android:paddingVertical="8dp"
+    android:layout_marginRight="5dp"
+    android:background="@drawable/scroll_thumb_background"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone" />

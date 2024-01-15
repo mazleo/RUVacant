@@ -1,0 +1,152 @@
+SUBJECTS
+========
+
+- description
+    - letters
+    - misc characters
+    - long
+    - all caps
+    - non null
+    - non empty
+    - always exists
+- code
+    - numbers
+    - non null
+    - non empty
+    - always exists
+    - unique
+    - string
+
+COURSES
+=======
+
+- Course
+    - courseNumber
+        - numbers
+        - string
+        - not null
+        - not empty
+        - dont assume always a number
+        - not unique
+    - subject
+        - numbers
+        - string
+        - not null
+        - not empty
+        - dont assume always a number
+        - not unique
+    - campusCode
+        - letters
+        - can be empty (online classes)
+        - not unique
+    - title
+        - letters
+        - all caps
+        - not empty
+        - not null
+    - expandedTitle
+        - letters
+        - very long
+        - null
+        - not empty
+- Sections
+    - number
+        - numbers
+        - letters
+        - string
+    - campusCode
+        - letters
+    - index
+        - not null
+        - not empty
+        - string
+    - instructors
+        - array
+    - meetingTimes
+        - array
+- Instructors
+    - name
+        - letters
+        - string
+        - null
+- Meeting Times
+    - roomNumber
+        - letters
+        - numbers
+        - string
+    - campusAbbrev
+        - letters
+    - campusName
+        - letters
+    - meetingDay
+        - letters
+    - buildingCode
+        - letters
+    - startTime
+        - numbers
+        - strings
+    - endTime
+        - numbers
+        - strings
+    - pmCode
+        - letter
+
+PLACES
+======
+
+- Place
+    - title
+        - letters
+    - building_code
+        - letters
+    - campus_name
+        - letters
+
+VALUES
+======
+- campusCode
+    - NB
+    - N
+    - CM
+- campusAbbrev
+    - LIV
+    - BUS
+    - CAC
+    - D/C
+    - **
+    - CAM
+    - null
+- campusName
+    - LIVINGSTON
+    - BUSCH
+    - COLLEGE AVENUE
+    - DOUGLAS/COOK
+    - NEW JERSEY INSTITUTE O
+    - CAMDEN
+- meetingDay
+    - W
+    - M
+    - T
+    - TH
+    - F
+    - S
+    - null
+- campus_name
+    - Busch
+    - College Avenue
+    - Newark
+    - Livingston
+    - Cook
+    - Off-Campus
+    - Douglass
+    - Camden
+    - Health Sciences at Newark
+    - null
+- pmCode
+    - P
+    - A
+- semester code
+    - 1 (spring)
+    - 7 (summer)
+    - 9 (fall)
+    - 0 (winter)

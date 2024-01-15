@@ -1,0 +1,725 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "c843bc501c14c28d0104ccf8e5226dac",
+    "entities": [
+      {
+        "tableName": "SchoolCampus",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`code`))",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Level",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`code`))",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Semester",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`month` INTEGER NOT NULL, `year` INTEGER NOT NULL, PRIMARY KEY(`month`, `year`))",
+        "fields": [
+          {
+            "fieldPath": "month",
+            "columnName": "month",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "month",
+            "year"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Option",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`semester_month` INTEGER NOT NULL, `semester_year` INTEGER NOT NULL, `school_campus_code` TEXT NOT NULL, `level_code` TEXT NOT NULL, PRIMARY KEY(`semester_month`, `semester_year`, `school_campus_code`, `level_code`), FOREIGN KEY(`semester_month`, `semester_year`) REFERENCES `Semester`(`month`, `year`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`school_campus_code`) REFERENCES `SchoolCampus`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`level_code`) REFERENCES `Level`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "semesterMonth",
+            "columnName": "semester_month",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "semesterYear",
+            "columnName": "semester_year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "schoolCampusCode",
+            "columnName": "school_campus_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "levelCode",
+            "columnName": "level_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "semester_month",
+            "semester_year",
+            "school_campus_code",
+            "level_code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Option_school_campus_code",
+            "unique": false,
+            "columnNames": [
+              "school_campus_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Option_school_campus_code` ON `${TABLE_NAME}` (`school_campus_code`)"
+          },
+          {
+            "name": "index_Option_level_code",
+            "unique": false,
+            "columnNames": [
+              "level_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Option_level_code` ON `${TABLE_NAME}` (`level_code`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Semester",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "semester_month",
+              "semester_year"
+            ],
+            "referencedColumns": [
+              "month",
+              "year"
+            ]
+          },
+          {
+            "table": "SchoolCampus",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "school_campus_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          },
+          {
+            "table": "Level",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "level_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Campus",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `name` TEXT, `school_campus_code` TEXT, PRIMARY KEY(`code`), FOREIGN KEY(`school_campus_code`) REFERENCES `SchoolCampus`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "schoolCampusCode",
+            "columnName": "school_campus_code",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Campus_school_campus_code",
+            "unique": false,
+            "columnNames": [
+              "school_campus_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Campus_school_campus_code` ON `${TABLE_NAME}` (`school_campus_code`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "SchoolCampus",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "school_campus_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Building",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `name` TEXT, `campus_code` TEXT, `is_fave` INTEGER NOT NULL, PRIMARY KEY(`code`), FOREIGN KEY(`campus_code`) REFERENCES `Campus`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "campusCode",
+            "columnName": "campus_code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "is_fave",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Building_campus_code",
+            "unique": false,
+            "columnNames": [
+              "campus_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Building_campus_code` ON `${TABLE_NAME}` (`campus_code`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Campus",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "campus_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Room",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`building_code` TEXT NOT NULL, `number` TEXT NOT NULL, PRIMARY KEY(`building_code`, `number`), FOREIGN KEY(`building_code`) REFERENCES `Building`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "buildingCode",
+            "columnName": "building_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "number",
+            "columnName": "number",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "building_code",
+            "number"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "Building",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "building_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Subject",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `title` TEXT, PRIMARY KEY(`code`))",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Course",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_code` TEXT NOT NULL, `code` TEXT NOT NULL, `title` TEXT, `expanded_title` TEXT, PRIMARY KEY(`subject_code`, `code`), FOREIGN KEY(`subject_code`) REFERENCES `Subject`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "subjectCode",
+            "columnName": "subject_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expandedTitle",
+            "columnName": "expanded_title",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "subject_code",
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "Subject",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "subject_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Class",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`index` TEXT NOT NULL, `code` TEXT, `subject_code` TEXT, `course_code` TEXT, PRIMARY KEY(`index`), FOREIGN KEY(`subject_code`) REFERENCES `Subject`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`subject_code`, `course_code`) REFERENCES `Course`(`subject_code`, `code`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "index",
+            "columnName": "index",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subjectCode",
+            "columnName": "subject_code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "courseCode",
+            "columnName": "course_code",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "index"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Class_subject_code_course_code",
+            "unique": false,
+            "columnNames": [
+              "subject_code",
+              "course_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Class_subject_code_course_code` ON `${TABLE_NAME}` (`subject_code`, `course_code`)"
+          },
+          {
+            "name": "index_Class_subject_code",
+            "unique": false,
+            "columnNames": [
+              "subject_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Class_subject_code` ON `${TABLE_NAME}` (`subject_code`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Subject",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "subject_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          },
+          {
+            "table": "Course",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "subject_code",
+              "course_code"
+            ],
+            "referencedColumns": [
+              "subject_code",
+              "code"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Meeting",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`class_index` TEXT NOT NULL, `building_code` TEXT NOT NULL, `room_number` TEXT NOT NULL, `meeting_day` TEXT NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, PRIMARY KEY(`class_index`, `building_code`, `room_number`, `meeting_day`, `start_time`, `end_time`), FOREIGN KEY(`class_index`) REFERENCES `Class`(`index`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`building_code`) REFERENCES `Building`(`code`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`building_code`, `room_number`) REFERENCES `Room`(`building_code`, `number`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "classIndex",
+            "columnName": "class_index",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "buildingCode",
+            "columnName": "building_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roomNumber",
+            "columnName": "room_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meetingDay",
+            "columnName": "meeting_day",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "start_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endTime",
+            "columnName": "end_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "class_index",
+            "building_code",
+            "room_number",
+            "meeting_day",
+            "start_time",
+            "end_time"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Meeting_building_code_room_number",
+            "unique": false,
+            "columnNames": [
+              "building_code",
+              "room_number"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Meeting_building_code_room_number` ON `${TABLE_NAME}` (`building_code`, `room_number`)"
+          },
+          {
+            "name": "index_Meeting_building_code",
+            "unique": false,
+            "columnNames": [
+              "building_code"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Meeting_building_code` ON `${TABLE_NAME}` (`building_code`)"
+          },
+          {
+            "name": "index_Meeting_room_number",
+            "unique": false,
+            "columnNames": [
+              "room_number"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Meeting_room_number` ON `${TABLE_NAME}` (`room_number`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Class",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "class_index"
+            ],
+            "referencedColumns": [
+              "index"
+            ]
+          },
+          {
+            "table": "Building",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "building_code"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
+          },
+          {
+            "table": "Room",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "building_code",
+              "room_number"
+            ],
+            "referencedColumns": [
+              "building_code",
+              "number"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Instructor",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`last_name` TEXT NOT NULL, `first_name` TEXT NOT NULL, PRIMARY KEY(`last_name`, `first_name`))",
+        "fields": [
+          {
+            "fieldPath": "lastName",
+            "columnName": "last_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "first_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "last_name",
+            "first_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ClassInstructor",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`class_index` TEXT NOT NULL, `instructor_last_name` TEXT NOT NULL, `instructor_first_name` TEXT NOT NULL, PRIMARY KEY(`class_index`, `instructor_last_name`, `instructor_first_name`), FOREIGN KEY(`class_index`) REFERENCES `Class`(`index`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`instructor_last_name`, `instructor_first_name`) REFERENCES `Instructor`(`last_name`, `first_name`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "classIndex",
+            "columnName": "class_index",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "instructorLastName",
+            "columnName": "instructor_last_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "instructorFirstName",
+            "columnName": "instructor_first_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "class_index",
+            "instructor_last_name",
+            "instructor_first_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_ClassInstructor_instructor_last_name_instructor_first_name",
+            "unique": false,
+            "columnNames": [
+              "instructor_last_name",
+              "instructor_first_name"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ClassInstructor_instructor_last_name_instructor_first_name` ON `${TABLE_NAME}` (`instructor_last_name`, `instructor_first_name`)"
+          },
+          {
+            "name": "index_ClassInstructor_instructor_last_name",
+            "unique": false,
+            "columnNames": [
+              "instructor_last_name"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ClassInstructor_instructor_last_name` ON `${TABLE_NAME}` (`instructor_last_name`)"
+          },
+          {
+            "name": "index_ClassInstructor_instructor_first_name",
+            "unique": false,
+            "columnNames": [
+              "instructor_first_name"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ClassInstructor_instructor_first_name` ON `${TABLE_NAME}` (`instructor_first_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Class",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "class_index"
+            ],
+            "referencedColumns": [
+              "index"
+            ]
+          },
+          {
+            "table": "Instructor",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "instructor_last_name",
+              "instructor_first_name"
+            ],
+            "referencedColumns": [
+              "last_name",
+              "first_name"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c843bc501c14c28d0104ccf8e5226dac')"
+    ]
+  }
+}
