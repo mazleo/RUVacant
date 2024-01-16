@@ -61,3 +61,7 @@ __1.15.2024__
 [Demo](https://drive.google.com/file/d/1qAY5l1wjrzedgmNRRUEOUVDsIGYDzlZR/view?usp=sharing)
 
 [Demo - It's a bit wonky still](https://drive.google.com/file/d/1qDUQdquDw5h_olay3i5-baa3D9lv21_g/view?usp=sharing)
+
+__1.16.2024__
+
+- Improve scroller visibility handling: [Demo](https://drive.google.com/file/d/1qFrsAzzVzJXey-UGlO6J1AZMs-cTqztw/view?usp=sharing) 

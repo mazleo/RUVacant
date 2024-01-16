@@ -28,6 +28,7 @@ import java.util.List;
 public final class UniversitySceneScroller extends LinearLayout implements RecyclerViewScroller {
 
   private static final int SCROLLER_HIDE_DELAY = 3000;
+  private static final String VISIBILITY_MESSAGE_ID = "VISIBILITY_MESSAGE";
 
   private SceneDataManager dataManager;
   private RecyclerView recyclerView;
@@ -35,6 +36,7 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
   private final StateModel stateModel = new StateModel();
   private List<String> letterList = new ArrayList<>();
   private List<TextView> letterViews = new ArrayList<>();
+  private Handler handler = new Handler();
   private int[] positionIndex;
   ConstraintLayout contentContainer;
   FrameLayout scrollerTab;
@@ -130,27 +132,27 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
                 if (((ObservableInt) sender).get() == StateModel.State.VISIBLE) {
                   UniversitySceneScroller.this.setVisibility(VISIBLE);
                   UniversitySceneScroller.this.setAlpha(0.5F);
+                  cancelHide();
                   return;
                 } else if (((ObservableInt) sender).get() == StateModel.State.GONE) {
-                  // Checks whether the state has changed during this time before hiding the
-                  // scroller
-                  new Handler()
-                      .postDelayed(
-                          () -> {
-                            if (((ObservableInt) sender).get() == StateModel.State.GONE) {
-                              UniversitySceneScroller.this.setVisibility(GONE);
-                            }
-                          },
-                          SCROLLER_HIDE_DELAY);
+                  handler.postDelayed(
+                      () -> UniversitySceneScroller.this.setVisibility(GONE),
+                      VISIBILITY_MESSAGE_ID,
+                      SCROLLER_HIDE_DELAY);
                   return;
                 } else if (((ObservableInt) sender).get() == StateModel.State.SCROLLING) {
                   UniversitySceneScroller.this.setVisibility(VISIBLE);
                   UniversitySceneScroller.this.setAlpha(1F);
+                  cancelHide();
                   return;
                 }
                 throw new IllegalArgumentException("State not supported.");
               }
             });
+  }
+
+  private void cancelHide() {
+    handler.removeCallbacksAndMessages(VISIBILITY_MESSAGE_ID);
   }
 
   private void setScrollOnTouch() {
@@ -189,6 +191,8 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
     if (positionWithinBounds(position) && position != scrollerPosition) {
       onPositionExit(position);
       onPositionEnter(position);
+    } else if (positionWithinBounds(position)) {
+      stateModel.getStateObservable().set(StateModel.State.SCROLLING);
     }
     return true;
   }
