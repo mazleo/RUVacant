@@ -3,6 +3,7 @@ package blog.mazleo.ruvacant.ui.universityscene;
 import static blog.mazleo.ruvacant.util.Assertions.assertNotNull;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableInt;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import blog.mazleo.ruvacant.R;
@@ -23,12 +27,14 @@ import java.util.List;
 /** Scroller for the university scene. */
 public final class UniversitySceneScroller extends LinearLayout implements RecyclerViewScroller {
 
+  private static final int SCROLLER_HIDE_DELAY = 3000;
+
   private SceneDataManager dataManager;
   private RecyclerView recyclerView;
 
+  private final StateModel stateModel = new StateModel();
   private List<String> letterList = new ArrayList<>();
   private List<TextView> letterViews = new ArrayList<>();
-  private boolean[] letterScrollEnablement;
   private int[] positionIndex;
   ConstraintLayout contentContainer;
   FrameLayout scrollerTab;
@@ -64,6 +70,8 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
     buildLetterViews();
     buildThumb();
     setScrollOnTouch();
+    setVisibilityStateObservers();
+    setVisibilityStateSetters();
   }
 
   @Override
@@ -95,16 +103,58 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
     }
   }
 
-  private void setScrollOnTouch() {
-    fillScrollEnablementMap();
-    setOnTouchListener(this::scrollOnEnter);
+  private void setVisibilityStateSetters() {
+    recyclerView.addOnScrollListener(
+        new RecyclerView.OnScrollListener() {
+          @Override
+          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING
+                || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+              stateModel.getStateObservable().set(StateModel.State.VISIBLE);
+            } else if (newState == RecyclerView.SCROLL_STATE_IDLE
+                && stateModel.getStateObservable().get() != StateModel.State.SCROLLING) {
+              stateModel.getStateObservable().set(StateModel.State.GONE);
+            }
+          }
+        });
   }
 
-  private void fillScrollEnablementMap() {
-    letterScrollEnablement = new boolean[letterList.size()];
-    for (int l = 0; l < letterScrollEnablement.length; l++) {
-      letterScrollEnablement[0] = true;
-    }
+  private void setVisibilityStateObservers() {
+    stateModel
+        .getStateObservable()
+        .addOnPropertyChangedCallback(
+            new Observable.OnPropertyChangedCallback() {
+              @Override
+              public void onPropertyChanged(Observable sender, int propertyId) {
+                if (((ObservableInt) sender).get() == StateModel.State.VISIBLE) {
+                  UniversitySceneScroller.this.setVisibility(VISIBLE);
+                  UniversitySceneScroller.this.setAlpha(0.5F);
+                  return;
+                } else if (((ObservableInt) sender).get() == StateModel.State.GONE) {
+                  // Checks whether the state has changed during this time before hiding the
+                  // scroller
+                  new Handler()
+                      .postDelayed(
+                          () -> {
+                            if (((ObservableInt) sender).get() == StateModel.State.GONE) {
+                              UniversitySceneScroller.this.setVisibility(GONE);
+                            }
+                          },
+                          SCROLLER_HIDE_DELAY);
+                  return;
+                } else if (((ObservableInt) sender).get() == StateModel.State.SCROLLING) {
+                  UniversitySceneScroller.this.setVisibility(VISIBLE);
+                  UniversitySceneScroller.this.setAlpha(1F);
+                  return;
+                }
+                throw new IllegalArgumentException("State not supported.");
+              }
+            });
+  }
+
+  private void setScrollOnTouch() {
+    setOnTouchListener(this::scrollOnEnter);
   }
 
   private void buildThumb() {
@@ -125,11 +175,14 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
     if (event.getAction() == MotionEvent.ACTION_UP) {
       scrollerPosition = -1;
       removeThumb();
+      stateModel.getStateObservable().set(StateModel.State.GONE);
+      setAlpha(0.5F);
       return true;
     }
     if (event.getX() < 0 || event.getX() > view.getWidth()) {
       scrollerPosition = -1;
       removeThumb();
+      stateModel.getStateObservable().set(StateModel.State.SCROLLING);
       return true;
     }
     int position = positionFromY(event.getY());
@@ -147,6 +200,8 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
     int scrollTo = positionIndex[scrollPositionsIndex];
     presentThumb(position);
     smoothScrollToPosition(scrollTo);
+    stateModel.getStateObservable().set(StateModel.State.SCROLLING);
+    setAlpha(1F);
   }
 
   private void presentThumb(int textViewIndex) {
@@ -190,5 +245,20 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
   private int positionFromY(float y) {
     int itemHeight = letterViews.get(0).getHeight();
     return (int) Math.floor((double) y / (double) itemHeight);
+  }
+
+  static class StateModel {
+
+    private final ObservableInt stateObservable = new ObservableInt(State.GONE);
+
+    ObservableInt getStateObservable() {
+      return stateObservable;
+    }
+
+    static class State {
+      static int VISIBLE = 1;
+      static int GONE = 2;
+      static int SCROLLING = 3;
+    }
   }
 }

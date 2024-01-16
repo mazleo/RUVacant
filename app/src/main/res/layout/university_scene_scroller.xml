@@ -6,4 +6,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingVertical="5dp"
-    android:background="@drawable/scroller_background" />
+    android:background="@drawable/scroller_background"
+    android:visibility="gone" />
