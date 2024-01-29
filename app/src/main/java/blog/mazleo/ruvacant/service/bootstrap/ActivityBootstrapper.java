@@ -1,7 +1,7 @@
 package blog.mazleo.ruvacant.service.bootstrap;
 
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
-import blog.mazleo.ruvacant.service.state.binders.UiBinder;
+import blog.mazleo.ruvacant.service.state.binders.UniversitySceneBinder;
 import dagger.hilt.android.scopes.ActivityScoped;
 import javax.inject.Inject;
 
@@ -11,17 +11,18 @@ public final class ActivityBootstrapper {
 
   private final ApplicationStateManager stateManager;
 
-  private final UiBinder uiBinder;
+  private final UniversitySceneBinder universitySceneBinder;
 
   @Inject
-  ActivityBootstrapper(ApplicationStateManager stateManager, UiBinder uiBinder) {
+  ActivityBootstrapper(
+      ApplicationStateManager stateManager, UniversitySceneBinder universitySceneBinder) {
     this.stateManager = stateManager;
 
-    this.uiBinder = uiBinder;
+    this.universitySceneBinder = universitySceneBinder;
   }
 
   public void bootstrap() {
-    stateManager.registerBinder(uiBinder);
+    stateManager.registerBinder(universitySceneBinder);
     stateManager.bind();
   }
 }

@@ -39,19 +39,23 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-    CardValue card = dataManager.getCards().get(position);
+    CardValue card = dataManager.getFilteredCards().get(position);
     ViewHolder viewHolder = (ViewHolder) holder;
     viewHolder.setCode(card.code());
     viewHolder.setColorTheme(card.colorTheme());
     viewHolder.setTitle(card.title());
     viewHolder.setDescription(card.description());
     viewHolder.setSegments(card.segments());
-    viewHolder.setLetterDivider(card.title(), position, dataManager.getScrollerPositionIndex());
+    if (dataManager.getFilteredCards().size() == dataManager.getCards().size()) {
+      viewHolder.setLetterDivider(card.title(), position, dataManager.getScrollerPositionIndex());
+    } else {
+      viewHolder.hideLetterDivider();
+    }
   }
 
   @Override
   public int getItemCount() {
-    return dataManager.getCards().size();
+    return dataManager.getFilteredCards().size();
   }
 
   public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -162,6 +166,10 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
       } else {
         letterDivider.setVisibility(View.GONE);
       }
+    }
+
+    private void hideLetterDivider() {
+      letterDivider.setVisibility(View.GONE);
     }
 
     private View buildSegmentView(CardSegment cardSegment) {

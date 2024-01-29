@@ -65,3 +65,16 @@ __1.15.2024__
 __1.16.2024__
 
 - Improve scroller visibility handling: [Demo](https://drive.google.com/file/d/1qFrsAzzVzJXey-UGlO6J1AZMs-cTqztw/view?usp=sharing) 
+
+__1.29.2024__
+
+- Implement search functionality
+  - Add `UniversitySceneSearch`, which is responsible for handling search queries
+  - Rename `UiBinder` to `UniversitySceneBinder`
+  - Add search functionality in the UI
+    - This includes the search bar and search clear button
+    - Filter cards in recyclerview based on query results
+    - Disable scroller for search results
+    - Add searchbar layout
+
+[Demo](https://drive.google.com/file/d/1qXIDWwVrYxkJiimMTIj0qf56usoHvK-a/view?usp=sharing)

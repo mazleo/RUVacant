@@ -27,7 +27,7 @@ import java.util.List;
 /** Scroller for the university scene. */
 public final class UniversitySceneScroller extends LinearLayout implements RecyclerViewScroller {
 
-  private static final int SCROLLER_HIDE_DELAY = 3000;
+  private static final int SCROLLER_HIDE_DELAY = 1000;
   private static final String VISIBILITY_MESSAGE_ID = "VISIBILITY_MESSAGE";
 
   private SceneDataManager dataManager;
@@ -41,6 +41,7 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
   ConstraintLayout contentContainer;
   FrameLayout scrollerTab;
   private TextView thumb;
+  private boolean enabled = false;
   private int scrollerPosition = -1;
 
   public UniversitySceneScroller(Context context) {
@@ -86,6 +87,11 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
     this.recyclerView = recyclerView;
   }
 
+  @Override
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
   private void buildLetterList() {
     for (int l = 0; l < positionIndex.length; l++) {
       if (positionIndex[l] != -1) {
@@ -111,8 +117,9 @@ public final class UniversitySceneScroller extends LinearLayout implements Recyc
           @Override
           public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_DRAGGING
-                || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+            if (enabled
+                && (newState == RecyclerView.SCROLL_STATE_DRAGGING
+                    || newState == RecyclerView.SCROLL_STATE_SETTLING)) {
               stateModel.getStateObservable().set(StateModel.State.VISIBLE);
             } else if (newState == RecyclerView.SCROLL_STATE_IDLE
                 && stateModel.getStateObservable().get() != StateModel.State.SCROLLING) {

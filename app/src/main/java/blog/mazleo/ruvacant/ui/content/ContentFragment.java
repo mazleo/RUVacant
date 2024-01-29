@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
@@ -84,6 +86,22 @@ public class ContentFragment extends Fragment {
 
   public void setScroller(RecyclerViewScroller scroller) {
     this.scroller = scroller;
+  }
+
+  public void setTopBarContent(int layoutId) {
+    ConstraintLayout topBar = getView().findViewById(R.id.content_body_top_bar);
+    View topBarContent = ((ViewGroup) getLayoutInflater().inflate(layoutId, topBar)).getChildAt(0);
+    ConstraintSet constraintSet = new ConstraintSet();
+    constraintSet.clone(topBar);
+    constraintSet.connect(
+        topBarContent.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+    constraintSet.connect(
+        topBarContent.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+    constraintSet.connect(
+        topBarContent.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+    constraintSet.connect(
+        topBarContent.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+    constraintSet.applyTo(topBar);
   }
 
   private void setTitle() {

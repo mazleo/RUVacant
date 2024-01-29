@@ -1,11 +1,18 @@
 package blog.mazleo.ruvacant.service.state.binders;
 
 import android.content.Context;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableInt;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +20,7 @@ import blog.mazleo.ruvacant.R;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.AppName;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyFragment;
 import blog.mazleo.ruvacant.core.ApplicationAnnotations.ContentBodyParentFragment;
+import blog.mazleo.ruvacant.core.ApplicationAnnotations.MainThread;
 import blog.mazleo.ruvacant.service.state.ApplicationState;
 import blog.mazleo.ruvacant.service.state.ApplicationStateBinder;
 import blog.mazleo.ruvacant.service.state.ApplicationStateManager;
@@ -22,47 +30,58 @@ import blog.mazleo.ruvacant.ui.content.ContentFragment;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneAdapter;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneDataManager;
 import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneScroller;
+import blog.mazleo.ruvacant.ui.universityscene.UniversitySceneSearch;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import dagger.hilt.android.scopes.ActivityScoped;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
 @ActivityScoped
-public final class UiBinder implements ApplicationStateBinder {
+public final class UniversitySceneBinder implements ApplicationStateBinder {
+
+  private static final String UNIVERSITY_SCENE_ID = "university-scene";
 
   private final String appName;
   private final Context context;
   private final ApplicationActivity activity;
   private final FragmentManager fragmentManager;
   private final StateBinderUtil stateBinderUtil;
+  private final Handler mainThreadHandler;
 
   private final Provider<View> contentBodyViewProvider;
   private final Provider<View> contentBodyParentViewProvider;
   private final UniversitySceneDataManager universitySceneDataManager;
   private final UniversitySceneAdapter universitySceneAdapter;
+  private final UniversitySceneSearch.Factory universitySceneSearchFactory;
+
+  private UniversitySceneSearch universitySceneSearch;
 
   /** Binds UI tasks to certain states. */
   @Inject
-  UiBinder(
+  UniversitySceneBinder(
       @AppName String appName,
       Context context,
       ApplicationActivity activity,
       FragmentManager fragmentManager,
       StateBinderUtil stateBinderUtil,
+      @MainThread Handler mainThreadHandler,
       @ContentBodyFragment Provider<View> contentBodyViewProvider,
       @ContentBodyParentFragment Provider<View> contentBodyParentViewProvider,
       UniversitySceneDataManager universitySceneDataManager,
-      UniversitySceneAdapter universitySceneAdapter) {
+      UniversitySceneAdapter universitySceneAdapter,
+      UniversitySceneSearch.Factory universitySceneSearchFactory) {
     this.appName = appName;
     this.context = context;
     this.activity = activity;
     this.fragmentManager = fragmentManager;
     this.stateBinderUtil = stateBinderUtil;
+    this.mainThreadHandler = mainThreadHandler;
 
     this.contentBodyViewProvider = contentBodyViewProvider;
     this.contentBodyParentViewProvider = contentBodyParentViewProvider;
     this.universitySceneDataManager = universitySceneDataManager;
     this.universitySceneAdapter = universitySceneAdapter;
+    this.universitySceneSearchFactory = universitySceneSearchFactory;
   }
 
   @Override
@@ -97,7 +116,7 @@ public final class UiBinder implements ApplicationStateBinder {
             unused -> {
               fragmentManager
                   .beginTransaction()
-                  .replace(R.id.app_fragment, ContentFragment.class, null, "university-scene")
+                  .replace(R.id.app_fragment, ContentFragment.class, null, UNIVERSITY_SCENE_ID)
                   .setReorderingAllowed(true)
                   .addToBackStack(/* name= */ null)
                   .commit();
@@ -116,6 +135,35 @@ public final class UiBinder implements ApplicationStateBinder {
               View contentPlaceholder = contentBodyParent.findViewById(R.id.content_placeholder);
               contentPlaceholder.setVisibility(View.VISIBLE);
               ((ShimmerFrameLayout) contentPlaceholder).startShimmer();
+
+              ContentFragment universitySceneFragment =
+                  (ContentFragment) fragmentManager.findFragmentByTag(UNIVERSITY_SCENE_ID);
+              universitySceneFragment.setTopBarContent(R.layout.searchbar);
+
+              EditText searchbarEdit =
+                  universitySceneFragment.getView().findViewById(R.id.searchbar_edit);
+              searchbarEdit.addTextChangedListener(
+                  new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                        CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                      universitySceneSearch.onQueryMod(String.valueOf(s));
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {}
+                  });
+
+              Button clearSearchButton =
+                  universitySceneFragment.getView().findViewById(R.id.searchbar_clear);
+              clearSearchButton.setOnClickListener(
+                  view -> {
+                    universitySceneSearch.onQueryMod("");
+                    searchbarEdit.setText("");
+                  });
               return null;
             }),
         StateBinding.UNIVERSITY_SCENE.getId());
@@ -164,6 +212,9 @@ public final class UiBinder implements ApplicationStateBinder {
               buildingsListing.setLayoutManager(new LinearLayoutManager(contentBody.getContext()));
               buildingsListing.setAdapter(universitySceneAdapter);
 
+              universitySceneSearch =
+                  universitySceneSearchFactory.create(universitySceneDataManager.getCards());
+
               FrameLayout scrollerTab =
                   (FrameLayout)
                       contentBodyParent.getRootView().findViewById(R.id.content_scroller_tab);
@@ -179,6 +230,37 @@ public final class UiBinder implements ApplicationStateBinder {
               scroller.setDataManager(universitySceneDataManager);
               scroller.setRecyclerView(buildingsListing);
               scroller.buildScroller();
+              scroller.setEnabled(true);
+
+              universitySceneSearch
+                  .getStateObservable()
+                  .addOnPropertyChangedCallback(
+                      new Observable.OnPropertyChangedCallback() {
+                        @Override
+                        public void onPropertyChanged(Observable sender, int propertyId) {
+                          if (((ObservableInt) sender).get() == UniversitySceneSearch.State.IDLE) {
+                            universitySceneDataManager.setFilteredCards(
+                                universitySceneSearch.getFilteredCards());
+                            scroller.setEnabled(
+                                universitySceneDataManager.getFilteredCards().size()
+                                    == universitySceneDataManager.getCards().size());
+                            mainThreadHandler.post(
+                                () -> {
+                                  contentPlaceholder.stopShimmer();
+                                  contentPlaceholder.setVisibility(View.GONE);
+                                  buildingsListing.setVisibility(View.VISIBLE);
+                                  universitySceneAdapter.notifyDataSetChanged();
+                                });
+                          } else {
+                            mainThreadHandler.post(
+                                () -> {
+                                  buildingsListing.setVisibility(View.GONE);
+                                  contentPlaceholder.setVisibility(View.VISIBLE);
+                                  contentPlaceholder.startShimmer();
+                                });
+                          }
+                        }
+                      });
 
               return null;
             }),

@@ -10,4 +10,6 @@ public interface RecyclerViewScroller {
   void setDataManager(SceneDataManager sceneDataManager);
 
   void buildScroller();
+
+  void setEnabled(boolean enabled);
 }

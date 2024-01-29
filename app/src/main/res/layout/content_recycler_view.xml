@@ -3,4 +3,4 @@
     android:id="@+id/content_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/side_margins_horizontal" />
+    android:paddingHorizontal="@dimen/side_margins_horizontal" />

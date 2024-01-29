@@ -45,6 +45,7 @@ public final class UniversitySceneDataManager implements SceneDataManager {
   private final ExecutorService executorService;
 
   private final List<CardValue> cards = new ArrayList<>();
+  private final List<CardValue> filteredCards = new ArrayList<>();
   private final int[] letterIndex = new int[NUM_LETTERS];
   private UniversityContext universityContext;
   private ObservableInt cardStack = new ObservableInt();
@@ -83,6 +84,7 @@ public final class UniversitySceneDataManager implements SceneDataManager {
   @Override
   public void sortCards() {
     cards.sort(Comparator.comparing(CardValue::title, String::compareTo));
+    filteredCards.addAll(cards);
     buildLetterIndex();
     stateManager.exitState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADING.getState());
     stateManager.enterState(ApplicationState.UNIVERSITY_SCENE_DATA_LOADED.getState());
@@ -93,10 +95,19 @@ public final class UniversitySceneDataManager implements SceneDataManager {
     return letterIndex;
   }
 
-  private void buildLetterIndex() {
+  public List<CardValue> getFilteredCards() {
+    return filteredCards;
+  }
+
+  public void setFilteredCards(List<CardValue> filteredCards) {
+    this.filteredCards.clear();
+    this.filteredCards.addAll(filteredCards);
+  }
+
+  public void buildLetterIndex() {
     int c = 0;
     char lastLetter = 0;
-    for (CardValue card : cards) {
+    for (CardValue card : filteredCards) {
       char letter = card.title().charAt(0);
       if (letter != lastLetter) {
         letterIndex[letter - 'a'] = c;
