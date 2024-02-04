@@ -1,5 +1,8 @@
 package blog.mazleo.ruvacant.ui.universityscene;
 
+import static blog.mazleo.ruvacant.util.StringFormatter.capitalize;
+import static blog.mazleo.ruvacant.util.StringFormatter.limitChars;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +122,7 @@ public final class UniversitySceneAdapter extends RecyclerView.Adapter {
     }
 
     public void setTitle(String titleString) {
-      title.setText(titleString);
+      title.setText(limitChars(capitalize(titleString), 30));
     }
 
     public void setDescription(String descriptionString) {
